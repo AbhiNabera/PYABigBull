@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loginregistrationbackground"
+    tools:context=".RegistrationActivity">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/registrationCard"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:alpha="1"
+        android:background="#fff"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/mobileNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/ic_action_mobile"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:padding="10dp"
+                android:textColor="@color/greenText" />
+
+            <Button
+                android:id="@+id/register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/button_border"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:padding="5dp"
+                android:text="register"
+                android:textColor="@color/greenText"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
