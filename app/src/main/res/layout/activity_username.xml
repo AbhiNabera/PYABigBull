@@ -35,7 +35,7 @@
                 android:layout_marginTop="10dp" />
 
             <EditText
-                android:id="@+id/mobileNumber"
+                android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
@@ -45,8 +45,7 @@
                 android:drawableLeft="@drawable/ic_action_mobile"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:hint="Mobile Number"
-                android:inputType="number"
+                android:hint="User Name"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />
 

@@ -8,6 +8,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.example.abhinabera.pyabigbull.Login.LoginActivity;
+import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
+import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     ImageView splashImage;
@@ -27,7 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 splashImage.setImageResource(R.drawable.aspiretoinspirelogo);
             }
-        },1000);
+        },2000);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -39,10 +44,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent menuIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(menuIntent);
-                finish();
-                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                }else {
+                    Intent menuIntent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                    startActivity(menuIntent);
+                    finish();
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
             }
         },6000);
     }

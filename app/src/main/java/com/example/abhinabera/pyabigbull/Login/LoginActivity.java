@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Login;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.abhinabera.pyabigbull.MainActivity;
+import com.example.abhinabera.pyabigbull.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "506779052337",
+    "firebase_url": "https://pyabigbull.firebaseio.com",
+    "project_id": "pyabigbull",
+    "storage_bucket": "pyabigbull.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506779052337:android:9d3d5514a42a4dff",
+        "android_client_info": {
+          "package_name": "com.example.abhinabera.pyabigbull"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506779052337-pv9ieunhbul9n3rouerj38c5kojniavi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFWwtSrkBWi4JIddxK8w9h4CAHgrXTcwo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
