@@ -59,7 +59,7 @@ public class OTPActivity extends AppCompatActivity {
                     if (verify.getText().toString().trim().equalsIgnoreCase("VERIFY")) {
                         if (check()) {
                             //progressDialog.dismiss();
-                            progressDialog = new Utility().showDialog("Please wait while we are verifying otp", OTPActivity.this);
+                            progressDialog = new Utility().showDialog("Please wait while we are verifying OTP", OTPActivity.this);
                             progressDialog.setCancelable(false);
                             phoneAuthUtility.verifyVerificationCode(otp.getText().toString().trim());
                         }
@@ -105,7 +105,7 @@ public class OTPActivity extends AppCompatActivity {
     public boolean check() {
 
         if (otp.getText().toString().length() != 6) {
-            otp.setError("Enter a valid otp");
+            otp.setError("Enter a valid OTP");
             return false;
         }
         return true;
@@ -127,7 +127,7 @@ public class OTPActivity extends AppCompatActivity {
                 verify.setBackground(getDrawable(R.drawable.button_border));
 
                 //progressDialog.dismiss();
-                progressDialog = new Utility().showDialog("Please wait while we are verifying otp", OTPActivity.this);
+                progressDialog = new Utility().showDialog("Please wait while we are verifying OTP", OTPActivity.this);
                 progressDialog.setCancelable(false);
 
                 phoneAuthUtility.verifyVerificationCode(code);
@@ -138,7 +138,7 @@ public class OTPActivity extends AppCompatActivity {
             public void onNullCodeDetected() {
                 //ask user to manually enter otp
                 new Utility().showDialog("ENTER OTP",
-                        "Please manually enter the otp received on +91" + phoneNumber + ".", OTPActivity.this);
+                        "Please manually enter the OTP received on +91" + phoneNumber + ".", OTPActivity.this);
                 verify.setText("VERIFY");
                 verify.setEnabled(true);
                 verify.setBackground(getDrawable(R.drawable.button_border));
@@ -189,7 +189,7 @@ public class OTPActivity extends AppCompatActivity {
 
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                Toast.makeText(OTPActivity.this, "code sent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPActivity.this, "Code sent", Toast.LENGTH_SHORT).show();
                 Log.d("Code", "" + s);
 
                 //verify.setText("VERIFY");
@@ -211,7 +211,7 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onVerificationError() {
                 progressDialog.dismiss();
-                Toast.makeText(OTPActivity.this, "verification error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPActivity.this, "Verification error", Toast.LENGTH_SHORT).show();
 
                 verify.setText("RETRY");
                 verify.setEnabled(true);
@@ -230,7 +230,7 @@ public class OTPActivity extends AppCompatActivity {
         countDownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timer.setText("Waiting for otp " + millisUntilFinished / 1000 + "s");
+                timer.setText("Waiting for OTP..." + millisUntilFinished / 1000 + "s");
                 verify.setEnabled(false);
                 verify.setBackground(getDrawable(R.drawable.button_border_disabled));
                 //here you can have your logic to set text to edittext

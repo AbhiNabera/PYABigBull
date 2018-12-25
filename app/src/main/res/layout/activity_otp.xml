@@ -42,12 +42,12 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="18dp"
                 android:background="@drawable/border"
+                android:drawableLeft="@drawable/ic_action_mobile"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:hint="Mobile Number"
                 android:inputType="number"
                 android:padding="10dp"
-                android:gravity="center"
                 android:textColor="@color/colorTabtext" />
 
             <Button
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/hammersmithoneregular"
-                    android:text="Waiting for otp"
+                    android:text="Waiting for OTP..."
                     android:inputType="number"
                     android:padding="10dp"
                     android:gravity="center"

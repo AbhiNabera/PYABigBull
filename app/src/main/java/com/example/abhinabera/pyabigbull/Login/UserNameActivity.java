@@ -134,7 +134,7 @@ public class UserNameActivity extends AppCompatActivity {
 
     public void addPlayer() {
 
-        progressDialog = new Utility().showDialog("Please wait for updation to complete.", UserNameActivity.this);
+        progressDialog = new Utility().showDialog("Please wait for update to complete.", UserNameActivity.this);
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().addPlayer(phoneNumber, userName.getText().toString().trim()).enqueue(new Callback<JsonObject>() {
@@ -156,7 +156,7 @@ public class UserNameActivity extends AppCompatActivity {
                             break;
 
                         case "USERNAME_EXIST" :
-                            userName.setError("Username already exist");
+                            userName.setError("Username already exists");
                             //Toast.makeText(UserNameActivity.this, "Username already exist", Toast.LENGTH_SHORT).show();
                             break;
                     }
