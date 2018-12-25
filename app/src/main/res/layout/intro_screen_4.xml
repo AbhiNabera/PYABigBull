@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#fff">
+
+    <TextView
+        android:id="@+id/termsandconditionsText"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TERMS AND CONDITIONS"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/hammersmithone"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/termsandconditionsText">
+
+    </View>
+
+    <TextView
+        android:id="@+id/firstText"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line"
+        android:text="1. The game is only for fun and has no commercial or legal liability."
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/hammersmithone"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/secondText"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/firstText"
+        android:text="2. Admin has all the rights to remove or add any member."
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/hammersmithone"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/thirdText"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secondText"
+        android:text="3. The decision taken by the admin will be final in all cases."
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/hammersmithone"
+        android:textSize="18sp"
+        />
+
+</RelativeLayout>

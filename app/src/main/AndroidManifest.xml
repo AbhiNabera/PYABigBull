@@ -38,14 +38,22 @@
         <activity
             android:name=".Login.UserNameActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".IntroActivity" />
-        <activity android:name=".NiftyActivity" />
-        <activity android:name=".GoldActivity" />
-        <activity android:name=".SilverActivity" />
-        <activity android:name=".CrudeoilActivity" />
-        <activity android:name=".DollarActivity" />
-        <activity android:name=".EuroActivity" />
-        <activity android:name=".PoundActivity"></activity>
+        <activity android:name=".IntroActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NiftyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GoldActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SilverActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CrudeoilActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DollarActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EuroActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PoundActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

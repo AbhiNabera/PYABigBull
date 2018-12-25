@@ -95,29 +95,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                splashImage.setImageResource(R.drawable.aspiretoinspirelogo);
-            }
-        },2000);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                splashImage.setImageResource(R.drawable.bigbullsplashscreen);
-            }
-        },5000);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, IntroActivity.class));
+                    finish();
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                 }else {
-                    Intent menuIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    Intent menuIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
                     startActivity(menuIntent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             }
-        },7000);
+        },2000);
     }
 }

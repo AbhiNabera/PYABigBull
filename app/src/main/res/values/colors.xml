@@ -7,5 +7,18 @@
     <color name="greenText">#4AB556</color>
     <color name="colorAccent">#D81B60</color>
     <color name= "red">#FF0000</color>
-    <color name="green">#7FF000</color>
+
+    <array name="array_dot_active">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorPrimaryDark</item>
+    </array>
 </resources>

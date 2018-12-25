@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pehchaanlogo" />
+        android:scaleType="center"
+        app:srcCompat="@drawable/bigbullsplashscreen" />
 
 </RelativeLayout>
