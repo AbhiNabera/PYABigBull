@@ -1,9 +1,11 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.DataActivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.abhinabera.pyabigbull.R;
 
 public class SilverActivity extends AppCompatActivity {
 

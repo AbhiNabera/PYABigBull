@@ -1,10 +1,12 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.DataActivities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.abhinabera.pyabigbull.R;
 
 public class CrudeoilActivity extends AppCompatActivity {
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_data"
+        android:icon="@drawable/ic_bottom_data"
+        android:title="Live" />
+
+    <item
+        android:id="@+id/navigation_userdata"
+        android:icon="@drawable/ic_bottom_userdata"
+        android:title="User" />
+
+    <item
+        android:id="@+id/navigation_leaderboard"
+        android:icon="@drawable/ic_bottom_leaderboard"
+        android:title="Leaderboard" />
+
+
+</menu>
