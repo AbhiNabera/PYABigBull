@@ -1,17 +1,22 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.DataActivities.CrudeoilActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.DollarActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.EuroActivity;
@@ -20,11 +25,22 @@ import com.example.abhinabera.pyabigbull.DataActivities.NiftyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.PoundActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.SilverActivity;
 import com.example.abhinabera.pyabigbull.R;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import retrofit2.Response;
 
 public class DataFragment extends Fragment {
 
-    CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard;
+    private static int count = 0;
+    private static int MAXCOUNT = 4;
 
+    Response<JsonObject> nifty50, gold, silver, crudeoil, usd, eur, gbp;
+
+    CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard;
 
     TextView niftyDate, goldDate, silverDate, crudeoilDate, dollarDate, euroDate, poundDate,
             nifty50Rate, goldRate, silverRate, crudeoilRate, dollarRate, euroRate, poundRate,
@@ -32,7 +48,9 @@ public class DataFragment extends Fragment {
             nifty50BoxPercent, goldBoxPercent, silverBoxPercent, crudeoilBoxPercent, dollarBoxPercent, euroBoxPercent, poundBoxPercent;
 
     LinearLayout nifty50Box, goldBox, silverBox, crudeoilBox, dollarBox, euroBox, poundBox;
-    
+
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,6 +106,8 @@ public class DataFragment extends Fragment {
         dollarBox = (LinearLayout) view.findViewById(R.id.dollarBox);
         euroBox = (LinearLayout) view.findViewById(R.id.euroBox);
         poundBox = (LinearLayout) view.findViewById(R.id.poundBox);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
         niftyCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,5 +172,228 @@ public class DataFragment extends Fragment {
             }
         });
 
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                getNifty50();
+                getUSDINR();
+                getEURINR();
+                getGBPINR();
+
+            }
+        },50);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                count = 0;
+                getNifty50();
+                getUSDINR();
+                getEURINR();
+                getGBPINR();
+            }
+        });
+
+    }
+
+    public void setNiftyCard() {
+
+        JsonObject object = nifty50.body().get("indices").getAsJsonObject();
+
+        niftyDate.setText(""+object.get("lastupdated").getAsString());
+        nifty50Rate.setText(object.get("lastprice").getAsString()+"");
+        nifty50BoxRate.setText(object.get("change").getAsString()+"");
+        String pchange = object.get("percentchange").getAsString();
+        nifty50BoxPercent.setText(pchange+"%");
+        if(Double.parseDouble(pchange)>0) {
+            nifty50Box.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            nifty50Box.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+    }
+
+    public void setGoldCard() {
+
+    }
+
+    public void setSilverCard() {
+
+    }
+
+    public void setCrudeoilCard() {
+
+    }
+
+    public void setDollarCard() {
+        JsonObject object = usd.body().get("data").getAsJsonObject();
+        dollarDate.setText(""+object.get("lastupd").getAsString());
+        dollarRate.setText(""+object.get("pricecurrent").getAsString());
+        dollarBoxRate.setText(""+object.get("CHANGE").getAsString());
+        String pchange = ""+object.get("PERCCHANGE").getAsString();
+        dollarBoxPercent.setText(pchange+"%");
+
+
+        if(Double.parseDouble(pchange)>=0) {
+            dollarBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            dollarBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+    }
+
+    public void setEuroCard() {
+        JsonObject object = eur.body().get("data").getAsJsonObject();
+        euroDate.setText(""+object.get("lastupd").getAsString());
+        euroRate.setText(""+object.get("pricecurrent").getAsString());
+        euroBoxRate.setText(""+object.get("CHANGE").getAsString());
+        String pchange = ""+object.get("PERCCHANGE").getAsString();
+        euroBoxPercent.setText(pchange+"%");
+
+
+        if(Double.parseDouble(pchange)>=0) {
+            euroBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            euroBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+    }
+
+    public void setPoundCard() {
+        JsonObject object = gbp.body().get("data").getAsJsonObject();
+        poundDate.setText(""+object.get("lastupd").getAsString());
+        poundRate.setText(""+object.get("pricecurrent").getAsString());
+        poundBoxRate.setText(""+object.get("CHANGE").getAsString());
+        String pchange = ""+object.get("PERCCHANGE").getAsString();
+        poundBoxPercent.setText(pchange+"%");
+
+
+        if(Double.parseDouble(pchange)>=0) {
+            poundBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            poundBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+    }
+
+    public void getNifty50() {
+
+        new NetworkUtility().getNifty50(new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    nifty50 = response;
+                    Log.d("response NIFTY50", response.body().toString());
+                    setNiftyCard();
+                }else {
+                    try {
+                        Log.d("response ERR NIFTY50", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+                count++;
+                hideSwipeRefresh();
+            }
+        });
+    }
+
+    public void getUSDINR() {
+
+        new NetworkUtility().getUSDINR(new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    usd = response;
+                    Log.d("response USDINR", response.body().toString());
+                    setDollarCard();
+                }else {
+                    try {
+                        Log.d("response ERR USDINR", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+                count++;
+                hideSwipeRefresh();
+            }
+        });
+    }
+
+    public void getEURINR() {
+
+        new NetworkUtility().getEURINR(new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    eur = response;
+                    Log.d("response EURINR", response.body().toString());
+                    setEuroCard();
+                }else {
+                    try {
+                        Log.d("response ERR EURINR", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+                count++;
+                hideSwipeRefresh();
+            }
+        });
+    }
+
+    public void getGBPINR() {
+
+        new NetworkUtility().getGBPINR(new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    gbp = response;
+                    Log.d("response GBPINR", response.body().toString());
+                    setPoundCard();
+                }else {
+                    try {
+                        Log.d("response ERR GBPINR", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+                count++;
+                hideSwipeRefresh();
+            }
+        });
+    }
+
+    public void hideSwipeRefresh() {
+        if(count == MAXCOUNT) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

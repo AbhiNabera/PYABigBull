@@ -9,17 +9,28 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
     ImageView splashImage;
+
+    ProgressBar progressBar;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
@@ -42,11 +53,16 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         splashImage = (ImageView) findViewById(R.id.splashImage);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        else{ nextActivity(); }
+        else{
+            //nextActivity();
+            getCommodityExpiry();
+        }
 
     }
 
@@ -77,7 +93,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
                 else {
-                    nextActivity();
+                    //nextActivity();
+                    getCommodityExpiry();
                 }
 
             }
@@ -117,7 +134,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
             }
-        },2000);
+        },1000);
     }
 
     public String getUserName() {
@@ -128,5 +145,38 @@ public class SplashScreenActivity extends AppCompatActivity {
     public String getPhoneNumber() {
         SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
         return sharedPreferences.getString("phoneNumber", "");
+    }
+
+    public void getCommodityExpiry() {
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        new RetrofitClient().getInterface().getCommodityExpiry().enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                progressBar.setVisibility(View.GONE);
+                if(response.isSuccessful()) {
+                    pushDataInSP(response.body().toString());
+                    nextActivity();
+                }else{
+                    Toast.makeText(SplashScreenActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                t.printStackTrace();
+                Toast.makeText(SplashScreenActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void pushDataInSP(String data) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("expiry", data);
+        editor.apply();
+        editor.commit();
     }
 }

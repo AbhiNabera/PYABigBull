@@ -24,4 +24,18 @@ public interface ApiInterface {
     @GET("userName")
     Call<JsonObject> getUserName(@Query("phoneNumber") String phoneNumber);
 
+    @GET("expiry")
+    Call<JsonObject> getCommodityExpiry();
+
+    @GET("jsonapi/market/indices&ind_id=9")
+    Call<JsonObject> getNifty50();
+
+    @GET("pricefeed/notapplicable/currencyspot/%24%24%3BUSDINR")
+    Call<JsonObject> getUSDINR();
+
+    @GET("pricefeed/notapplicable/currencyspot/%24%24%3BEURINR")
+    Call<JsonObject> getEURINR();
+
+    @GET("pricefeed/notapplicable/currencyspot/%24%24%3BGBPINR")
+    Call<JsonObject> getGBPINR();
 }

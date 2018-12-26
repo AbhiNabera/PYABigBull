@@ -4,17 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#fff"
+    android:gravity="center_horizontal"
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
 
     <ImageView
         android:id="@+id/splashImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="center"
         app:srcCompat="@drawable/bigbullsplashscreen" />
+
+    <ProgressBar
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/splashImage"
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_atop" />
 
 </RelativeLayout>
