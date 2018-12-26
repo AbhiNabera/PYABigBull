@@ -1,7 +1,8 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,9 +26,13 @@ import com.example.abhinabera.pyabigbull.DataActivities.NiftyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.PoundActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.SilverActivity;
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.Utility;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -36,7 +41,7 @@ import retrofit2.Response;
 public class DataFragment extends Fragment {
 
     private static int count = 0;
-    private static int MAXCOUNT = 4;
+    private static int MAXCOUNT = 7;
 
     Response<JsonObject> nifty50, gold, silver, crudeoil, usd, eur, gbp;
 
@@ -51,6 +56,11 @@ public class DataFragment extends Fragment {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
+    String data;
+
+    JsonObject object;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,6 +71,11 @@ public class DataFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, Context.MODE_PRIVATE);
+        data = sharedPreferences.getString("expiry",null);
+        JsonParser jsonParser = new JsonParser();
+        object = (JsonObject) jsonParser.parse(data);
 
         niftyCard = (CardView) view.findViewById(R.id.niftyCard);
         goldCard = (CardView) view.findViewById(R.id.goldCard);
@@ -177,10 +192,14 @@ public class DataFragment extends Fragment {
             @Override
             public void run() {
 
+                count = 0;
                 getNifty50();
                 getUSDINR();
                 getEURINR();
                 getGBPINR();
+                getGold();
+                getSilver();
+                getCrudeoil();
 
             }
         },50);
@@ -193,6 +212,9 @@ public class DataFragment extends Fragment {
                 getUSDINR();
                 getEURINR();
                 getGBPINR();
+                getGold();
+                getSilver();
+                getCrudeoil();
             }
         });
 
@@ -201,11 +223,12 @@ public class DataFragment extends Fragment {
     public void setNiftyCard() {
 
         JsonObject object = nifty50.body().get("indices").getAsJsonObject();
+        Utility utility = new Utility();
 
         niftyDate.setText(""+object.get("lastupdated").getAsString());
-        nifty50Rate.setText(object.get("lastprice").getAsString()+"");
-        nifty50BoxRate.setText(object.get("change").getAsString()+"");
-        String pchange = object.get("percentchange").getAsString();
+        nifty50Rate.setText(/*utility.getRoundoffData*/(object.get("lastprice").getAsString()+""));
+        nifty50BoxRate.setText(utility.getRoundoffData(object.get("change").getAsString()+""));
+        String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         nifty50BoxPercent.setText(pchange+"%");
         if(Double.parseDouble(pchange)>0) {
             nifty50Box.setBackgroundColor(getResources().getColor(R.color.greenText));
@@ -215,23 +238,64 @@ public class DataFragment extends Fragment {
     }
 
     public void setGoldCard() {
+        JsonObject object = gold.body().get("data").getAsJsonObject();
+        Utility utility = new Utility();
 
+        goldDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()+""));
+        goldRate.setText("" + /*utility.getRoundoffData*/(object.get("pricecurrent").getAsString()+""));
+        goldBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        goldBoxPercent.setText("" + pchange + "%");
+
+        if(Double.parseDouble(pchange)>0) {
+            goldBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            goldBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
     }
 
     public void setSilverCard() {
+        JsonObject object = silver.body().get("data").getAsJsonObject();
+        Utility utility = new Utility();
 
+        silverDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()));
+        silverRate.setText(/*utility.getRoundoffData*/("" + object.get("pricecurrent").getAsString()));
+        silverBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        silverBoxPercent.setText("" + pchange + "%");
+
+        if(Double.parseDouble(pchange)>0) {
+            silverBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            silverBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
     }
 
     public void setCrudeoilCard() {
+        JsonObject object = crudeoil.body().get("data").getAsJsonObject();
+        Utility utility = new Utility();
 
+        crudeoilDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()));
+        crudeoilRate.setText(/*utility.getRoundoffData*/("" + object.get("pricecurrent").getAsString()));
+        crudeoilBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        crudeoilBoxPercent.setText("" + pchange + "%");
+
+        if(Double.parseDouble(pchange)>0) {
+            crudeoilBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+        }else {
+            crudeoilBox.setBackgroundColor(getResources().getColor(R.color.red));
+        }
     }
 
     public void setDollarCard() {
         JsonObject object = usd.body().get("data").getAsJsonObject();
-        dollarDate.setText(""+object.get("lastupd").getAsString());
-        dollarRate.setText(""+object.get("pricecurrent").getAsString());
-        dollarBoxRate.setText(""+object.get("CHANGE").getAsString());
-        String pchange = ""+object.get("PERCCHANGE").getAsString();
+        Utility utility = new Utility();
+
+        dollarDate.setText(utility.getFormattedDate(""+object.get("lastupd_epoch").getAsString()));
+        dollarRate.setText(utility.getRoundoffData(""+object.get("pricecurrent").getAsString()));
+        dollarBoxRate.setText(utility.getRoundoffData(""+object.get("CHANGE").getAsString()));
+        String pchange = utility.getRoundoffData(""+object.get("PERCCHANGE").getAsString());
         dollarBoxPercent.setText(pchange+"%");
 
 
@@ -244,10 +308,12 @@ public class DataFragment extends Fragment {
 
     public void setEuroCard() {
         JsonObject object = eur.body().get("data").getAsJsonObject();
-        euroDate.setText(""+object.get("lastupd").getAsString());
-        euroRate.setText(""+object.get("pricecurrent").getAsString());
-        euroBoxRate.setText(""+object.get("CHANGE").getAsString());
-        String pchange = ""+object.get("PERCCHANGE").getAsString();
+        Utility utility = new Utility();
+
+        euroDate.setText(utility.getFormattedDate(""+object.get("lastupd_epoch").getAsString()));
+        euroRate.setText(utility.getRoundoffData(""+object.get("pricecurrent").getAsString()));
+        euroBoxRate.setText(utility.getRoundoffData(""+object.get("CHANGE").getAsString()));
+        String pchange = utility.getRoundoffData(""+object.get("PERCCHANGE").getAsString());
         euroBoxPercent.setText(pchange+"%");
 
 
@@ -260,12 +326,13 @@ public class DataFragment extends Fragment {
 
     public void setPoundCard() {
         JsonObject object = gbp.body().get("data").getAsJsonObject();
-        poundDate.setText(""+object.get("lastupd").getAsString());
-        poundRate.setText(""+object.get("pricecurrent").getAsString());
-        poundBoxRate.setText(""+object.get("CHANGE").getAsString());
-        String pchange = ""+object.get("PERCCHANGE").getAsString();
-        poundBoxPercent.setText(pchange+"%");
+        Utility utility = new Utility();
 
+        poundDate.setText(utility.getFormattedDate(""+object.get("lastupd_epoch").getAsString()));
+        poundRate.setText(utility.getRoundoffData(""+object.get("pricecurrent").getAsString()));
+        poundBoxRate.setText(utility.getRoundoffData(""+object.get("CHANGE").getAsString()));
+        String pchange = utility.getRoundoffData(""+object.get("PERCCHANGE").getAsString());
+        poundBoxPercent.setText(pchange+"%");
 
         if(Double.parseDouble(pchange)>=0) {
             poundBox.setBackgroundColor(getResources().getColor(R.color.greenText));
@@ -290,7 +357,6 @@ public class DataFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
                 count++;
                 hideSwipeRefresh();
             }
@@ -300,6 +366,93 @@ public class DataFragment extends Fragment {
                 t.printStackTrace();
                 count++;
                 hideSwipeRefresh();
+            }
+        });
+    }
+
+    public void getGold() {
+
+        new NetworkUtility().getGold(getGOLDexpiry(), new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    gold = response;
+                    Log.d("response GOLD", response.body().toString());
+                    setGoldCard();
+                }else {
+                    try {
+                        Log.d("response ERR GOLD", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                count++;
+                hideSwipeRefresh();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getSilver() {
+
+        new NetworkUtility().getSilver(getSILVERexpiry(), new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    silver = response;
+                    Log.d("response SILVER", response.body().toString());
+                    setSilverCard();
+                }else {
+                    try {
+                        Log.d("response ERR SILVER", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                count++;
+                hideSwipeRefresh();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getCrudeoil() {
+
+        new NetworkUtility().getCrudeoil(getCRUDEOILexpiry(), new NetworkCallback() {
+            @Override
+            public void onSuccess(Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    crudeoil = response;
+                    Log.d("response CRUDEOIL", response.body().toString());
+                    setCrudeoilCard();
+                }else {
+                    try {
+                        Log.d("response ERR CRUDEOIL", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                count++;
+                hideSwipeRefresh();
+                t.printStackTrace();
             }
         });
     }
@@ -396,4 +549,56 @@ public class DataFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
+
+    public String getGOLDexpiry() {
+        Long epoch = System.currentTimeMillis();
+        JsonArray array = object.get("expiry").getAsJsonObject().get("GOLD").getAsJsonArray();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
+        int i = 0;
+        for( i =0; i<array.size(); i++) {
+            try {
+                Date date = sdf.parse(array.get(i).getAsString());
+                if(date.getTime()>epoch) break;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return array.get(i).getAsString();
+    }
+
+    public String getSILVERexpiry() {
+        Long epoch = System.currentTimeMillis();
+        JsonArray array = object.get("expiry").getAsJsonObject().get("SILVER").getAsJsonArray();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
+        int i=0;
+        for(i=0; i<array.size(); i++) {
+            try {
+                Date date = sdf.parse(array.get(i).getAsString());
+                if(date.getTime()>epoch) break;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return array.get(i).getAsString();
+    }
+
+    public String getCRUDEOILexpiry() {
+        Long epoch = System.currentTimeMillis();
+        JsonArray array = object.get("expiry").getAsJsonObject().get("CRUDEOIL").getAsJsonArray();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
+        int i =0;
+        for(i=0; i<array.size(); i++) {
+            try {
+                Date date = sdf.parse(array.get(i).getAsString());
+                if(date.getTime()>epoch) break;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return array.get(i).getAsString();
+    }
+
 }

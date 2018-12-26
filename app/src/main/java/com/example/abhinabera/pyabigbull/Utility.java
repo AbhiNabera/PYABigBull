@@ -5,9 +5,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.abhinabera.pyabigbull.Dialog.MyDialog;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Utility {
 
@@ -76,4 +82,16 @@ public class Utility {
         return (netInfo != null && netInfo.isConnected());
     }
 
+    public String getRoundoffData(String value) {
+        String val = String.format("%.2f",( Float.parseFloat(value.replace(",",""))));
+        return val;
+    }
+
+    public String getFormattedDate(String epoch) {
+        Log.d("EPOCH TIME", ""+epoch);
+        int offset = TimeZone.getDefault().getRawOffset() + TimeZone.getDefault().getDSTSavings();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+        return sdf.format(new Date(Long.parseLong(epoch.trim()) * 1000L + offset));
+    }
 }

@@ -30,6 +30,15 @@ public interface ApiInterface {
     @GET("jsonapi/market/indices&ind_id=9")
     Call<JsonObject> getNifty50();
 
+    @GET("pricefeed/mcx/commodityfuture/GOLD")
+    Call<JsonObject> getGold(@Query("expiry") String expiry);
+
+    @GET("pricefeed/mcx/commodityfuture/SILVER")
+    Call<JsonObject> getSilver(@Query("expiry") String expiry);
+
+    @GET("pricefeed/mcx/commodityfuture/CRUDEOIL")
+    Call<JsonObject> getCrudeoil(@Query("expiry") String expiry);
+
     @GET("pricefeed/notapplicable/currencyspot/%24%24%3BUSDINR")
     Call<JsonObject> getUSDINR();
 

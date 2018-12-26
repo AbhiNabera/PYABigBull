@@ -25,6 +25,49 @@ public class NetworkUtility {
         });
     }
 
+    public void getGold(String expiry, final NetworkCallback networkCallback) {
+
+        new RetrofitClient().getCurrencyInterface().getGold(expiry).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                networkCallback.onSuccess(response);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                networkCallback.onError(t);
+            }
+        });
+    }
+
+    public void getSilver(String expiry, final NetworkCallback networkCallback) {
+        new RetrofitClient().getCurrencyInterface().getSilver(expiry).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                networkCallback.onSuccess(response);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                networkCallback.onError(t);
+            }
+        });
+    }
+
+    public void getCrudeoil(String expiry, final NetworkCallback networkCallback) {
+        new RetrofitClient().getCurrencyInterface().getCrudeoil(expiry).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                networkCallback.onSuccess(response);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                networkCallback.onError(t);
+            }
+        });
+    }
+
     public void getUSDINR(final NetworkCallback networkCallback) {
 
         new RetrofitClient().getCurrencyInterface().getUSDINR().enqueue(new Callback<JsonObject>() {
