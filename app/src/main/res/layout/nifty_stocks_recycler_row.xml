@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerHorizontal="true"
+    android:background="#fff"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:clickable="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nifty"
+            android:padding="5dp">
+            
+            <TextView
+                android:id="@+id/niftyStocksCompanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:padding="5dp"
+                android:text="Company"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/niftyStocksPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@id/niftyStocksBox"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:padding="5dp"
+                android:text="000000.00"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/niftyStocksVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_below="@id/niftyStocksPrice"
+                android:layout_toLeftOf="@id/niftyStocksBox"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:text="Vol: 0.00m"
+                android:textColor="#000"
+                android:textSize="12sp" />
+            
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:id="@+id/niftyStocksBox"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/red">
+
+                <TextView
+                    android:id="@+id/niftyStocksBoxPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="00.0"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/niftyStocksBoxPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="0.0%"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    
+
+</RelativeLayout>

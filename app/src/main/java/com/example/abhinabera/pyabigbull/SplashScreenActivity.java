@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -116,12 +117,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if(getUserName()!=null) {
 
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
 
                     }else {
 
                         Intent intent = new Intent(SplashScreenActivity.this, UserNameActivity.class);
                         intent.putExtra("phoneNumber", getPhoneNumber());
                         startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
 
                     }
 
