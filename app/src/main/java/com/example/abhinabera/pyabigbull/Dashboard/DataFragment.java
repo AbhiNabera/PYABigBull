@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.example.abhinabera.pyabigbull.DataActivities.GoldActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.NiftyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.PoundActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.SilverActivity;
+import com.example.abhinabera.pyabigbull.R;
 
 public class DataFragment extends Fragment {
 

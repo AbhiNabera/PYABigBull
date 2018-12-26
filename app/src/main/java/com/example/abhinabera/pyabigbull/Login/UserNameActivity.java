@@ -10,11 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
-import com.example.abhinabera.pyabigbull.MainActivity;
+import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Utility;
 import com.google.gson.JsonObject;
@@ -65,9 +64,9 @@ public class UserNameActivity extends AppCompatActivity {
 
                         }else {
 
-                            Intent intent = new Intent(UserNameActivity.this, UserNameActivity.class);
-                            intent.putExtra("phoneNumber", phoneNumber);
-                            intent.putExtra("userName", userName.getText().toString().trim());
+                            //Intent intent = new Intent(UserNameActivity.this, UserNameActivity.class);
+                            //intent.putExtra("phoneNumber", phoneNumber);
+                            //intent.putExtra("userName", userName.getText().toString().trim());
                             startActivity(new Intent(UserNameActivity.this, MainActivity.class));
                         }
                     }
@@ -137,7 +136,7 @@ public class UserNameActivity extends AppCompatActivity {
         progressDialog = new Utility().showDialog("Please wait for update to complete.", UserNameActivity.this);
         progressDialog.setCancelable(false);
 
-        new RetrofitClient().getInterface().addPlayer(phoneNumber, userName.getText().toString().trim()).enqueue(new Callback<JsonObject>() {
+        new RetrofitClient().getInterface().addPlayer(phoneNumber, userName.getText().toString().trim(), prevUsername).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 

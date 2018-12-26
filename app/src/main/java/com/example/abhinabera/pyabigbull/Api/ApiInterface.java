@@ -18,7 +18,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("addPlayer")
     Call<JsonObject> addPlayer(@Field("phoneNumber") String phoneNumber,
-                               @Field("userName") String userName);
+                               @Field("userName") String userName,
+                               @Field("prevUserName") String prevUserName);
 
     @GET("userName")
     Call<JsonObject> getUserName(@Query("phoneNumber") String phoneNumber);

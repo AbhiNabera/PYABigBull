@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull.Login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (check()) {
                         Intent i = new Intent(RegistrationActivity.this, OTPActivity.class);
                         i.putExtra("phoneNumber", mobileNumber.getText().toString().trim());
+                        pushDataInSP(mobileNumber.getText().toString().trim());
                         startActivity(i);
                         finish();
                         overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -65,5 +67,13 @@ public class RegistrationActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public void pushDataInSP(String phoneNumber) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("phoneNumber", phoneNumber);
+        editor.apply();
+        editor.commit();
     }
 }

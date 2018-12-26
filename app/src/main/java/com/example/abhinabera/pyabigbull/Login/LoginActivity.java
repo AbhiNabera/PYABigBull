@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.abhinabera.pyabigbull.MainActivity;
+import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 
 public class LoginActivity extends AppCompatActivity {

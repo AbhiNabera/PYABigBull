@@ -1,9 +1,9 @@
 package com.example.abhinabera.pyabigbull;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -13,8 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.example.abhinabera.pyabigbull.Login.LoginActivity;
-import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
+import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -84,7 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
             else {
 
-                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+                //ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
 
             }
         }
@@ -96,16 +95,38 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
-                    startActivity(new Intent(SplashScreenActivity.this, IntroActivity.class));
-                    finish();
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                    if(getUserName()!=null) {
+
+                        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+
+                    }else {
+
+                        Intent intent = new Intent(SplashScreenActivity.this, UserNameActivity.class);
+                        intent.putExtra("phoneNumber", getPhoneNumber());
+                        startActivity(intent);
+
+                    }
+
                 }else {
+
                     Intent menuIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
                     startActivity(menuIntent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
+
                 }
             }
         },2000);
+    }
+
+    public String getUserName() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        return sharedPreferences.getString("userName", null);
+    }
+
+    public String getPhoneNumber() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        return sharedPreferences.getString("phoneNumber", "");
     }
 }

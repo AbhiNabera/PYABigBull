@@ -1,11 +1,9 @@
 package com.example.abhinabera.pyabigbull.Login;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +11,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
-import com.example.abhinabera.pyabigbull.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Utility;
 import com.google.firebase.auth.PhoneAuthProvider;

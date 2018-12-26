@@ -1,13 +1,14 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Dashboard;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+
+import com.example.abhinabera.pyabigbull.R;
 
 public class MainActivity extends AppCompatActivity{
 

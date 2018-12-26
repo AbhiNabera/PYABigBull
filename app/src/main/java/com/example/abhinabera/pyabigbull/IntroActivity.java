@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
+
 public class IntroActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
@@ -102,7 +104,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        startActivity(new Intent(IntroActivity.this, MainActivity.class));
+        startActivity(new Intent(IntroActivity.this, RegistrationActivity.class));
         finish();
     }
 
