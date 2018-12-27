@@ -42,6 +42,11 @@ public interface ApiInterface {
     @GET("jsonapi/ticker/index&type=nifty&format=json")
     Call<List<JsonObject>> getNify50StockList();
 
+    @GET
+    Call<JsonObject> getData(@Url String url);
+
+    @GET("jsonapi/commodity/top_commodity&ex=MCX&format=json")
+    Call<JsonObject> getTopCommodity();
 
     /*
     priceapi

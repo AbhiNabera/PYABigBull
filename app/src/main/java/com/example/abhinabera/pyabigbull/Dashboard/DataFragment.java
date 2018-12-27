@@ -18,12 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.CommodityActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Utility;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -32,14 +34,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DataFragment extends Fragment {
 
     private static int count = 0;
-    private static int MAXCOUNT = 7;
+    private static int MAXCOUNT = 5;
 
-    Response<JsonObject> nifty50, gold, silver, crudeoil, usd, eur, gbp;
+    Response<JsonObject> nifty50, usd, eur, gbp;
+
+    JsonObject gold, silver, crudeoil;
 
     CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard;
 
@@ -52,10 +58,23 @@ public class DataFragment extends Fragment {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-    String data;
+    @Override
+    public void onResume() {
+        super.onResume();
 
-    JsonObject object;
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                count = 0;
+                getNifty50();
+                getUSDINR();
+                getEURINR();
+                getGBPINR();
+                getTopCommodity();
+            }
+        },20);
+    }
 
     @Nullable
     @Override
@@ -67,11 +86,6 @@ public class DataFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, Context.MODE_PRIVATE);
-        data = sharedPreferences.getString("expiry",null);
-        JsonParser jsonParser = new JsonParser();
-        object = (JsonObject) jsonParser.parse(data);
 
         niftyCard = (CardView) view.findViewById(R.id.niftyCard);
         goldCard = (CardView) view.findViewById(R.id.goldCard);
@@ -189,23 +203,6 @@ public class DataFragment extends Fragment {
             }
         });
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                count = 0;
-                getNifty50();
-                getUSDINR();
-                getEURINR();
-                getGBPINR();
-                getGold();
-                getSilver();
-                getCrudeoil();
-
-            }
-        },50);
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -214,9 +211,7 @@ public class DataFragment extends Fragment {
                 getUSDINR();
                 getEURINR();
                 getGBPINR();
-                getGold();
-                getSilver();
-                getCrudeoil();
+                getTopCommodity();
             }
         });
 
@@ -240,13 +235,13 @@ public class DataFragment extends Fragment {
     }
 
     public void setGoldCard() {
-        JsonObject object = gold.body().get("data").getAsJsonObject();
+        JsonObject object = gold;
         Utility utility = new Utility();
 
-        goldDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()+""));
-        goldRate.setText("" + /*utility.getRoundoffData*/(object.get("pricecurrent").getAsString()+""));
-        goldBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
-        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        goldDate.setText("MCX: " + (object.get("lastupdate").getAsString()+""));
+        goldRate.setText("" + /*utility.getRoundoffData*/(object.get("lastprice").getAsString()+""));
+        goldBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         goldBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
@@ -257,13 +252,13 @@ public class DataFragment extends Fragment {
     }
 
     public void setSilverCard() {
-        JsonObject object = silver.body().get("data").getAsJsonObject();
+        JsonObject object = silver;
         Utility utility = new Utility();
 
-        silverDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()));
-        silverRate.setText(/*utility.getRoundoffData*/("" + object.get("pricecurrent").getAsString()));
-        silverBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
-        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        silverDate.setText("MCX: " + object.get("lastupdate").getAsString()+"");
+        silverRate.setText(/*utility.getRoundoffData*/("" + object.get("lastprice").getAsString()));
+        silverBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         silverBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
@@ -274,13 +269,13 @@ public class DataFragment extends Fragment {
     }
 
     public void setCrudeoilCard() {
-        JsonObject object = crudeoil.body().get("data").getAsJsonObject();
+        JsonObject object = crudeoil;
         Utility utility = new Utility();
 
-        crudeoilDate.setText("MCX: " + utility.getFormattedDate(object.get("lastupd_epoch").getAsString()));
-        crudeoilRate.setText(/*utility.getRoundoffData*/("" + object.get("pricecurrent").getAsString()));
-        crudeoilBoxRate.setText(utility.getRoundoffData("" + object.get("pricechange").getAsString()));
-        String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
+        crudeoilDate.setText("MCX: " + object.get("lastupdate").getAsString()+"");
+        crudeoilRate.setText(/*utility.getRoundoffData*/("" + object.get("lastprice").getAsString()));
+        crudeoilBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
+        String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         crudeoilBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
@@ -372,76 +367,49 @@ public class DataFragment extends Fragment {
         });
     }
 
-    public void getGold() {
+    public void getTopCommodity() {
 
-        new NetworkUtility().getGold(getGOLDexpiry(), new NetworkCallback() {
+        new RetrofitClient().getNifty50Interface().getTopCommodity().enqueue(new Callback<JsonObject>() {
             @Override
-            public void onSuccess(Response<JsonObject> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
-                    gold = response;
-                    Log.d("response GOLD", response.body().toString());
+                    Log.d("response COMMODITY", response.body().toString());
+
+                    int i = 0;
+
+                    for(JsonElement element: response.body().get("list").getAsJsonArray()) {
+
+                        switch (element.getAsJsonObject().get("id").getAsString()) {
+
+                            case "GOLD" :
+                                i++;
+                                gold = element.getAsJsonObject();
+                                break;
+
+                            case "SILVER" :
+                                i++;
+                                silver = element.getAsJsonObject();
+                                break;
+
+                            case "CRUDEOIL" :
+                                i++;
+                                crudeoil = element.getAsJsonObject();
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if(i==3) break;
+                    }
+
                     setGoldCard();
-                }else {
-                    try {
-                        Log.d("response ERR GOLD", response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                count++;
-                hideSwipeRefresh();
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                count++;
-                hideSwipeRefresh();
-                t.printStackTrace();
-            }
-        });
-    }
-
-    public void getSilver() {
-
-        new NetworkUtility().getSilver(getSILVERexpiry(), new NetworkCallback() {
-            @Override
-            public void onSuccess(Response<JsonObject> response) {
-                if(response.isSuccessful()) {
-                    silver = response;
-                    Log.d("response SILVER", response.body().toString());
                     setSilverCard();
-                }else {
-                    try {
-                        Log.d("response ERR SILVER", response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                count++;
-                hideSwipeRefresh();
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                count++;
-                hideSwipeRefresh();
-                t.printStackTrace();
-            }
-        });
-    }
-
-    public void getCrudeoil() {
-
-        new NetworkUtility().getCrudeoil(getCRUDEOILexpiry(), new NetworkCallback() {
-            @Override
-            public void onSuccess(Response<JsonObject> response) {
-                if(response.isSuccessful()) {
-                    crudeoil = response;
-                    Log.d("response CRUDEOIL", response.body().toString());
                     setCrudeoilCard();
-                }else {
+
+                }else{
                     try {
-                        Log.d("response ERR CRUDEOIL", response.errorBody().string());
+                        Log.d("response COMMODITY", response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -451,7 +419,7 @@ public class DataFragment extends Fragment {
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 count++;
                 hideSwipeRefresh();
                 t.printStackTrace();
@@ -550,57 +518,6 @@ public class DataFragment extends Fragment {
         if(count == MAXCOUNT) {
             swipeRefreshLayout.setRefreshing(false);
         }
-    }
-
-    public String getGOLDexpiry() {
-        Long epoch = System.currentTimeMillis();
-        JsonArray array = object.get("expiry").getAsJsonObject().get("GOLD").getAsJsonArray();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
-        int i = 0;
-        for( i =0; i<array.size(); i++) {
-            try {
-                Date date = sdf.parse(array.get(i).getAsString());
-                if(date.getTime()>epoch) break;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return array.get(i).getAsString();
-    }
-
-    public String getSILVERexpiry() {
-        Long epoch = System.currentTimeMillis();
-        JsonArray array = object.get("expiry").getAsJsonObject().get("SILVER").getAsJsonArray();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
-        int i=0;
-        for(i=0; i<array.size(); i++) {
-            try {
-                Date date = sdf.parse(array.get(i).getAsString());
-                if(date.getTime()>epoch) break;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return array.get(i).getAsString();
-    }
-
-    public String getCRUDEOILexpiry() {
-        Long epoch = System.currentTimeMillis();
-        JsonArray array = object.get("expiry").getAsJsonObject().get("CRUDEOIL").getAsJsonArray();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
-        int i =0;
-        for(i=0; i<array.size(); i++) {
-            try {
-                Date date = sdf.parse(array.get(i).getAsString());
-                if(date.getTime()>epoch) break;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return array.get(i).getAsString();
     }
 
 }

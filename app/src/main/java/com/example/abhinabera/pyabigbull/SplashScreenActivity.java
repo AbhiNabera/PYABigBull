@@ -63,8 +63,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         else{
-            //nextActivity();
-            getCommodityExpiry();
+            nextActivity();
+            //getCommodityExpiry();
         }
 
     }
@@ -96,8 +96,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
                 else {
-                    //nextActivity();
-                    getCommodityExpiry();
+                    nextActivity();
+                    //getCommodityExpiry();
                 }
 
             }
@@ -152,6 +152,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         return sharedPreferences.getString("phoneNumber", "");
     }
 
+    @Deprecated
     public void getCommodityExpiry() {
 
         progressBar.setVisibility(View.VISIBLE);

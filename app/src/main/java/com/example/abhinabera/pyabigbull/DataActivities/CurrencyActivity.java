@@ -1,7 +1,9 @@
 package com.example.abhinabera.pyabigbull.DataActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +15,21 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.Utility;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrencyActivity extends AppCompatActivity {
 
     TextView currentPrice, prevClose, todaysLow, todaysHigh;
     android.support.v7.widget.Toolbar currencyToolbar;
     Typeface custom_font;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,6 @@ public class CurrencyActivity extends AppCompatActivity {
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         changeToolbarFont(currencyToolbar, this);
-
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -71,7 +81,8 @@ public class CurrencyActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.enter1, R.anim.exit1);
+        //finish();
+        //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
+
 }

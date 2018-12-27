@@ -19,7 +19,7 @@ public class Utility {
 
     public static String URL = "https://us-central1-pyabigbull.cloudfunctions.net";
 
-    public static String MONEY_CONTROL_NIFTY50_URL = "http://appfeeds.moneycontrol.com";
+    public static String MONEY_CONTROL_NIFTY50_URL = "https://appfeeds.moneycontrol.com";
 
     public static String MONEY_CONTROL_CURRENCY_URL = "https://priceapi.moneycontrol.com";
 
@@ -28,6 +28,15 @@ public class Utility {
 
     public static String MyPREF = "PAYBigBullPref";
 
+    public String getCommodityURL(String id) {
+        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id;
+        return URL;
+    }
+
+    public String getCommodityExpiryURL(String id, String expiry) {
+        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt" + expiry;
+        return URL;
+    }
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {
         ProgressDialog progressDialog = new ProgressDialog();

@@ -81,7 +81,7 @@ public class NiftyOverviewFragment extends Fragment {
                 refreshLayout.setRefreshing(true);
                 getNifty50();
             }
-        },50);
+        },20);
 
     }
 
