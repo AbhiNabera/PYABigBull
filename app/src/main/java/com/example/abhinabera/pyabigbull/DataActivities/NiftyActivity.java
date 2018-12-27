@@ -1,14 +1,18 @@
 package com.example.abhinabera.pyabigbull.DataActivities;
 
+import android.app.Activity;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import java.util.List;
 public class NiftyActivity extends AppCompatActivity {
 
     private TabLayout niftyTabs;
+    android.support.v7.widget.Toolbar niftyToolbar;
     private ViewPager niftyViewPager;
     Typeface custom_font;
 
@@ -38,6 +43,17 @@ public class NiftyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nifty);
         getSupportActionBar().hide();
 
+        niftyToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.niftyToolbar);
+        niftyToolbar.setTitle("NIFTY50");
+
+        niftyToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
+        niftyToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         niftyViewPager = (ViewPager) findViewById(R.id.niftyViewpager);
@@ -47,6 +63,30 @@ public class NiftyActivity extends AppCompatActivity {
         niftyTabs.setupWithViewPager(niftyViewPager);
 
         changeTabsFont();
+        changeToolbarFont(niftyToolbar, this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public void changeToolbarFont(Toolbar toolbar, Activity context) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                if (tv.getText().equals(toolbar.getTitle())) {
+                    applyFont(tv, context);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void applyFont(TextView tv, Activity context) {
+        tv.setTypeface(custom_font);
     }
 
     private void changeTabsFont() {
