@@ -185,6 +185,140 @@
             </View>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/simpleMovingAverages"
+            android:layout_below="@+id/wkLowHigh"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simple Moving Averages"
+                android:textSize="18sp"
+                android:textColor="#fff"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorTabtext">
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/thirtyDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30 Days"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/thirtyDaysTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:text="10635.45"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/fiftyDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50 Days"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/fiftyDaysTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:text="10635.45"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorTabtext">
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/oneFiftyDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150 Days"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/oneFiftyDaysTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:text="10635.45"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/twoHundredDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200 Days"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:id="@+id/twoHunderedDaysTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:text="10635.45"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:textColor="#fff"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorTabtext">
+            </View>
+        </LinearLayout>
+
 
     </RelativeLayout>
 

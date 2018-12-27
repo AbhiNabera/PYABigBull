@@ -13,7 +13,7 @@ import com.example.abhinabera.pyabigbull.R;
 
 public class NiftyOverviewFragment extends Fragment {
 
-    TextView openPrice, prevClose, todaysLow, todaysHigh, wkLow, wkHigh;
+    TextView openPrice, prevClose, todaysLow, todaysHigh, wkLow, wkHigh, thirtyDays, fiftyDays, oneFiftyDays, twoHundredDays;
 
     public NiftyOverviewFragment() {
         // Required empty public constructor
@@ -41,5 +41,9 @@ public class NiftyOverviewFragment extends Fragment {
         todaysHigh = (TextView) view.findViewById(R.id.todaysHighTextView);
         wkLow = (TextView) view.findViewById(R.id.wkLowTextView);
         wkHigh = (TextView) view.findViewById(R.id.wkHighTextView);
+        thirtyDays = (TextView) view.findViewById(R.id.thirtyDaysTextView);
+        fiftyDays = (TextView) view.findViewById(R.id.fiftyDaysTextView);
+        oneFiftyDays = (TextView) view.findViewById(R.id.oneFiftyDaysTextView);
+        twoHundredDays = (TextView) view.findViewById(R.id.twoHunderedDaysTextView);
     }
 }

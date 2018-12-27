@@ -162,6 +162,7 @@ public class DataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
+                i.putExtra("cardName", "Dollar");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -171,6 +172,7 @@ public class DataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
+                i.putExtra("cardName", "Euro");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -180,6 +182,7 @@ public class DataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
+                i.putExtra("cardName", "Pound");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
