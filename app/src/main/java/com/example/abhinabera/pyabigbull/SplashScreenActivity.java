@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
+import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
 import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
@@ -116,8 +118,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     if(getUserName()!=null) {
 
-                        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                        checkifUserEnabled();
+                        //startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
 
                     }else {
 
@@ -137,7 +139,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
             }
-        },1000);
+        },00);
     }
 
     public String getUserName() {
@@ -181,5 +183,48 @@ public class SplashScreenActivity extends AppCompatActivity {
         editor.putString("expiry", data);
         editor.apply();
         editor.commit();
+    }
+
+    public void checkifUserEnabled() {
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        String phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+        Log.d("phoneNumber", phoneNumber);
+
+        new RetrofitClient().getInterface().checkifActive(phoneNumber.substring(3)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                progressBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
+                        new Utility().showDialog("ACCOUNT 404",
+                                "Your account does not exist." +
+                                        "Please contact your admin.", SplashScreenActivity.this);
+                    } else {
+                        if (response.body().get("isActive").getAsBoolean()) {
+                            startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                        } else {
+                            new Utility().showDialog("ACCOUNT DISABLED",
+                                    "Your account has been disabled and you can't login until it is enabled again. " +
+                                            "Please contact your admin.", SplashScreenActivity.this);
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(SplashScreenActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                t.printStackTrace();
+                Toast.makeText(SplashScreenActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

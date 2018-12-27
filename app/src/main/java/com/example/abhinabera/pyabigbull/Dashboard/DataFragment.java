@@ -19,11 +19,9 @@ import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.DataActivities.CrudeoilActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.DollarActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.EuroActivity;
+import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.GoldActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.NiftyActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.PoundActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.SilverActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Utility;
@@ -163,7 +161,7 @@ public class DataFragment extends Fragment {
         dollarCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), DollarActivity.class);
+                Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -172,7 +170,7 @@ public class DataFragment extends Fragment {
         euroCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), EuroActivity.class);
+                Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -181,7 +179,7 @@ public class DataFragment extends Fragment {
         poundCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), PoundActivity.class);
+                Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -230,7 +228,7 @@ public class DataFragment extends Fragment {
         nifty50BoxRate.setText(utility.getRoundoffData(object.get("change").getAsString()+""));
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         nifty50BoxPercent.setText(pchange+"%");
-        if(Double.parseDouble(pchange)>0) {
+        if(Double.parseDouble(pchange)>=0) {
             nifty50Box.setBackgroundColor(getResources().getColor(R.color.greenText));
         }else {
             nifty50Box.setBackgroundColor(getResources().getColor(R.color.red));
@@ -247,7 +245,7 @@ public class DataFragment extends Fragment {
         String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
         goldBoxPercent.setText("" + pchange + "%");
 
-        if(Double.parseDouble(pchange)>0) {
+        if(Double.parseDouble(pchange)>=0) {
             goldBox.setBackgroundColor(getResources().getColor(R.color.greenText));
         }else {
             goldBox.setBackgroundColor(getResources().getColor(R.color.red));
@@ -264,7 +262,7 @@ public class DataFragment extends Fragment {
         String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
         silverBoxPercent.setText("" + pchange + "%");
 
-        if(Double.parseDouble(pchange)>0) {
+        if(Double.parseDouble(pchange)>=0) {
             silverBox.setBackgroundColor(getResources().getColor(R.color.greenText));
         }else {
             silverBox.setBackgroundColor(getResources().getColor(R.color.red));
@@ -281,7 +279,7 @@ public class DataFragment extends Fragment {
         String pchange = utility.getRoundoffData(object.get("pricepercentchange").getAsString());
         crudeoilBoxPercent.setText("" + pchange + "%");
 
-        if(Double.parseDouble(pchange)>0) {
+        if(Double.parseDouble(pchange)>=0) {
             crudeoilBox.setBackgroundColor(getResources().getColor(R.color.greenText));
         }else {
             crudeoilBox.setBackgroundColor(getResources().getColor(R.color.red));

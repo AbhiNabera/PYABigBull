@@ -1,10 +1,12 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.abhinabera.pyabigbull.R;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
     private NiftyStocksData[] itemsData;

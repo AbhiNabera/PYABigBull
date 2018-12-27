@@ -54,7 +54,7 @@
             android:name=".DataActivities.CrudeoilActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DataActivities.DollarActivity"
+            android:name=".DataActivities.CurrencyActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DataActivities.EuroActivity"

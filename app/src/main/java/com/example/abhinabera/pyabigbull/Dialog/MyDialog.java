@@ -117,6 +117,29 @@ public class MyDialog extends DialogFragment {
             });
 
 
+        }else if(header.contains("ACCOUNT")){
+            headerTv.setText(header);
+            messageTv.setText(message);
+            positive.setText("OKAY");
+            negative.setText("EXIT");
+
+            positive.setVisibility(View.VISIBLE);
+            negative.setVisibility(View.GONE);
+
+            positive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onPositive();
+                }
+            });
+
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onNegative();
+                }
+            });
+
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

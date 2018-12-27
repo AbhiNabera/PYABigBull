@@ -17,14 +17,17 @@ import java.util.TimeZone;
 
 public class Utility {
 
-    //EXPIRY(MCX): GOLD-> 2 MONTHS, SILVER-> 3 MONTHS, CRUDE OIL -> 1 MONTH
     public static String URL = "https://us-central1-pyabigbull.cloudfunctions.net";
 
     public static String MONEY_CONTROL_NIFTY50_URL = "http://appfeeds.moneycontrol.com";
 
     public static String MONEY_CONTROL_CURRENCY_URL = "https://priceapi.moneycontrol.com";
 
+    public static String STOCK_GRAPH_URL = "jsonapi/stocks/graph&format=json&range=1d&type=area&ex=&sc_id=MPS";
+
+
     public static String MyPREF = "PAYBigBullPref";
+
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {
         ProgressDialog progressDialog = new ProgressDialog();

@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

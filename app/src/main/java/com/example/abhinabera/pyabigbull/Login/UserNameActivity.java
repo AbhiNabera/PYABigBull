@@ -15,6 +15,7 @@ import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.SplashScreenActivity;
 import com.example.abhinabera.pyabigbull.Utility;
 import com.google.gson.JsonObject;
 
@@ -58,17 +59,17 @@ public class UserNameActivity extends AppCompatActivity {
                 if(Utility.isOnline(UserNameActivity.this)) {
                     if (check()) {
 
+                        addPlayer();
+                        /*
                         if(!prevUsername.equals(userName.getText().toString().trim())) {
 
                             addPlayer();
 
                         }else {
 
-                            //Intent intent = new Intent(UserNameActivity.this, UserNameActivity.class);
-                            //intent.putExtra("phoneNumber", phoneNumber);
-                            //intent.putExtra("userName", userName.getText().toString().trim());
-                            startActivity(new Intent(UserNameActivity.this, MainActivity.class));
-                        }
+                            addPlayer();
+                            //startActivity(new Intent(UserNameActivity.this, MainActivity.class));
+                        }*/
                     }
                 } else {
 
@@ -133,7 +134,7 @@ public class UserNameActivity extends AppCompatActivity {
 
     public void addPlayer() {
 
-        progressDialog = new Utility().showDialog("Please wait for update to complete.", UserNameActivity.this);
+        progressDialog = new Utility().showDialog("Please wait for updation to complete.", UserNameActivity.this);
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().addPlayer(phoneNumber, userName.getText().toString().trim(), prevUsername).enqueue(new Callback<JsonObject>() {
@@ -158,6 +159,11 @@ public class UserNameActivity extends AppCompatActivity {
                             userName.setError("Username already exists");
                             //Toast.makeText(UserNameActivity.this, "Username already exist", Toast.LENGTH_SHORT).show();
                             break;
+
+                        case "USER_DISABLED" : new Utility().showDialog("ACCOUNT DISABLED",
+                                "Your account has been disabled and you can't login until it is enabled again. " +
+                                        "Please contact your admin.", UserNameActivity.this);
+                        break;
                     }
 
                 }
