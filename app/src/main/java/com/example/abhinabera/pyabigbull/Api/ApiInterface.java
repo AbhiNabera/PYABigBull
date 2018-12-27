@@ -32,47 +32,35 @@ public interface ApiInterface {
     @GET("expiry")
     Call<JsonObject> getCommodityExpiry();
 
-    //appfeeds
+
+    /*
+    appfeeds
+     */
     @GET("jsonapi/market/indices&ind_id=9")
     Call<JsonObject> getNifty50();
 
-    @GET
-    Call<JsonObject> getNift50Graph(@Url String url);
-
-    /*//appfeeds: to fetch any specific stck(depricated)
-    @GET("jsonapi/stocks/overview&format=json&sc_id=MPS")//for adani port
-    Call<JsonObject> getNift50company();
-    */
-
-    //appfeeds: Get graph of specific stock
-    @GET
-    Call<JsonObject> getStockGraph(@Url String url);
-
-    //appfeeds: json array of all the stocks
     @GET("jsonapi/ticker/index&type=nifty&format=json")
-    Call<JsonObject> getNifty50stocks();
+    Call<List<JsonObject>> getNify50StockList();
 
-    //priceapi
+
+    /*
+    priceapi
+     */
     @GET("pricefeed/mcx/commodityfuture/GOLD")
     Call<JsonObject> getGold(@Query("expiry") String expiry);
 
-    //priceapi
     @GET("pricefeed/mcx/commodityfuture/SILVER")
     Call<JsonObject> getSilver(@Query("expiry") String expiry);
 
-    //priceapi
     @GET("pricefeed/mcx/commodityfuture/CRUDEOIL")
     Call<JsonObject> getCrudeoil(@Query("expiry") String expiry);
 
-    //priceapi
     @GET("pricefeed/notapplicable/currencyspot/%24%24%3BUSDINR")
     Call<JsonObject> getUSDINR();
 
-    //priceapi
     @GET("pricefeed/notapplicable/currencyspot/%24%24%3BEURINR")
     Call<JsonObject> getEURINR();
 
-    //priceapi
     @GET("pricefeed/notapplicable/currencyspot/%24%24%3BGBPINR")
     Call<JsonObject> getGBPINR();
 }

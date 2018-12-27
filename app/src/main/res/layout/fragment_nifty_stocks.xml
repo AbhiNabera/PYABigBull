@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:background="@color/colorPrimary"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/swipeRefresh">
 
     <android.support.v7.widget.RecyclerView
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/niftyStocksRecycler">
+        android:id="@+id/niftyStocksRecycler"
+        android:clipToPadding="false"/>
 
-    </android.support.v7.widget.RecyclerView>
-
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

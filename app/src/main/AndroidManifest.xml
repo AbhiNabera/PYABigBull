@@ -42,7 +42,7 @@
             android:name=".IntroActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DataActivities.NiftyActivity"
+            android:name=".DataActivities.Nifty50.NiftyActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DataActivities.CommodityActivity"

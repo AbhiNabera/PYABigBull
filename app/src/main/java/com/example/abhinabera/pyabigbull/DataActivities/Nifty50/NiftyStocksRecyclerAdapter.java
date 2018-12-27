@@ -1,18 +1,26 @@
 package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.Utility;
+import com.google.gson.JsonObject;
+
+import java.util.List;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
-    private NiftyStocksData[] itemsData;
+    private List<JsonObject> stockList;
+    private Context context;
 
-    public NiftyStocksRecyclerAdapter(NiftyStocksData[] itemsData) {
-        this.itemsData = itemsData;
+    public NiftyStocksRecyclerAdapter(Context context, List<JsonObject> stockList) {
+        this.stockList = stockList;
+        this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -35,12 +43,26 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
 
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
+        viewHolder.companyName.setText(stockList.get(position).get("shortname").getAsString().trim()+"");
+        viewHolder.price.setText(stockList.get(position).get("lastvalue").getAsString().trim()+"");
+        viewHolder.volume.setText("Vol: " + stockList.get(position).get("volume").getAsString().trim()+"");
+        viewHolder.boxPrice.setText(stockList.get(position).get("change").getAsString().trim()+"");
+
+        String pchange = stockList.get(position).get("percentchange").getAsString().trim()+"";
+        viewHolder.boxPercent.setText(pchange);
+
+        if(Double.parseDouble(pchange)>=0) {
+            viewHolder.stockBox.setBackgroundColor(context.getResources().getColor(R.color.greenText));
+        }else {
+            viewHolder.stockBox.setBackgroundColor(context.getResources().getColor(R.color.red));
+        }
     }
 
     // inner class to hold a reference to each item of RecyclerView 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView companyName, price, volume, boxPrice, boxPercent;
+        public LinearLayout stockBox;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -49,6 +71,7 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
             volume = (TextView) itemLayoutView.findViewById(R.id.niftyStocksVolume);
             boxPrice = (TextView) itemLayoutView.findViewById(R.id.niftyStocksBoxPrice);
             boxPercent = (TextView) itemLayoutView.findViewById(R.id.niftyStocksBoxPercent);
+            stockBox = (LinearLayout) itemLayoutView.findViewById(R.id.niftyStocksBox);
         }
     }
 
@@ -56,6 +79,6 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
     // Return the size of your itemsData (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return itemsData.length;
+        return stockList.size();
     }
 }

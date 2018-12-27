@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull.DataActivities;
+package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -142,7 +142,7 @@ public class NiftyActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.enter1, R.anim.exit1);
+        //finish();
+        //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
 }

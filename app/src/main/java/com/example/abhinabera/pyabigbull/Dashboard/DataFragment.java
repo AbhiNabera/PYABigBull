@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.CommodityActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.NiftyActivity;
+import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Utility;
 import com.google.gson.JsonArray;
@@ -125,7 +125,7 @@ public class DataFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), NiftyActivity.class);
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -135,7 +135,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CommodityActivity.class);
                 i.putExtra("cardName", "GOLD");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -145,7 +145,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CommodityActivity.class);
                 i.putExtra("cardName", "SILVER");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -155,7 +155,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CommodityActivity.class);
                 i.putExtra("cardName", "CRUDEOIL");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -165,7 +165,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 i.putExtra("cardName", "DOLLAR");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -175,7 +175,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 i.putExtra("cardName", "EURO");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -185,7 +185,7 @@ public class DataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CurrencyActivity.class);
                 i.putExtra("cardName", "POUND");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 

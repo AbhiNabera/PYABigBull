@@ -1,189 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/swipeRefresh"
     android:background="@color/colorPrimary">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/openPrice"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="200dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Open Price"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/openPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="24sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/prevClose"
-            android:layout_below="@+id/openPrice"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Prev. Close"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/prevCloseTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="24sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/todaysLowHigh"
-            android:layout_below="@+id/prevClose"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today's Low/High"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:id="@+id/lastPrice"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/todaysLowTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="Last Update"
+                    android:textSize="14sp"
+                    android:id="@+id/lastUpdate"
                     android:textColor="#fff"
                     />
 
-                <TextView
-                    android:id="@+id/todaysHighTextView"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lastPriceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="0000.00"
+                        android:textColor="#fff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/lastChangeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="0.0%"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorTabtext">
+
+                </View>
             </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:layout_below="@+id/lastPrice"
+                android:id="@+id/graphContainer"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/wkLowHigh"
-            android:layout_below="@+id/todaysLowHigh"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="52 Wk Low/High"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_below="@+id/lastPrice"
+                    android:layout_width="match_parent"
+                    android:paddingRight="20dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_below="@+id/lastPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/openPrice"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Open Price"
+                            android:textSize="18sp"
+                            android:textColor="#fff"
+                            />
+
+                        <TextView
+                            android:id="@+id/openPriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:text="00000.00"
+                            android:textColor="#fff"
+                            android:textSize="24sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+
+                        </View>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/prevClose"
+                        android:layout_below="@+id/openPrice"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prev. Close"
+                            android:textSize="18sp"
+                            android:textColor="#fff"
+                            />
+
+                        <TextView
+                            android:id="@+id/prevCloseTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:text="00000.00"
+                            android:textColor="#fff"
+                            android:textSize="24sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+
+
+                        </View>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/graphLayout">
+
+                    <!--TODO: add graph here -->
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:id="@+id/todaysLowHigh"
+                android:layout_below="@+id/graphContainer"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/wkLowTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="Today's Low/High"
+                    android:textSize="18sp"
                     android:textColor="#fff"
                     />
 
-                <TextView
-                    android:id="@+id/wkHighTextView"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/todaysLowTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/todaysHighTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorTabtext">
+
+                </View>
             </LinearLayout>
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-            </View>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/wkLowHigh"
+                android:layout_below="@+id/todaysLowHigh"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="52 Wk Low/High"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/wkLowTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/wkHighTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorTabtext">
+                </View>
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -210,52 +298,68 @@
             </View>
 
             <LinearLayout
+                android:paddingTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/thirtyDays"
+                <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30 Days"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/thirtyDaysTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:text="10635.45"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    <TextView
+                        android:id="@+id/thirtyDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30 Days"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"
+                        />
 
-                <TextView
-                    android:id="@+id/fiftyDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="50 Days"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    <TextView
+                        android:id="@+id/thirtyDaysTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/fiftyDaysTextView"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:text="10635.45"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/fiftyDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50 Days"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"
+                        />
+
+                    <TextView
+                        android:id="@+id/fiftyDaysTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.0"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <View
@@ -265,52 +369,68 @@
             </View>
 
             <LinearLayout
+                android:paddingTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/oneFiftyDays"
+                <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150 Days"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/oneFiftyDaysTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:text="10635.45"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    <TextView
+                        android:id="@+id/oneFiftyDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="150 Days"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"
+                        />
 
-                <TextView
-                    android:id="@+id/twoHundredDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="200 Days"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    <TextView
+                        android:id="@+id/oneFiftyDaysTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.00"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/twoHunderedDaysTextView"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="17dp"
-                    android:text="10635.45"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/twoHundredDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200 Days"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"
+                        />
+
+                    <TextView
+                        android:id="@+id/twoHunderedDaysTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:text="00000.0"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -320,6 +440,7 @@
         </LinearLayout>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
-</ScrollView>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
