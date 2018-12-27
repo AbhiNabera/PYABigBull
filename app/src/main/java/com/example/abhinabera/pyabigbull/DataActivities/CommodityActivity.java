@@ -1,9 +1,7 @@
 package com.example.abhinabera.pyabigbull.DataActivities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
@@ -22,11 +20,10 @@ import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;

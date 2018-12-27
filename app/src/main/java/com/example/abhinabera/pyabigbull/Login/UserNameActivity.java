@@ -15,8 +15,7 @@ import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.SplashScreenActivity;
-import com.example.abhinabera.pyabigbull.Utility;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,133 +26,228 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/currentPrice"
-            android:layout_below="@+id/currencyToolbarParent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="200dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current Price"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/currentPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="24sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/prevClose"
-            android:layout_below="@+id/currentPrice"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Prev. Close"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/prevCloseTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="24sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/todaysLowHigh"
-            android:layout_below="@+id/prevClose"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today's Low/High"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+            android:layout_height="match_parent"
+            android:id="@+id/swipeRefresh">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/todaysLowTextView"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:id="@+id/lastPrice"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/todaysHighTextView"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last Update"
+                        android:textSize="14sp"
+                        android:id="@+id/lastUpdate"
+                        android:textColor="#fff"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/lastPriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:text="0000.00"
+                            android:textColor="#fff"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:gravity="center_vertical"
+                            android:id="@+id/lastChangeTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="0.0%"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:textColor="#fff"
+                            />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/colorTabtext">
+
+                    </View>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/currentPrice"
+                            android:layout_below="@+id/currencyToolbarParent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Current Price"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/currentPriceTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@color/colorTabtext">
+
+                            </View>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/prevClose"
+                            android:layout_below="@+id/currentPrice"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Prev. Close"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/prevCloseTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@color/colorTabtext">
+
+
+                            </View>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <!--TODO: add graph here-->
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/todaysLowHigh"
+                    android:layout_below="@+id/prevClose"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today's Low/High"
+                        android:textSize="18sp"
+                        android:textColor="#fff"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/todaysLowTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00000.00"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:textColor="#fff"
+                            />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/todaysHighTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00000.00"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:textColor="#fff"
+                            />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/colorTabtext">
+
+                    </View>
+                </LinearLayout>
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-            </View>
-        </LinearLayout>
+    </LinearLayout>
 
-
-    </RelativeLayout>
-
-</ScrollView>
+</RelativeLayout>

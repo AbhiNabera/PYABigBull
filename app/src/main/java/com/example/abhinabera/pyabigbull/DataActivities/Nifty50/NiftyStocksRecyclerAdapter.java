@@ -12,15 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
 import com.google.gson.JsonObject;
 
 import java.util.List;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
-    private List<JsonObject> stockList;
-    private Context context;
-
+    public List<JsonObject> stockList;
+    public Context context;
 
     public NiftyStocksRecyclerAdapter(Context context, List<JsonObject> stockList) {
         this.stockList = stockList;
@@ -63,7 +61,7 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
     }
 
     // inner class to hold a reference to each item of RecyclerView 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView companyName, price, volume, boxPrice, boxPercent;
         public LinearLayout stockBox;
@@ -79,13 +77,14 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
             boxPercent = (TextView) itemLayoutView.findViewById(R.id.niftyStocksBoxPercent);
             stockBox = (LinearLayout) itemLayoutView.findViewById(R.id.niftyStocksBox);
 
-            niftyStocksRow = (RelativeLayout) itemLayoutView.findViewById(R.id.niftyStocksRow);
+            niftyStocksRow = (RelativeLayout) itemLayoutView.findViewById(R.id.nifty);
 
             niftyStocksRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(itemLayoutView.getContext(), NiftyStocksIndividual.class);
                     i.putExtra("companyName", companyName.getText().toString());
+                    i.putExtra("id", stockList.get(getAdapterPosition()).get("id").getAsString());
                     itemLayoutView.getContext().startActivity(i);
                     mContext = (Activity) itemLayoutView.getContext();
                     mContext.overridePendingTransition(R.anim.enter, R.anim.exit);

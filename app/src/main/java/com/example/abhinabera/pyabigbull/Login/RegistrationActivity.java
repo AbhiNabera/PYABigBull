@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 
 public class RegistrationActivity extends AppCompatActivity {
 

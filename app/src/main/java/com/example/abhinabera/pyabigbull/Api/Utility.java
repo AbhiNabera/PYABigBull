@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Api;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -25,8 +25,8 @@ public class Utility {
 
     public static String STOCK_GRAPH_URL = "jsonapi/stocks/graph&format=json&range=1d&type=area&ex=&sc_id=MPS";
 
-
     public static String MyPREF = "PAYBigBullPref";
+
 
     public String getCommodityURL(String id) {
         URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id;
@@ -36,6 +36,10 @@ public class Utility {
     public String getCommodityExpiryURL(String id, String expiry) {
         URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt" + expiry;
         return URL;
+    }
+
+    public String getStockIndividualUrl(String id) {
+        return "jsonapi/stocks/overview&format=json&sc_id="+id+"&ex=N";
     }
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {

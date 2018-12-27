@@ -1,11 +1,11 @@
 package com.example.abhinabera.pyabigbull.DataActivities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,22 +14,29 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.ApiInterface;
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
-import com.google.gson.JsonElement;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CurrencyActivity extends AppCompatActivity {
 
-    TextView currentPrice, prevClose, todaysLow, todaysHigh;
+    SwipeRefreshLayout refreshLayout;
+
+    TextView currentPrice, prevClose, todaysLow, todaysHigh, lastUpdate, lastChange, lastPrice;
     android.support.v7.widget.Toolbar currencyToolbar;
     Typeface custom_font;
 
+    private String id;
 
+    private ApiInterface apiInterface;
+
+    private JsonObject currencyObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +50,20 @@ public class CurrencyActivity extends AppCompatActivity {
         Intent i = getIntent();
         currencyToolbar.setTitle(i.getExtras().getString("cardName"));
 
+        apiInterface = new RetrofitClient().getCurrencyInterface();
+
+        id = i.getExtras().getString("cardName");
+
+        lastUpdate = (TextView) findViewById(R.id.lastUpdate);
+        lastChange = (TextView) findViewById(R.id.lastChangeTextView);
+        lastPrice = (TextView) findViewById(R.id.lastPriceTextView);
+
         currentPrice = (TextView) findViewById(R.id.currentPriceTextView);
         prevClose = (TextView) findViewById(R.id.prevCloseTextView);
         todaysLow = (TextView) findViewById(R.id.todaysLowTextView);
         todaysHigh = (TextView) findViewById(R.id.todaysHighTextView);
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
 
         currencyToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         currencyToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -59,6 +76,21 @@ public class CurrencyActivity extends AppCompatActivity {
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         changeToolbarFont(currencyToolbar, this);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+                getCurrency();
+            }
+        },20);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCurrency();
+            }
+        });
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -85,4 +117,62 @@ public class CurrencyActivity extends AppCompatActivity {
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
 
+    public void setCurrencyCard() {
+
+        Utility utility = new Utility();
+        String pchange = utility.getRoundoffData(""+currencyObject.get("data").getAsJsonObject().get("PERCCHANGE").getAsString());
+
+        lastUpdate.setText(utility.getFormattedDate(""+currencyObject.get("data").getAsJsonObject().
+                get("lastupd_epoch").getAsString()));
+        lastChange.setText(currencyObject.get("data").getAsJsonObject().get("CHANGE").getAsString() + "(" + pchange + "%)");
+
+        currentPrice.setText(currencyObject.get("data").getAsJsonObject().get("pricecurrent").getAsString());
+        prevClose.setText(currencyObject.get("data").getAsJsonObject().get("priceprevclose").getAsString());
+        todaysHigh.setText(currencyObject.get("data").getAsJsonObject().get("HIGH").getAsString());
+        todaysLow.setText(currencyObject.get("data").getAsJsonObject().get("LOW").getAsString());
+
+        if(Double.parseDouble(pchange)>=0) {
+            lastChange.setTextColor(getResources().getColor(R.color.greenText));
+        }else {
+            lastChange.setTextColor(getResources().getColor(R.color.red));
+        }
+    }
+
+    public void getCurrency() {
+        getFunction().enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                refreshLayout.setRefreshing(false);
+
+                if(response.isSuccessful()) {
+                    currencyObject = response.body();
+                    setCurrencyCard();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    public Call<JsonObject> getFunction() {
+
+        switch(id) {
+
+            case "DOLLAR" :
+                return  apiInterface.getUSDINR();
+
+            case "EURO" :
+                return apiInterface.getEURINR();
+
+            case "POUND" :
+                return apiInterface.getGBPINR();
+        }
+
+        return null;
+    }
 }

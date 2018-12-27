@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public class OTPActivity extends AppCompatActivity {

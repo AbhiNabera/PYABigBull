@@ -1,8 +1,6 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,16 +21,11 @@ import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.CommodityActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.Utility;
-import com.google.gson.JsonArray;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +66,7 @@ public class DataFragment extends Fragment {
                 getGBPINR();
                 getTopCommodity();
             }
-        },20);
+        },5);
     }
 
     @Nullable

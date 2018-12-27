@@ -1,7 +1,6 @@
 package com.example.abhinabera.pyabigbull;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,8 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
-import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
 import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;

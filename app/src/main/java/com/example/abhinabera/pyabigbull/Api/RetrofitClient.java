@@ -1,8 +1,5 @@
 package com.example.abhinabera.pyabigbull.Api;
 
-import com.example.abhinabera.pyabigbull.Utility;
-import com.google.android.gms.common.api.Api;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;

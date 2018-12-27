@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,354 +26,511 @@
 
         </android.support.design.widget.AppBarLayout>
 
-
-        <LinearLayout
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bidPrice"
-            android:layout_below="@+id/stocksIndiToolbarParent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="200dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:id="@+id/swipeRefresh">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bid Price (Qty.)"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/bidPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="20sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
+                android:layout_height="match_parent">
 
-            </View>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/offerPrice"
-            android:layout_below="@+id/bidPrice"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_below="@+id/commoditySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lastUpdateLayout"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Offer Price (Qty.)"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Update"
+                            android:textSize="14sp"
+                            android:id="@+id/lastUpdate"
+                            android:textColor="#fff"
+                            />
 
-            <TextView
-                android:id="@+id/offerPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="20sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/lastPriceTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:text="0000.00"
+                                android:textColor="#fff"
+                                android:textSize="24sp" />
 
+                            <TextView
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/volume"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0k"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
 
-            </View>
-        </LinearLayout>
+                            <TextView
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/lastChangeTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0%"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
 
+                        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/prevClose"
-            android:layout_below="@+id/offerPrice"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Prev. Close"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+                        </View>
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/prevCloseTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="20sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
+                    <LinearLayout
+                        android:layout_below="@+id/lastPrice"
+                        android:id="@+id/graphContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_below="@+id/lastPrice"
+                            android:layout_width="match_parent"
+                            android:paddingRight="20dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/bidPrice"
+                                android:layout_below="@+id/stocksIndiToolbarParent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:orientation="vertical">
 
-            </View>
-        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Bid Price (Qty.)"
+                                    android:textSize="18sp"
+                                    android:textColor="#fff"
+                                    />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/openPrice"
-            android:layout_below="@+id/prevClose"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/bidPriceTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00000.00"
+                                    android:textSize="20sp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:textColor="#fff"
+                                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Open Price"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:background="@color/colorTabtext">
 
-            <TextView
-                android:id="@+id/openPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="20sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
+                                </View>
+                            </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/offerPrice"
+                                android:layout_below="@+id/bidPrice"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:orientation="vertical">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Offer Price (Qty.)"
+                                    android:textSize="18sp"
+                                    android:textColor="#fff"
+                                    />
 
-            </View>
-        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/offerPriceTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00000.00"
+                                    android:textSize="20sp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:textColor="#fff"
+                                    />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/vwap"
-            android:layout_below="@+id/openPrice"
-            android:layout_marginRight="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="VWAP"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <TextView
-                android:id="@+id/VWAPTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10635.45"
-                android:textSize="20sp"
-                android:fontFamily="@font/hammersmithoneregular"
-                android:textColor="#fff"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-
-            </View>
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/todaysLowHigh"
-            android:layout_below="@+id/vwap"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today's Low/High"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/todaysLowTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-
-                <TextView
-                    android:id="@+id/todaysHighTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/wkLowHigh"
-            android:layout_below="@+id/todaysLowHigh"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="52 Wk Low/High"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/wkLowTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-
-                <TextView
-                    android:id="@+id/wkHighTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-            </View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/luPriceBand"
-            android:layout_below="@+id/wkLowHigh"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="L/U Price Band"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/lPriceBandTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-
-                <TextView
-                    android:id="@+id/uPriceBandTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10635.45"
-                    android:layout_marginLeft="80dp"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorTabtext">
-            </View>
-        </LinearLayout>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:background="@color/colorTabtext">
 
 
+                                </View>
+                            </LinearLayout>
 
+                        </LinearLayout>
 
-    </RelativeLayout>
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/graphLayout">
 
-</ScrollView>
+                            <!--TODO: add graph here -->
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/prevClose"
+                            android:layout_below="@+id/offerPrice"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Prev. Close"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/prevCloseTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="20sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/openPrice"
+                            android:layout_below="@+id/prevClose"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Open Price"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/openPriceTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="20sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/colorTabtext">
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/vwap"
+                            android:layout_below="@+id/openPrice"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="VWAP"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/VWAPTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="20sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mktCap"
+                            android:layout_below="@+id/openPrice"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Marke Capital"
+                                android:textSize="18sp"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/mktCapextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="20sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/colorTabtext">
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/todaysLowHigh"
+                        android:layout_below="@+id/vwap"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Today's Low/High"
+                            android:textSize="18sp"
+                            android:textColor="#fff"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/todaysLowTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:id="@+id/todaysHighTextView"
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+
+                        </View>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/wkLowHigh"
+                        android:layout_below="@+id/todaysLowHigh"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="52 Wk Low/High"
+                            android:textSize="18sp"
+                            android:textColor="#fff"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/wkLowTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/wkHighTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+                        </View>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/luPriceBand"
+                        android:layout_below="@+id/wkLowHigh"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="L/U Price Band"
+                            android:textSize="18sp"
+                            android:textColor="#fff"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/lPriceBandTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/uPriceBandTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:textColor="#fff"
+                                />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+                        </View>
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
