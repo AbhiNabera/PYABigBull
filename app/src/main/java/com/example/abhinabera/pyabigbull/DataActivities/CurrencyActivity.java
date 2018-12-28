@@ -12,10 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.ApiInterface;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual;
+import com.example.abhinabera.pyabigbull.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonObject;
@@ -31,6 +34,7 @@ public class CurrencyActivity extends AppCompatActivity {
     TextView currentPrice, prevClose, todaysLow, todaysHigh, lastUpdate, lastChange, lastPrice;
     android.support.v7.widget.Toolbar currencyToolbar;
     Typeface custom_font;
+    Button buyStocks;
 
     private String id;
 
@@ -89,6 +93,17 @@ public class CurrencyActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getCurrency();
+            }
+        });
+
+        buyStocks = (Button) findViewById(R.id.buyStocks);
+
+        buyStocks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(CurrencyActivity.this, PurchaseActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
     }

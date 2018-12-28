@@ -56,7 +56,8 @@
         <activity
             android:name=".DataActivities.PoundActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual"></activity>
+        <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual" />
+        <activity android:name=".PurchaseActivity"></activity>
     </application>
 
 </manifest>

@@ -15,10 +15,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual;
+import com.example.abhinabera.pyabigbull.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonArray;
@@ -39,6 +42,8 @@ public class CommodityActivity extends AppCompatActivity {
     Typeface custom_font;
     TextView bidPrice, offerPrice, openInterest, OIChange, highPrice, lowPrice, open, previousClose,
             lastUpdate, lastChange, lastPrice, volume;
+
+    Button buyStocks;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -121,6 +126,17 @@ public class CommodityActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getExpiryData(expiryList.get(commodityDateSpinner.getSelectedItemPosition()));
+            }
+        });
+
+        buyStocks = (Button) findViewById(R.id.buyStocks);
+
+        buyStocks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(CommodityActivity.this, PurchaseActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
     }

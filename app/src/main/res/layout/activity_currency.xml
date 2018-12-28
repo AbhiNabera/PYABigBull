@@ -26,6 +26,21 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <Button
+            android:id="@+id/buyStocks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hammersmithoneregular"
+            android:text="buy stocks"
+            android:textColor="@color/greenText"
+            android:textSize="24sp"
+            android:background="@drawable/button_border"
+
+            />
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

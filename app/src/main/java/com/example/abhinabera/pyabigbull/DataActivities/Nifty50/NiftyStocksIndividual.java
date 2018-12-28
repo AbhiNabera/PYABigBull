@@ -11,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 
@@ -26,6 +28,8 @@ import retrofit2.Response;
 public class NiftyStocksIndividual extends AppCompatActivity {
 
     SwipeRefreshLayout refreshLayout;
+
+    Button buyStocks;
 
     android.support.v7.widget.Toolbar stocksIndiToolbar;
     Typeface custom_font;
@@ -89,6 +93,17 @@ public class NiftyStocksIndividual extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getStockIndividual();
+            }
+        });
+
+        buyStocks = (Button) findViewById(R.id.buyStocks);
+
+        buyStocks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(NiftyStocksIndividual.this, PurchaseActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
     }
