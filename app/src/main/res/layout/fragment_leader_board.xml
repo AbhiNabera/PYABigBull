@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent"
+    android:id="@+id/swipeRefresh">
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:id="@+id/userRank"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:maxWidth="150dp"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text="Nabera"
+                android:textColor="#000"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/userRankText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:text="6th"
+                android:textColor="#000"
+                android:textSize="24sp" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/hammersmithoneregular"
+            android:maxWidth="200dp"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:text="TOP PERFORMERS"
+            android:textColor="#FFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/leaderBoardRecycler"
+            android:clipToPadding="false"/>
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.SwipeRefreshLayout>

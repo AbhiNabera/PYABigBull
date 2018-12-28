@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerHorizontal="true"
+    android:background="#fff"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:clickable="true">
+
+        <RelativeLayout
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/leaderBoard"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/leaderBoardUserName"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:maxWidth="150dp"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text="Username"
+                android:textColor="#000"
+                android:textSize="20sp"
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:layout_marginLeft="30dp"
+                android:id="@+id/medal"
+                android:scaleType="centerCrop"
+                android:layout_toRightOf="@id/leaderBoardUserName"/>
+
+            <TextView
+                android:id="@+id/leaderBoardRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:layout_toRightOf="@+id/medal"
+                android:padding="5dp"
+                android:text="10th"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:textSize="24sp" />
+
+        </RelativeLayout>
+    
+
+</RelativeLayout>

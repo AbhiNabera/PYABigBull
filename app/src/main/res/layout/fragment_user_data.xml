@@ -1,6 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myStocksCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="1"
+            android:background="#fff"
+            android:clickable="true"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/myStocks"
+                android:padding="5dp">
+
+
+
+                <TextView
+                    android:id="@+id/myStocksText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="MY STOCKS"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/transactionsHistoryCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="1"
+            android:layout_below="@+id/myStocksCard"
+            android:background="#fff"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/transactionsHistory"
+                android:padding="5dp">
+
+
+                <TextView
+                    android:id="@+id/transactionsHistoryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="TRANSACTIONS HISTORY"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myProfileCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="1"
+            android:layout_below="@+id/transactionsHistoryCard"
+            android:background="#fff"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/myProfile"
+                android:padding="5dp">
+
+
+                <TextView
+                    android:id="@+id/myProfileText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="MY PROFILE"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/termsAndCondtionsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="1"
+            android:layout_below="@+id/myProfileCard"
+            android:background="#fff"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/termsAndConditions"
+                android:padding="5dp">
+
+
+                <TextView
+                    android:id="@+id/termsAndConditionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="TERMS AND CONDITIONS"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/aboutCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:alpha="1"
+            android:layout_below="@+id/termsAndCondtionsCard"
+            android:background="#fff"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/about"
+                android:padding="5dp">
+
+
+                <TextView
+                    android:id="@+id/aboutText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="ABOUT"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
+
