@@ -46,6 +46,14 @@ public class Utility {
         return "jsonapi/market/graph&format=&ind_id=9&range=" + range + "&type=area";
     }
 
+    public String getNift50IndvGraphURL(String range, String id) {
+        return "jsonapi/stocks/graph&format=json&range="+ range +"&type=area&ex=&sc_id=" +id;
+    }
+
+    public String getCommodityGraphURL(String type, String symbol, String expdt) {
+        return "jsonapi/commodity/chart&format=json&type="+ type +"&symbol="+ symbol +"&expdt="+expdt+"&ex=MCX";
+    }
+
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {
         ProgressDialog progressDialog = new ProgressDialog();
 

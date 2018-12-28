@@ -100,8 +100,8 @@ public class NiftyOverviewFragment extends Fragment {
         graphView = (GraphView) view.findViewById(R.id.graph);
 
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        graphView.getGridLabelRenderer().setVerticalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 

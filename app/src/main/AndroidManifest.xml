@@ -45,7 +45,7 @@
             android:name=".DataActivities.Nifty50.NiftyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DataActivities.CommodityActivity"
+            android:name=".DataActivities.Commodity.CommodityActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DataActivities.CurrencyActivity"
@@ -59,6 +59,12 @@
 
         <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".DataActivities.Nifty50.NiftyIndvGraphActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".DataActivities.Commodity.CommodityGraphActivity"
+            android:screenOrientation="landscape"/>
 
         <activity android:name=".DataActivities.Nifty50.NiftyGraphActivity"
             android:screenOrientation="landscape"></activity>

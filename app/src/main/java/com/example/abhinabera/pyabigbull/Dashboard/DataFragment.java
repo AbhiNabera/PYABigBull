@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.CommodityActivity;
+import com.example.abhinabera.pyabigbull.DataActivities.Commodity.CommodityActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
