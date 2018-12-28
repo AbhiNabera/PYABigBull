@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +17,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
+import com.example.abhinabera.pyabigbull.R;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
 import com.example.abhinabera.pyabigbull.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
@@ -30,6 +50,12 @@ public class NiftyOverviewFragment extends Fragment {
     TextView openPrice, prevClose, todaysLow, todaysHigh, wkLow, wkHigh, thirtyDays, fiftyDays, oneFiftyDays, twoHundredDays;
     TextView lastUpdate, lastPrice, lastChange;
     SwipeRefreshLayout refreshLayout;
+
+    GraphView graphView;
+    LineGraphSeries<DataPoint> series;
+    DataPoint[] dataPoints;
+
+    long MIN, MAX;
 
     private Response<JsonObject> nifty50;
 
@@ -71,10 +97,28 @@ public class NiftyOverviewFragment extends Fragment {
 
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
+        graphView = (GraphView) view.findViewById(R.id.graph);
+
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimary));
+
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getNifty50();
+                getGraphData();
+            }
+        });
+
+        graphView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), NiftyGraphActivity.class);
+                intent.putExtra("id", "nifty");
+                startActivity(intent);
             }
         });
 
@@ -86,6 +130,7 @@ public class NiftyOverviewFragment extends Fragment {
             }
         },20);
 
+        getGraphData();
     }
 
     private void setNiftyCard() {
@@ -112,6 +157,7 @@ public class NiftyOverviewFragment extends Fragment {
         fiftyDays.setText(""+object.get("dayavg50").getAsString());
         oneFiftyDays.setText(""+object.get("dayavg150").getAsString());
         twoHundredDays.setText(""+object.get("dayavg200").getAsString());
+
     }
 
     public void getNifty50() {
@@ -145,5 +191,128 @@ public class NiftyOverviewFragment extends Fragment {
                 Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
             }
         });
+   }
+
+
+    public long getDateFromString(String time) {
+
+        DateFormat format;
+
+        try {
+            time = new SimpleDateFormat("dd MMM yyyy").format(new Date()) + " " +time;
+            format = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            return format.parse(time).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public double getDoubleVal(String val) {
+        return Double.parseDouble(val.replace("," ,""));
+    }
+
+    public void getGraphData() {
+
+        new RetrofitClient().getNifty50Interface().getData(new Utility().getNift50GraphURL("1d")).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            int i = 0;
+
+                            dataPoints = null;
+
+                            dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
+                                    get("values").getAsJsonArray().size()];
+
+                            JsonElement lastElement = null;
+
+                            for(JsonElement element: response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                dataPoints[i] = (new DataPoint(
+                                        getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
+                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+
+                                if(i == 0) {
+
+                                    MIN = getDateFromString(element.getAsJsonObject().
+                                            get("_time").getAsString());
+
+                                }
+
+                                lastElement = element;
+                                i++;
+
+                            }
+
+                            MAX = getDateFromString(lastElement.getAsJsonObject().
+                                    get("_time").getAsString());
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setUpChart();
+                                    series.resetData(dataPoints);
+                                    graphView.addSeries(series);
+                                    setScrollable();
+                                }
+                            });
+                        }
+                    });
+
+                }else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+
+            }
+        });
+    }
+
+    public void setUpChart() {
+
+        graphView.removeAllSeries();
+
+        series = new LineGraphSeries<>();
+
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(MIN);
+        graphView.getViewport().setMaxX(MAX);
+        graphView.getViewport().setXAxisBoundsManual(false);
+
+        graphView.getViewport().setScrollable(false);
+        graphView.getViewport().setScalable(false);
+        graphView.getViewport().setScrollableY(false);
+        graphView.getViewport().setScalableY(false);
+
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(android.R.color.white));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(android.R.color.white));
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphView.getGridLabelRenderer().setNumVerticalLabels(10);
+        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graphView.getGridLabelRenderer().setTextSize(getResources().getDimension(R.dimen.smallGraphTextSize));
+
+        series.setColor(getResources().getColor(R.color.greenText));
+        series.setBackgroundColor(getResources().getColor(R.color.greenTextAlpha));
+        series.setDrawBackground(true);
+        series.setThickness(4);
+        series.setAnimated(true);
+    }
+
+    public void setScrollable() {
+
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalable(true);
+        graphView.getViewport().setScrollableY(true);
+        graphView.getViewport().setScalableY(true);
     }
 }

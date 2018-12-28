@@ -46,6 +46,7 @@ public interface ApiInterface {
     @GET("jsonapi/commodity/top_commodity&ex=MCX&format=json")
     Call<JsonObject> getTopCommodity();
 
+
     /*
     priceapi
      */

@@ -50,19 +50,19 @@
         <activity
             android:name=".DataActivities.CurrencyActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".DataActivities.EuroActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DataActivities.PoundActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual" />
         <activity android:name=".PurchaseActivity" />
         <activity android:name=".UserActivities.UserStocks" />
         <activity android:name=".UserActivities.TransactionsHistory" />
         <activity android:name=".UserActivities.UserProfile" />
         <activity android:name=".UserActivities.TermsAndConditions" />
         <activity android:name=".UserActivities.About"></activity>
+
+        <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".DataActivities.Nifty50.NiftyGraphActivity"
+            android:screenOrientation="landscape"></activity>
+
     </application>
 
 </manifest>

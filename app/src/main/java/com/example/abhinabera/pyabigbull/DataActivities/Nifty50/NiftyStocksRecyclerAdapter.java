@@ -58,6 +58,7 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
         }else {
             viewHolder.stockBox.setBackgroundColor(context.getResources().getColor(R.color.red));
         }
+        viewHolder.boxPercent.setText(stockList.get(position).get("percentchange").getAsString().trim()+"");
     }
 
     // inner class to hold a reference to each item of RecyclerView 
@@ -86,8 +87,8 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
                     i.putExtra("companyName", companyName.getText().toString());
                     i.putExtra("id", stockList.get(getAdapterPosition()).get("id").getAsString());
                     itemLayoutView.getContext().startActivity(i);
-                    mContext = (Activity) itemLayoutView.getContext();
-                    mContext.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    //mContext = (Activity) itemLayoutView.getContext();
+                    //mContext.overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             });
         }

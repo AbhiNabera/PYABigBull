@@ -126,6 +126,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         intent.putExtra("phoneNumber", getPhoneNumber());
                         startActivity(intent);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
+                        finish();
 
                     }
 
@@ -207,6 +208,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     } else {
                         if (response.body().get("isActive").getAsBoolean()) {
                             startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                            finish();
                         } else {
                             new Utility().showDialog("ACCOUNT DISABLED",
                                     "Your account has been disabled and you can't login until it is enabled again. " +

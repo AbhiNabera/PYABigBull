@@ -338,7 +338,7 @@ public class DataFragment extends Fragment {
             public void onSuccess(Response<JsonObject> response) {
                 if(response.isSuccessful()) {
                     nifty50 = response;
-                    Log.d("response NIFTY50", response.body().toString());
+                    //Log.d("response NIFTY50", response.body().toString());
                     setNiftyCard();
                 }else {
                     try {
@@ -366,7 +366,7 @@ public class DataFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
-                    Log.d("response COMMODITY", response.body().toString());
+                    //Log.d("response COMMODITY", response.body().toString());
 
                     int i = 0;
 
@@ -427,7 +427,7 @@ public class DataFragment extends Fragment {
             public void onSuccess(Response<JsonObject> response) {
                 if(response.isSuccessful()) {
                     usd = response;
-                    Log.d("response USDINR", response.body().toString());
+                    //Log.d("response USDINR", response.body().toString());
                     setDollarCard();
                 }else {
                     try {
@@ -456,7 +456,7 @@ public class DataFragment extends Fragment {
             public void onSuccess(Response<JsonObject> response) {
                 if(response.isSuccessful()) {
                     eur = response;
-                    Log.d("response EURINR", response.body().toString());
+                    //Log.d("response EURINR", response.body().toString());
                     setEuroCard();
                 }else {
                     try {
@@ -485,7 +485,7 @@ public class DataFragment extends Fragment {
             public void onSuccess(Response<JsonObject> response) {
                 if(response.isSuccessful()) {
                     gbp = response;
-                    Log.d("response GBPINR", response.body().toString());
+                    //Log.d("response GBPINR", response.body().toString());
                     setPoundCard();
                 }else {
                     try {

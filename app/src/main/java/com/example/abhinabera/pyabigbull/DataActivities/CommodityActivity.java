@@ -113,6 +113,7 @@ public class CommodityActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 swipeRefreshLayout.setRefreshing(true);
                 pos = i;
+                Log.d("EXPIRY", expiryList.get(i));
                 getExpiryData(expiryList.get(i));
             }
 
@@ -250,7 +251,9 @@ public class CommodityActivity extends AppCompatActivity {
 
     public void getExpiryData(String expiry) {
 
-        new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityExpiryURL(id, expiry)).enqueue(new Callback<JsonObject>() {
+        //Log.d("URL", new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())+"");
+
+        new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 

@@ -23,7 +23,7 @@ public class Utility {
 
     public static String MONEY_CONTROL_CURRENCY_URL = "https://priceapi.moneycontrol.com";
 
-    public static String STOCK_GRAPH_URL = "jsonapi/stocks/graph&format=json&range=1d&type=area&ex=&sc_id=MPS";
+    public static String STOCK_GRAPHURL = "jsonapi/stocks/graph&format=json&range=1d&type=area&ex=&sc_id=MPS";
 
     public static String MyPREF = "PAYBigBullPref";
 
@@ -34,12 +34,16 @@ public class Utility {
     }
 
     public String getCommodityExpiryURL(String id, String expiry) {
-        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt" + expiry;
+        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt=" + expiry;
         return URL;
     }
 
     public String getStockIndividualUrl(String id) {
         return "jsonapi/stocks/overview&format=json&sc_id="+id+"&ex=N";
+    }
+
+    public String getNift50GraphURL(String range) {
+        return "jsonapi/market/graph&format=&ind_id=9&range=" + range + "&type=area";
     }
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {
