@@ -22,21 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <Button
-        android:id="@+id/buyStocks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/hammersmithoneregular"
-        android:text="buy stocks"
-        android:textColor="@color/greenText"
-        android:textSize="24sp"
-        android:background="@drawable/button_border"
 
-        />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -55,6 +41,7 @@
                 <Spinner
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:theme="@style/ThemeOverlay.AppCompat.Light"
@@ -81,7 +68,7 @@
                         android:text="Last Update"
                         android:textSize="14sp"
                         android:id="@+id/lastUpdate"
-                        android:textColor="#fff"
+                        android:textColor="@color/greyText"
                         />
 
                     <LinearLayout
@@ -94,10 +81,10 @@
                             android:id="@+id/lastPriceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="0000.00"
                             android:textColor="#fff"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:layout_weight="1"
@@ -107,8 +94,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="0.0k"
-                            android:textSize="18sp"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:textSize="14sp"
+                            android:fontFamily="serif"
                             android:textColor="#fff"
                             />
 
@@ -120,8 +107,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="0.0%"
-                            android:textSize="18sp"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:textSize="14sp"
+                            android:fontFamily="serif"
                             android:textColor="#fff"
                             />
 
@@ -162,14 +149,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Bid Price (Qty.)"
-                                android:textColor="#fff"
-                                android:textSize="18sp" />
+                                android:textColor="@color/greyText"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/bidPriceTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/hammersmithoneregular"
+                                android:fontFamily="serif"
                                 android:text="00000.00"
                                 android:textColor="#fff"
                                 android:textSize="20sp" />
@@ -196,14 +183,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Offer Price (Qty.)"
-                                android:textColor="#fff"
-                                android:textSize="18sp" />
+                                android:textColor="@color/greyText"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/offerPriceTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/hammersmithoneregular"
+                                android:fontFamily="serif"
                                 android:text="00000.00"
                                 android:textColor="#fff"
                                 android:textSize="20sp" />
@@ -258,14 +245,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Open Interest"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/openInterestTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
                             android:textSize="20sp" />
@@ -289,14 +276,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="OI Change"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/OIChangeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="@color/red"
                             android:textSize="17sp" />
@@ -334,14 +321,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="High Price"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/highPriceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
                             android:textSize="20sp" />
@@ -366,14 +353,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Low Price"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/lowPriceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
                             android:textSize="20sp" />
@@ -410,14 +397,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Open"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/openTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
                             android:textSize="20sp" />
@@ -441,14 +428,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Previous Close"
-                            android:textColor="#fff"
-                            android:textSize="18sp" />
+                            android:textColor="@color/greyText"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/previousCloseTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
                             android:textSize="20sp" />
@@ -464,6 +451,22 @@
 
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/buyStocks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="buy"
+                    android:textColor="@color/greenText"
+                    android:textSize="20sp"
+                    android:background="@drawable/button_border"
+
+                    />
 
             </LinearLayout>>
 

@@ -45,7 +45,7 @@
                 android:drawableLeft="@drawable/ic_action_mobile"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:hint="User Name"
+                android:hint="Enter Full Name"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />
 

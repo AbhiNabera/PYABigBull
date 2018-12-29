@@ -30,7 +30,7 @@
                     android:text="Last Update"
                     android:textSize="14sp"
                     android:id="@+id/lastUpdate"
-                    android:textColor="#fff"
+                    android:textColor="#868378"
                     />
 
                 <LinearLayout
@@ -42,10 +42,10 @@
                         android:id="@+id/lastPriceTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="0000.00"
                         android:textColor="#fff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:gravity="center_vertical"
@@ -54,8 +54,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="0.0%"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textSize="14sp"
+                        android:fontFamily="serif"
                         android:textColor="#fff"
                         />
 
@@ -99,18 +99,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Open Price"
-                            android:textSize="18sp"
-                            android:textColor="#fff"
+                            android:textSize="14sp"
+                            android:textColor="#868378"
                             />
 
                         <TextView
                             android:id="@+id/openPriceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -134,18 +134,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Prev. Close"
-                            android:textSize="18sp"
-                            android:textColor="#fff"
+                            android:textSize="14sp"
+                            android:textColor="#868378"
                             />
 
                         <TextView
                             android:id="@+id/prevCloseTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/hammersmithoneregular"
+                            android:fontFamily="serif"
                             android:text="00000.00"
                             android:textColor="#fff"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -193,8 +193,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Today's Low/High"
-                    android:textSize="18sp"
-                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textColor="#868378"
                     />
 
                 <LinearLayout
@@ -207,20 +207,20 @@
                         android:id="@+id/todaysLowTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_weight="1"
                         android:id="@+id/todaysHighTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <View
@@ -245,8 +245,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="52 Wk Low/High"
-                    android:textSize="18sp"
-                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textColor="#868378"
                     />
 
                 <LinearLayout
@@ -259,20 +259,20 @@
                         android:id="@+id/wkLowTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_weight="1"
                         android:id="@+id/wkHighTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <View
@@ -296,8 +296,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Simple Moving Averages"
-                android:textSize="18sp"
-                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textColor="#868378"
                 />
 
             <View
@@ -324,7 +324,7 @@
                         android:layout_height="wrap_content"
                         android:text="30 Days"
                         android:textSize="14sp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:textColor="#fff"
                         />
 
@@ -333,10 +333,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -353,7 +353,7 @@
                         android:text="50 Days"
                         android:layout_marginLeft="10dp"
                         android:textSize="14sp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:textColor="#fff"
                         />
 
@@ -362,10 +362,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.0"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -395,7 +395,7 @@
                         android:layout_height="wrap_content"
                         android:text="150 Days"
                         android:textSize="14sp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:textColor="#fff"
                         />
 
@@ -403,11 +403,11 @@
                         android:id="@+id/oneFiftyDaysTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:layout_marginLeft="12dp"
+                        android:fontFamily="serif"
                         android:text="00000.00"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -424,7 +424,7 @@
                         android:text="200 Days"
                         android:layout_marginLeft="7dp"
                         android:textSize="14sp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:textColor="#fff"
                         />
 
@@ -433,10 +433,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/hammersmithoneregular"
+                        android:fontFamily="serif"
                         android:text="00000.0"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 

@@ -5,9 +5,10 @@
     <color name="colorTabtext">#404F50</color>
     <color name="colorDisabled">#ce404f50</color>
     <color name="greenText">#4AB556</color>
-    <color name="greenTextAlpha">#374ab556</color>
+    <color name="greenTextAlpha">#374AB556</color>
     <color name="colorAccent">#4AB556</color>
     <color name= "red">#FF0000</color>
+    <color name = "greyText">#868378</color>
 
     <array name="array_dot_active">
         <item>@color/colorPrimary</item>
