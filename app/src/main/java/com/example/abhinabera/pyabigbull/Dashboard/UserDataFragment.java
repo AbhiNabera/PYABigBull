@@ -19,7 +19,7 @@ import com.example.abhinabera.pyabigbull.UserActivities.UserStocks;
 
 public class UserDataFragment extends Fragment {
 
-    CardView myStocks, transactionsHistory, myProfile, termsAndConditions, about;
+    CardView myStocks, transactionsHistory, myProfile, termsAndConditions, about, logout;
 
     @Nullable
     @Override
@@ -37,6 +37,7 @@ public class UserDataFragment extends Fragment {
         myProfile = (CardView) view.findViewById(R.id.myProfileCard);
         termsAndConditions = (CardView) view.findViewById(R.id.termsAndCondtionsCard);
         about = (CardView) view.findViewById(R.id.aboutCard);
+        logout = (CardView) view.findViewById(R.id.logoutCard);
 
         myStocks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +86,13 @@ public class UserDataFragment extends Fragment {
                 i.putExtra("name", "ABOUT");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

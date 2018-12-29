@@ -1,5 +1,6 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksRecyclerAdapter;
@@ -21,7 +23,8 @@ import com.example.abhinabera.pyabigbull.R;
 public class LeaderBoardFragment extends Fragment {
 
     private LeaderBoardRecyclerAdapter mAdapter;
-    TextView userName, userRank;
+    ImageView userMedal;
+    TextView userName, userRank, boxPrice, boxPercent;
 
     @Nullable
     @Override
@@ -37,6 +40,9 @@ public class LeaderBoardFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.leaderBoardRecycler);
         userName = (TextView) view.findViewById(R.id.userNameText);
         userRank = (TextView) view.findViewById(R.id.userRankText);
+        boxPrice = (TextView) view.findViewById(R.id.leaderBoardBoxPrice);
+        boxPercent = (TextView) view.findViewById(R.id.leaderBoardBoxPercent);
+        userMedal = (ImageView) view.findViewById(R.id.userMedal);
 
         LeaderBoardData itemsData[] = { new LeaderBoardData("Avinash", "1st", R.drawable.goldmedal),
                 new LeaderBoardData("Abhi" ,"2nd", R.drawable.silvermedal),

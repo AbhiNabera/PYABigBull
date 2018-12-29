@@ -45,13 +45,15 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     // inner class to hold a reference to each item of RecyclerView 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, userRank;
+        public TextView userName, userRank, userBoxPrice, userBoxPercent;
         public ImageView imageId;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             userName = (TextView) itemLayoutView.findViewById(R.id.leaderBoardUserName);
             userRank = (TextView) itemLayoutView.findViewById(R.id.leaderBoardRank);
+            userBoxPrice = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
+            userBoxPercent = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
             imageId = (ImageView) itemLayoutView.findViewById(R.id.medal);
         }
     }

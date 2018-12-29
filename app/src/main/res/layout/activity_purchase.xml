@@ -41,7 +41,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Available Balance"
+                    android:text="Available balance"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
@@ -52,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:text="00000.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -61,7 +62,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,7 +75,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Company Name"
+                    android:text="Name"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
@@ -85,7 +87,7 @@
                     android:id="@+id/companyName"
                     android:text="XYZ"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -94,7 +96,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,8 +109,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Current Stock Price"
+                    android:text="Current price"
                     android:layout_weight="1"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
 
@@ -118,7 +121,7 @@
                     android:id="@+id/currentStockPrice"
                     android:text="0.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -127,7 +130,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,22 +144,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="No. of stocks"
+                    android:text="No. of units"
                     android:layout_weight="1"
                     android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:textColor="#fff"/>
 
                 <EditText
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:id="@+id/numberStocks"
-                    android:text="100"
+                    android:text=""
                     android:background="@drawable/border"
                     android:padding="5dp"
                     android:textAlignment="center"
                     android:inputType="number"
                     android:textSize="18sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="@color/colorPrimary"/>
 
 
@@ -165,7 +169,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -178,7 +182,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Total Investment"
+                    android:text="Total investment"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
@@ -189,7 +194,7 @@
                     android:id="@+id/totalInvestment"
                     android:text="000000.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -198,7 +203,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -211,9 +216,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Transaction Charges"
+                    android:text="Transaction charges"
                     android:layout_weight="1"
                     android:textSize="18sp"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:textColor="#fff"/>
 
                 <TextView
@@ -222,7 +228,7 @@
                     android:id="@+id/transactionCharges"
                     android:text="50.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -231,7 +237,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -244,8 +250,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Total Cost"
+                    android:text="Total cost"
                     android:layout_weight="1"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
 
@@ -255,7 +262,7 @@
                     android:id="@+id/totalCost"
                     android:text="000000.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -264,7 +271,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,7 +284,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Account Balance"
+                    android:text="Account balance"
+                    android:fontFamily="@font/hammersmithoneregular"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:textColor="#fff"/>
@@ -288,7 +296,7 @@
                     android:id="@+id/accountBalance"
                     android:text="000000.00"
                     android:textSize="20sp"
-                    android:fontFamily="@font/hammersmithoneregular"
+                    android:fontFamily="serif"
                     android:textColor="#fff"/>
 
 
@@ -297,7 +305,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="#fff"/>
+                android:background="@color/greyText"/>
 
             <Button
                 android:id="@+id/confirmButton"

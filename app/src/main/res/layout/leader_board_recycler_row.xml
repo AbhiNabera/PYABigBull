@@ -14,14 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/leaderBoard"
-            android:padding="5dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/leaderBoardUserName"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="0dp"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:maxWidth="150dp"
                 android:layout_centerVertical="true"
@@ -29,32 +27,63 @@
                 android:singleLine="true"
                 android:text="Username"
                 android:textColor="#000"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="5dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginRight="5dp"
                 android:id="@+id/medal"
                 android:scaleType="centerCrop"
-                android:layout_toRightOf="@id/leaderBoardUserName"/>
+                android:layout_toLeftOf="@id/leaderBoardRank"/>
 
             <TextView
                 android:id="@+id/leaderBoardRank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:layout_toRightOf="@+id/medal"
+                android:layout_toLeftOf="@id/leaderBoardItemBox"
                 android:padding="5dp"
                 android:text="10th"
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_centerVertical="true"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:id="@+id/leaderBoardItemBox"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/red">
+
+                <TextView
+                    android:id="@+id/leaderBoardItemBoxPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="00.0"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/leaderBoardItemBoxPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:text="0.0%"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
 
         </RelativeLayout>
     
