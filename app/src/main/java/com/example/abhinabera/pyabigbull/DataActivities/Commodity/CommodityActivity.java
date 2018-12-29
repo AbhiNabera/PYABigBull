@@ -344,51 +344,56 @@ public class CommodityActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
+                    if(response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray().size() != 0) {
 
-                            int i = 0;
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            dataPoints = null;
+                                int i = 0;
 
-                            dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                    get("values").getAsJsonArray().size()];
+                                dataPoints = null;
 
-                            JsonElement lastElement = null;
+                                dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
+                                        get("values").getAsJsonArray().size()];
 
-                            for(JsonElement element: response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                dataPoints[i] = (new DataPoint(
-                                        getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+                                JsonElement lastElement = null;
 
-                                if(i == 0) {
+                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                    dataPoints[i] = (new DataPoint(
+                                            getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
+                                            getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
 
-                                    MIN = getDateFromString(element.getAsJsonObject().
-                                            get("_time").getAsString());
+                                    if (i == 0) {
+
+                                        MIN = getDateFromString(element.getAsJsonObject().
+                                                get("_time").getAsString());
+
+                                    }
+
+                                    lastElement = element;
+                                    i++;
 
                                 }
 
-                                lastElement = element;
-                                i++;
+                                MAX = getDateFromString(lastElement.getAsJsonObject().
+                                        get("_time").getAsString());
 
+                                CommodityActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setUpChart();
+                                        series.resetData(dataPoints);
+                                        graphView.addSeries(series);
+                                        setScrollable();
+                                    }
+                                });
                             }
+                        });
 
-                            MAX = getDateFromString(lastElement.getAsJsonObject().
-                                    get("_time").getAsString());
-
-                            CommodityActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setUpChart();
-                                    series.resetData(dataPoints);
-                                    graphView.addSeries(series);
-                                    setScrollable();
-                                }
-                            });
-                        }
-                    });
-
+                    }else {
+                        setUpBlankChart();
+                    }
                 }else {
 
                 }
@@ -430,6 +435,15 @@ public class CommodityActivity extends AppCompatActivity {
         series.setDrawBackground(true);
         series.setThickness(4);
         series.setAnimated(true);
+    }
+
+    public void setUpBlankChart() {
+
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        graphView.removeAllSeries();
     }
 
     public void setScrollable() {

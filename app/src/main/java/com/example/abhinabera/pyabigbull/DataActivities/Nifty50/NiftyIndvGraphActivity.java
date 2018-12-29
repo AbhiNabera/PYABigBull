@@ -135,10 +135,20 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
                     return new SimpleDateFormat("HH:mm").format(new Date(value));
 
                 case 1:
-                    return new SimpleDateFormat("dd MMM yyyy HH:mm").format(new Date(value));
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 2:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 3:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 4:
+                    return new SimpleDateFormat("MMM").format(new Date(value));
 
                 default:
-                    return new SimpleDateFormat("dd MMM yyyy").format(new Date(value));
+                    return new SimpleDateFormat("MMM yyyy").format(new Date(value));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +240,7 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
                                     setUpChart();
                                     series.resetData(dataPoints);
                                     graphView.addSeries(series);
-                                    setScrollable();
+                                    //setScrollable();
                                     progressBar.setVisibility(View.GONE);
                                 }
                             });
@@ -271,7 +281,7 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
         graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(android.R.color.white));
         graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(android.R.color.white));
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphView.getGridLabelRenderer().setNumVerticalLabels(18);
+        //graphView.getGridLabelRenderer().setNumVerticalLabels(18);
         graphView.getGridLabelRenderer().setTextSize(getResources().getDimension(R.dimen.graphTextSize));
 
         series.setColor(getResources().getColor(R.color.greenText));

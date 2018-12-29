@@ -259,7 +259,7 @@ public class NiftyOverviewFragment extends Fragment {
                                     setUpChart();
                                     series.resetData(dataPoints);
                                     graphView.addSeries(series);
-                                    setScrollable();
+                                    //setScrollable();
                                 }
                             });
                         }

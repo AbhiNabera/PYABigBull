@@ -23,8 +23,6 @@ public class Utility {
 
     public static String MONEY_CONTROL_CURRENCY_URL = "https://priceapi.moneycontrol.com";
 
-    public static String STOCK_GRAPHURL = "jsonapi/stocks/graph&format=json&range=1d&type=area&ex=&sc_id=MPS";
-
     public static String MyPREF = "PAYBigBullPref";
 
 

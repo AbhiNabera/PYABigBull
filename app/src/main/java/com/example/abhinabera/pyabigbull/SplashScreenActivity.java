@@ -204,7 +204,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
                         new Utility().showDialog("ACCOUNT 404",
                                 "Your account does not exist." +
-                                        "Please contact your admin.", SplashScreenActivity.this);
+                                        "Please close your app and reopen gain.", SplashScreenActivity.this);
+                        FirebaseAuth.getInstance().signOut();
                     } else {
                         if (response.body().get("isActive").getAsBoolean()) {
                             startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
@@ -213,6 +214,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             new Utility().showDialog("ACCOUNT DISABLED",
                                     "Your account has been disabled and you can't login until it is enabled again. " +
                                             "Please contact your admin.", SplashScreenActivity.this);
+                            //FirebaseAuth.getInstance().signOut();
                         }
                     }
 

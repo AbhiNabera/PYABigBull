@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,6 +18,8 @@ import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -165,6 +168,12 @@ public class UserNameActivity extends AppCompatActivity {
                         break;
                     }
 
+                }else {
+                    try {
+                        Log.d("error", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 progressDialog.dismiss();

@@ -138,10 +138,20 @@ public class NiftyGraphActivity extends AppCompatActivity {
                     return new SimpleDateFormat("HH:mm").format(new Date(value));
 
                 case 1:
-                    return new SimpleDateFormat("dd MMM yyyy HH:mm").format(new Date(value));
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 2:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 3:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 4:
+                    return new SimpleDateFormat("MMM").format(new Date(value));
 
                 default:
-                    return new SimpleDateFormat("dd MMM yyyy").format(new Date(value));
+                    return new SimpleDateFormat("MMM yyyy").format(new Date(value));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,6 +203,8 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
+                    Log.d("graph response", ""+response.body());
+
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -201,15 +213,31 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
                             dataPoints = null;
 
-                            dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                    get("values").getAsJsonArray().size()];
+                            //dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
+                              //      get("values").getAsJsonArray().size()];
 
                             JsonElement lastElement = null;
 
+                            graphView.removeAllSeries();
+                            series = new LineGraphSeries<>();
+
+                            //TODO: temp fix
+                            long prevTime = 0;
+                            String prevDate = "";
+
                             for(JsonElement element: response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                dataPoints[i] = (new DataPoint(
-                                        getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+
+                                long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+
+                                if(time > prevTime) {
+                                    prevTime = time;
+                                    prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                }else {
+                                    //Log.d("time and date", prevTime+ " : "+prevDate+ ":" +time+":" + element.getAsJsonObject().get("_time").getAsString());
+                                    break;
+                                }
+
+                                //dataPoints[i] = ();
 
                                 if(i == 0) {
 
@@ -221,6 +249,11 @@ public class NiftyGraphActivity extends AppCompatActivity {
                                 lastElement = element;
                                 i++;
 
+                                series.appendData(new DataPoint(
+                                        time,
+                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                ,true, i);
+
                             }
 
                             MAX = getDateFromString(lastElement.getAsJsonObject().
@@ -230,7 +263,7 @@ public class NiftyGraphActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     setUpChart();
-                                    series.resetData(dataPoints);
+                                    //series.resetData(dataPoints);
                                     graphView.addSeries(series);
                                     setScrollable();
                                     progressBar.setVisibility(View.GONE);
@@ -256,10 +289,6 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
     public void setUpChart() {
 
-        graphView.removeAllSeries();
-
-        series = new LineGraphSeries<>();
-
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(MIN);
         graphView.getViewport().setMaxX(MAX);
@@ -273,7 +302,7 @@ public class NiftyGraphActivity extends AppCompatActivity {
         graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(android.R.color.white));
         graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(android.R.color.white));
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphView.getGridLabelRenderer().setNumVerticalLabels(18);
+        //graphView.getGridLabelRenderer().setNumVerticalLabels(18);
         graphView.getGridLabelRenderer().setTextSize(getResources().getDimension(R.dimen.graphTextSize));
 
         series.setColor(getResources().getColor(R.color.greenText));
@@ -287,8 +316,8 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setScalable(true);
-        graphView.getViewport().setScrollableY(true);
-        graphView.getViewport().setScalableY(true);
+        //graphView.getViewport().setScrollableY(true);
+        //graphView.getViewport().setScalableY(true);
 
     }
 }

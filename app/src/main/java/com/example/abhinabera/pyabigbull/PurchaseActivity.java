@@ -6,12 +6,23 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.abhinabera.pyabigbull.Api.ApiInterface;
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PurchaseActivity extends AppCompatActivity {
 
@@ -21,6 +32,13 @@ public class PurchaseActivity extends AppCompatActivity {
     EditText numberStocks;
     Button confirm;
 
+    private ApiInterface apiInterface;
+
+    private String DATA_URL;
+
+    private String type;
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +46,11 @@ public class PurchaseActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_purchase);
         getSupportActionBar().hide();
+
+        type = getIntent().getStringExtra("type");
+        id = getIntent().getStringExtra("id");
+        
+        apiInterface = new RetrofitClient().getCurrencyInterface();
 
         purchaseToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.purchaseToolbar);
         purchaseToolbar.setTitle("BUY STOCKS");
@@ -85,5 +108,72 @@ public class PurchaseActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
+    }
+
+    public void getCurrentQuote(String type, String id) {
+
+        switch (type) {
+
+            case "NIFTY" :
+                DATA_URL = "jsonapi/stocks/overview&format=json&sc_id="+id+"&ex=N";
+                getData(DATA_URL);
+                break;
+
+            case "COMMODITY" :
+                DATA_URL = "jsonapi/commodity/top_commodity&ex=MCX&format=json";
+                getData(DATA_URL);
+                break;
+
+            case "CURRENCY" :
+                DATA_URL = "pricefeed/notapplicable/currencyspot/%24%24%3B"+ id;
+                getCurrencyData(DATA_URL);
+                break;
+        }
+    }
+
+    public void getData(String url) {
+
+        new RetrofitClient().getNifty50Interface().getData(url).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+
+                }else {
+                    try {
+                        Log.d("Purchase error", response.errorBody().string()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getCurrencyData(String url) {
+
+        new RetrofitClient().getCurrencyInterface().getData(url).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+
+                }else {
+                    try {
+                        Log.d("Purchase error", response.errorBody().string()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }

@@ -41,9 +41,8 @@
                 <Spinner
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginLeft="0dp"
                     android:theme="@style/ThemeOverlay.AppCompat.Light"
                     android:id="@+id/commoditySpinner"
                     android:layout_width="match_parent"
