@@ -9,17 +9,18 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.UserActivities.About;
 import com.example.abhinabera.pyabigbull.UserActivities.TermsAndConditions;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
-import com.example.abhinabera.pyabigbull.UserActivities.UserProfile;
 import com.example.abhinabera.pyabigbull.UserActivities.UserStocks;
 
 public class UserDataFragment extends Fragment {
 
-    CardView myStocks, transactionsHistory, myProfile, termsAndConditions, about, logout;
+    CardView myStocks, transactionsHistory, termsAndConditions, about, logout;
+    TextView userName, phoneNumber, balance, rank;
 
     @Nullable
     @Override
@@ -34,10 +35,14 @@ public class UserDataFragment extends Fragment {
 
         myStocks = (CardView) view.findViewById(R.id.myStocksCard);
         transactionsHistory = (CardView) view.findViewById(R.id.transactionsHistoryCard);
-        myProfile = (CardView) view.findViewById(R.id.myProfileCard);
         termsAndConditions = (CardView) view.findViewById(R.id.termsAndCondtionsCard);
         about = (CardView) view.findViewById(R.id.aboutCard);
         logout = (CardView) view.findViewById(R.id.logoutCard);
+
+        userName = (TextView) view.findViewById(R.id.userNameText);
+        phoneNumber = (TextView) view.findViewById(R.id.phoneNumberText);
+        balance = (TextView) view.findViewById(R.id.balanceText);
+        rank = (TextView) view.findViewById(R.id.rankText);
 
         myStocks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +59,6 @@ public class UserDataFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), TransactionsHistory.class);
                 i.putExtra("name", "HISTORY");
-                startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-            }
-        });
-
-        myProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), UserProfile.class);
-                i.putExtra("name", "PROFILE");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }

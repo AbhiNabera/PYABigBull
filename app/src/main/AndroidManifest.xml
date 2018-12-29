@@ -56,8 +56,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".UserActivities.TransactionsHistory"
             android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.UserProfile"
-            android:screenOrientation="portrait"/>
         <activity android:name=".UserActivities.TermsAndConditions"
             android:screenOrientation="portrait"/>
         <activity android:name=".UserActivities.About"
