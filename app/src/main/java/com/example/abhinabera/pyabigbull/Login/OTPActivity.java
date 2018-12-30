@@ -24,6 +24,7 @@ public class OTPActivity extends AppCompatActivity {
     EditText otp;
     Button verify;
     TextView timer;
+    TextView retry;
 
     private String phoneNumber;
 
@@ -44,6 +45,16 @@ public class OTPActivity extends AppCompatActivity {
         otp = (EditText) findViewById(R.id.otp);
         verify = (Button) findViewById(R.id.verify);
         timer = (TextView) findViewById(R.id.timer);
+        retry = (TextView) findViewById(R.id.retry);
+
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timer.setText("Retrying");
+                statTimer();
+                performAuth();
+            }
+        });
 
         phoneNumber = getIntent().getStringExtra("phoneNumber");
 
@@ -149,9 +160,9 @@ public class OTPActivity extends AppCompatActivity {
                 Toast.makeText(OTPActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                 //progressDialog.dismiss();
 
-                verify.setText("RETRY");
-                verify.setEnabled(true);
-                verify.setBackground(getDrawable(R.drawable.button_border));
+                //verify.setText("RETRY");
+                //verify.setEnabled(true);
+                //verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
                 timer.setText("Retry...");
@@ -162,9 +173,9 @@ public class OTPActivity extends AppCompatActivity {
                 Toast.makeText(OTPActivity.this, "Invalid credential", Toast.LENGTH_SHORT).show();
                 //progressDialog.dismiss();
 
-                verify.setText("RETRY");
-                verify.setEnabled(true);
-                verify.setBackground(getDrawable(R.drawable.button_border));
+                //verify.setText("RETRY");
+                //verify.setEnabled(true);
+                //verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
                 timer.setText("Retry...");
@@ -175,9 +186,9 @@ public class OTPActivity extends AppCompatActivity {
                 Toast.makeText(OTPActivity.this, "Too many request", Toast.LENGTH_SHORT).show();
                 //progressDialog.dismiss();
 
-                verify.setText("RETRY");
-                verify.setEnabled(true);
-                verify.setBackground(getDrawable(R.drawable.button_border));
+                //verify.setText("RETRY");
+                //verify.setEnabled(true);
+                //verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
                 timer.setText("Retry...");
@@ -188,11 +199,12 @@ public class OTPActivity extends AppCompatActivity {
                 Toast.makeText(OTPActivity.this, "Code sent", Toast.LENGTH_SHORT).show();
                 Log.d("Code", "" + s);
 
-                //verify.setText("VERIFY");
-                //verify.setEnabled(true);
+                verify.setText("VERIFY");
+                verify.setEnabled(true);
+                verify.setBackground(getDrawable(R.drawable.button_border));
 
-                //countDownTimer.cancel();
-                //timer.setText("Verfying...");
+                countDownTimer.cancel();
+                timer.setText("Enter OTP sent at " + phoneNumber);
             }
 
             @Override
@@ -209,9 +221,9 @@ public class OTPActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Toast.makeText(OTPActivity.this, "Verification error", Toast.LENGTH_SHORT).show();
 
-                verify.setText("RETRY");
-                verify.setEnabled(true);
-                verify.setBackground(getDrawable(R.drawable.button_border));
+                //verify.setText("RETRY");
+                //verify.setEnabled(true);
+                //verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
                 timer.setText("Retry...");
@@ -227,16 +239,16 @@ public class OTPActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 timer.setText("Waiting for OTP..." + millisUntilFinished / 1000 + "s");
-                verify.setEnabled(false);
-                verify.setBackground(getDrawable(R.drawable.button_border_disabled));
+                //verify.setEnabled(false);
+                //verify.setBackground(getDrawable(R.drawable.button_border_disabled));
                 //here you can have your logic to set text to edittext
             }
 
             public void onFinish() {
                 timer.setText("Retry...");
-                verify.setText("RETRY");
-                verify.setEnabled(true);
-                verify.setBackground(getDrawable(R.drawable.button_border));
+                //verify.setText("RETRY");
+                //verify.setEnabled(true);
+                //verify.setBackground(getDrawable(R.drawable.button_border));
             }
 
         }.start();

@@ -48,7 +48,7 @@ public class MyDialog extends DialogFragment {
         final RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
 
         //splash screen conditions
-        if(header.contains("NO INTERNET")|| header.contains("ENTER OTP")){
+        if(header.contains("NO INTERNET")|| header.contains("ENTER OTP") || header.contains("BALANCE") ){
             headerTv.setText(header);
             messageTv.setText(message);
             positive.setText("OKAY");
@@ -140,6 +140,38 @@ public class MyDialog extends DialogFragment {
                 }
             });
 
+        }else if(header.contains("SESSION")) {
+
+            headerTv.setText(header);
+            messageTv.setText(message);
+            positive.setText("OKAY");
+            negative.setText("LATER");
+
+            positive.setVisibility(View.GONE);
+            negative.setVisibility(View.GONE);
+
+            positive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onPositive();
+                }
+            });
+        }else {
+
+            headerTv.setText(header);
+            messageTv.setText(message);
+            positive.setText("OKAY");
+            negative.setText("LATER");
+
+            positive.setVisibility(View.VISIBLE);
+            negative.setVisibility(View.GONE);
+
+            positive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onPositive();
+                }
+            });
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

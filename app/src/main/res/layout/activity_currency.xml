@@ -26,139 +26,200 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/swipeRefresh">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v4.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:id="@+id/swipeRefresh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/lastPrice"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Last Update"
-                        android:textSize="14sp"
-                        android:id="@+id/lastUpdate"
-                        android:textColor="@color/greyText"
-                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:id="@+id/lastPrice"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:visibility="gone"
-                            android:id="@+id/lastPriceTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="serif"
-                            android:text="0000.00"
-                            android:textColor="#fff"
-                            android:textSize="20sp" />
+                            android:text="Last Update"
+                            android:textSize="14sp"
+                            android:id="@+id/lastUpdate"
+                            android:textColor="@color/greyText"
+                            />
 
-                        <TextView
-                            android:gravity="center_vertical"
-                            android:id="@+id/lastChangeTextView"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/lastPriceTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="serif"
+                                android:text="0000.00"
+                                android:textColor="#fff"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:gravity="center_vertical"
+                                android:id="@+id/lastChangeTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0%"
+                                android:textSize="20sp"
+                                android:fontFamily="serif"
+                                android:textColor="#fff"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
+
+                        </View>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/currentPrice"
+                                android:layout_below="@+id/currencyToolbarParent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Current Price"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/greyText"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/currentPriceTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="00000.00"
+                                    android:textSize="20sp"
+                                    android:fontFamily="serif"
+                                    android:textColor="#fff"
+                                    />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:background="@color/colorTabtext">
+
+                                </View>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/prevClose"
+                                android:layout_below="@+id/currentPrice"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Prev. Close"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/greyText"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/prevCloseTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00000.00"
+                                    android:textSize="20sp"
+                                    android:fontFamily="serif"
+                                    android:textColor="#fff"
+                                    />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:background="@color/colorTabtext">
+
+
+                                </View>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="0.0%"
-                            android:textSize="20sp"
-                            android:fontFamily="serif"
-                            android:textColor="#fff"
-                            />
+                            android:orientation="vertical">
+
+                            <!--TODO: add graph here-->
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/colorTabtext">
-
-                    </View>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/todaysLowHigh"
+                        android:layout_below="@+id/prevClose"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/currentPrice"
-                            android:layout_below="@+id/currencyToolbarParent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Current Price"
-                                android:textSize="14sp"
-                                android:textColor="@color/greyText"
-                                />
-
-                            <TextView
-                                android:id="@+id/currentPriceTextView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="00000.00"
-                                android:textSize="20sp"
-                                android:fontFamily="serif"
-                                android:textColor="#fff"
-                                />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/colorTabtext">
-
-                            </View>
-                        </LinearLayout>
+                            android:text="Today's Low/High"
+                            android:textSize="14sp"
+                            android:textColor="@color/greyText"
+                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/prevClose"
-                            android:layout_below="@+id/currentPrice"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Prev. Close"
-                                android:textSize="14sp"
-                                android:textColor="@color/greyText"
-                                />
-
-                            <TextView
-                                android:id="@+id/prevCloseTextView"
+                                android:layout_weight="1"
+                                android:id="@+id/todaysLowTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="00000.00"
@@ -167,90 +228,45 @@
                                 android:textColor="#fff"
                                 />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/colorTabtext">
-
-
-                            </View>
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/todaysHighTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00000.00"
+                                android:textSize="20sp"
+                                android:fontFamily="serif"
+                                android:textColor="#fff"
+                                />
                         </LinearLayout>
 
-                    </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorTabtext">
 
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <!--TODO: add graph here-->
-
+                        </View>
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/todaysLowHigh"
-                    android:layout_below="@+id/prevClose"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
+            </android.support.v4.widget.SwipeRefreshLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Today's Low/High"
-                        android:textSize="14sp"
-                        android:textColor="@color/greyText"
-                        />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:id="@+id/todaysLowTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="00000.00"
-                            android:textSize="20sp"
-                            android:fontFamily="serif"
-                            android:textColor="#fff"
-                            />
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:id="@+id/todaysHighTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="00000.00"
-                            android:textSize="20sp"
-                            android:fontFamily="serif"
-                            android:textColor="#fff"
-                            />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/colorTabtext">
-
-                    </View>
-                </LinearLayout>
+            <RelativeLayout
+                android:elevation="4dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/buyStocks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/hammersmithoneregular"
                     android:text="buy"
                     android:textColor="@color/greenText"
@@ -258,10 +274,9 @@
                     android:background="@drawable/button_border"
 
                     />
+            </RelativeLayout>
 
-            </LinearLayout>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
+            </RelativeLayout>
 
     </LinearLayout>
 

@@ -1,5 +1,8 @@
 package com.example.abhinabera.pyabigbull.Api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,9 +18,11 @@ public class RetrofitClient {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
 
+        Gson gson = new GsonBuilder().setLenient().create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Utility.URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 //.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

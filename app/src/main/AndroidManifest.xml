@@ -50,7 +50,7 @@
         <activity
             android:name=".DataActivities.CurrencyActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".PurchaseActivity"
+       <activity android:name=".PurchaseActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".UserActivities.UserStocks"
             android:screenOrientation="portrait"/>
@@ -73,6 +73,6 @@
         <activity android:name=".DataActivities.Nifty50.NiftyGraphActivity"
             android:screenOrientation="landscape"></activity>
 
-    </application>
+        <activity android:name=".TransactionSummaryActivity"></activity></application>
 
 </manifest>

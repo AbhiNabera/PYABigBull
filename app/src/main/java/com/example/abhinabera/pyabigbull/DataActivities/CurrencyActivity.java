@@ -38,6 +38,8 @@ public class CurrencyActivity extends AppCompatActivity {
 
     private String id;
 
+    private String purchaseId;
+
     private ApiInterface apiInterface;
 
     private JsonObject currencyObject;
@@ -102,6 +104,9 @@ public class CurrencyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(CurrencyActivity.this, PurchaseActivity.class);
+                i.putExtra("type", "CURRENCY");
+                i.putExtra("id", purchaseId);
+                i.putExtra("name", id);
                 startActivity(i);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
@@ -179,12 +184,15 @@ public class CurrencyActivity extends AppCompatActivity {
         switch(id) {
 
             case "DOLLAR" :
+                purchaseId = "USDINR";
                 return  apiInterface.getUSDINR();
 
             case "EURO" :
+                purchaseId = "EURINR";
                 return apiInterface.getEURINR();
 
             case "POUND" :
+                purchaseId = "GBPINR";
                 return apiInterface.getGBPINR();
         }
 

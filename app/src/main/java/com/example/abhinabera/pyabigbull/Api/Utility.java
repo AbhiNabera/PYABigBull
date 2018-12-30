@@ -27,13 +27,11 @@ public class Utility {
 
 
     public String getCommodityURL(String id) {
-        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id;
-        return URL;
+        return "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id;
     }
 
     public String getCommodityExpiryURL(String id, String expiry) {
-        URL = "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt=" + expiry;
-        return URL;
+        return "jsonapi/commodity/details&format=json&ex=MCX&symbol=" + id + "&expdt=" + expiry;
     }
 
     public String getStockIndividualUrl(String id) {

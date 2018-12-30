@@ -295,8 +295,8 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
 
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setScalable(true);
-        graphView.getViewport().setScrollableY(true);
-        graphView.getViewport().setScalableY(true);
+        //graphView.getViewport().setScrollableY(true);
+        //graphView.getViewport().setScalableY(true);
 
     }
 }

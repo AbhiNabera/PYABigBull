@@ -304,7 +304,7 @@ public class NiftyOverviewFragment extends Fragment {
         series.setColor(getResources().getColor(R.color.greenText));
         series.setBackgroundColor(getResources().getColor(R.color.greenTextAlpha));
         series.setDrawBackground(true);
-        series.setThickness(4);
+        series.setThickness(2);
         series.setAnimated(true);
     }
 

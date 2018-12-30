@@ -203,19 +203,13 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
-                    Log.d("graph response", ""+response.body());
+                    //Log.d("graph response", ""+response.body());
 
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
 
                             int i = 0;
-
-                            dataPoints = null;
-
-                            //dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                              //      get("values").getAsJsonArray().size()];
-
                             JsonElement lastElement = null;
 
                             graphView.removeAllSeries();
@@ -233,11 +227,8 @@ public class NiftyGraphActivity extends AppCompatActivity {
                                     prevTime = time;
                                     prevDate = element.getAsJsonObject().get("_time").getAsString();
                                 }else {
-                                    //Log.d("time and date", prevTime+ " : "+prevDate+ ":" +time+":" + element.getAsJsonObject().get("_time").getAsString());
                                     break;
                                 }
-
-                                //dataPoints[i] = ();
 
                                 if(i == 0) {
 
