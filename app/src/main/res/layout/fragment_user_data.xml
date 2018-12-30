@@ -1,392 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<RelativeLayout android:layout_width="match_parent"
+<android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
+    android:id="@+id/swipeRefresh"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/myProfileCard"
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:paddingTop="30dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:background="#fff"
-            android:clickable="true"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="5dp">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <android.support.v7.widget.AppCompatImageView
+                android:tint="@color/colorPrimaryDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/user_account"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textAlignment="center"
+                android:drawablePadding="5dp"
+                android:text="username"
+                android:textColor="#fff"
+                android:fontFamily="@font/hammersmithone"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/phoneNumberText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textAlignment="center"
+                android:drawablePadding="5dp"
+                android:text="Phone number"
+                android:textColor="#fff"
+                android:fontFamily="@font/hammersmithone"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:layout_height="match_parent">
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"/>
 
                 <LinearLayout
+                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/userNameTextView"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/accountLayout"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_action_user"
-                        android:drawablePadding="5dp"
-                        android:text="User name"
-                        android:textColor="@color/greyText"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/userNameText"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:drawableLeft="@drawable/accountbal"
+                            android:drawableTint="@color/colorPrimaryDark"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:drawablePadding="10dp"
+                            android:text="Account balance"
+                            android:textColor="#b9b6b6"
+                            android:fontFamily="@font/hammersmithone"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/balanceText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center_vertical|end"
+                            android:drawablePadding="5dp"
+                            android:text="00.00"
+                            android:textColor="#b9b6b6"
+                            android:fontFamily="@font/hammersmithone"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:fontFamily="@font/hammersmithoneregular"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="10dp"
-                        android:text="Abhinandan Nabera"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp" />
+                        android:id="@+id/expandableLayout"
+                        app:el_expanded="false">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:background="@color/greyText"
-                    android:layout_marginTop="2dp"
-                    android:layout_height="2dp">
+                            <View
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
 
-                </View>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content">
+                                <LinearLayout
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginRight="15dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/phoneNumberTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_action_mobile"
-                        android:drawablePadding="5dp"
-                        android:text="Mobile number"
-                        android:textColor="@color/greyText"
-                        android:textSize="18sp" />
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textAlignment="viewStart"
+                                        android:drawablePadding="5dp"
+                                        android:text="Total Investment"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/phoneNumberText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:fontFamily="@font/hammersmithoneregular"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="30dp"
-                        android:text="8939033399"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp" />
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:id="@+id/investmentText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="5dp"
+                                        android:textAlignment="viewEnd"
+                                        android:drawablePadding="5dp"
+                                        android:text="00000.00"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                </LinearLayout>
+                                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:background="@color/greyText"
-                    android:layout_marginTop="2dp"
-                    android:layout_height="2dp">
+                                <LinearLayout
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginRight="15dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
 
-                </View>
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textAlignment="viewStart"
+                                        android:drawablePadding="5dp"
+                                        android:text="Gain/Loss amount"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:id="@+id/changeText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="5dp"
+                                        android:textAlignment="viewEnd"
+                                        android:drawablePadding="5dp"
+                                        android:text="000.00"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/balanceTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_action_balance"
-                        android:drawablePadding="5dp"
-                        android:text="Account balance"
-                        android:textColor="@color/greyText"
-                        android:textSize="18sp" />
+                                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/balanceText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:fontFamily="@font/hammersmithoneregular"
-                        android:textAlignment="center"
-                        android:singleLine="true"
-                        android:layout_marginLeft="10dp"
-                        android:text="10000000.00"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp" />
+                                <LinearLayout
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginRight="15dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
 
-                </LinearLayout>
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textAlignment="viewStart"
+                                        android:drawablePadding="5dp"
+                                        android:text="Gain/Loss %"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:background="@color/greyText"
-                    android:layout_marginTop="2dp"
-                    android:layout_height="2dp">
+                                    <TextView
+                                        android:layout_weight="1"
+                                        android:id="@+id/percentchangeText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="5dp"
+                                        android:textAlignment="viewEnd"
+                                        android:drawablePadding="5dp"
+                                        android:text="00.00%"
+                                        android:textColor="#cac8c8"
+                                        android:fontFamily="@font/hammersmithone"
+                                        android:textSize="16sp" />
 
-                </View>
+                                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="wrap_content">
+                            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/rankTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_action_rank"
-                        android:drawablePadding="5dp"
-                        android:text="Rank"
-                        android:textColor="@color/greyText"
-                        android:textSize="18sp" />
+                        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/rankText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:fontFamily="@font/hammersmithoneregular"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="150dp"
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
+                    <View
+                        android:layout_marginTop="15dp"
                         android:layout_marginRight="10dp"
-                        android:text="400th"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimaryDark"/>
+
+                    <ScrollView
+                        android:nestedScrollingEnabled="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_marginTop="15dp"
+                                android:id="@+id/myStocksText"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:drawableLeft="@drawable/investment"
+                                android:drawablePadding="10dp"
+                                android:text="My investment"
+                                android:textColor="#b9b6b6"
+                                android:fontFamily="@font/hammersmithone"
+                                android:textSize="18sp" />
+
+                            <View
+                                android:visibility="invisible"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:id="@+id/transactionsHistoryText"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:drawableLeft="@drawable/txnhistory"
+                                android:drawablePadding="10dp"
+                                android:text="Transaction history"
+                                android:textColor="#b9b6b6"
+                                android:fontFamily="@font/hammersmithone"
+                                android:textSize="18sp" />
+
+                            <View
+                                android:visibility="invisible"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:id="@+id/termsAndConditionsText"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:drawableLeft="@drawable/termsandcondition"
+                                android:drawablePadding="10dp"
+                                android:text="Terms and conditions"
+                                android:textColor="#b9b6b6"
+                                android:fontFamily="@font/hammersmithone"
+                                android:textSize="18sp" />
+
+                            <View
+                                android:visibility="invisible"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:id="@+id/logoutText"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:drawableLeft="@drawable/logout"
+                                android:drawablePadding="10dp"
+                                android:text="Log out"
+                                android:textColor="#b9b6b6"
+                                android:fontFamily="@font/hammersmithone"
+                                android:textSize="18sp" />
+
+                            <View
+                                android:visibility="invisible"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:id="@+id/aboutText"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:drawableLeft="@drawable/aboutus"
+                                android:drawablePadding="10dp"
+                                android:text="About us"
+                                android:textColor="#b9b6b6"
+                                android:fontFamily="@font/hammersmithone"
+                                android:textSize="18sp" />
+
+                            <View
+                                android:visibility="invisible"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"/>
+
+                        </LinearLayout>
+
+                    </ScrollView>
 
                 </LinearLayout>
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/transactionsHistoryCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:clickable="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:layout_below="@+id/myStocksCard"
-            android:background="#fff"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/transactionsHistory"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/transactionsHistoryText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:padding="5dp"
-                    android:text="TRANSACTION HISTORY"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/myStocksCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:clickable="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:layout_below="@+id/myProfileCard"
-            android:background="#fff"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/myStocks"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/myStocksText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:padding="5dp"
-                    android:text="MY INVESTMENTS"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/termsAndCondtionsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:clickable="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:layout_below="@+id/transactionsHistoryCard"
-            android:background="#fff"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/termsAndConditions"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/termsAndConditionsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:padding="5dp"
-                    android:text="TERMS AND CONDITIONS"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/aboutCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:clickable="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:layout_below="@+id/termsAndCondtionsCard"
-            android:background="#fff"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/about"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/aboutText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:padding="5dp"
-                    android:text="ABOUT"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/logoutCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="15dp"
-            android:clickable="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:alpha="1"
-            android:layout_below="@+id/aboutCard"
-            android:background="#fff"
-            card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/logout"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/logoutText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/hammersmithoneregular"
-                    android:padding="5dp"
-                    android:text="LOGOUT"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
 
 
     </RelativeLayout>
 
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
 
