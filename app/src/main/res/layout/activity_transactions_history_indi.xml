@@ -17,11 +17,11 @@
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/purchaseToolbarParent"
+                android:id="@+id/historyIndiToolbarParent"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/purchaseToolbar"
+                    android:id="@+id/historyIndiToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimaryDark"
@@ -48,7 +48,7 @@
                     android:textColor="#fff"/>
 
                 <TextView
-                    android:id="@+id/txn_id"
+                    android:id="@+id/historyTxnId"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="00000.00"
@@ -64,40 +64,6 @@
                 android:layout_height="2dp"
                 android:background="@color/colorPrimaryDark"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Available Balance"
-                    android:fontFamily="@font/hammersmithone"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:textColor="#fff"/>
-
-                <TextView
-                    android:id="@+id/availableBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="00000.00"
-                    android:textSize="20sp"
-                    android:fontFamily="serif"
-                    android:textColor="#fff"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:background="@color/colorPrimaryDark"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +85,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/totalInvestment"
+                    android:id="@+id/historyTotalInvestment"
                     android:text="000000.00"
                     android:textSize="20sp"
                     android:fontFamily="serif"
@@ -155,7 +121,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/companyName"
+                    android:id="@+id/historyCompanyName"
                     android:text="XYZ"
                     android:textSize="20sp"
                     android:fontFamily="serif"
@@ -191,7 +157,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/currentStockPrice"
+                    android:id="@+id/historyCurrentStockPrice"
                     android:text="0.00"
                     android:textSize="20sp"
                     android:fontFamily="serif"
@@ -229,7 +195,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/numberStocks"
+                    android:id="@+id/historyNumberStocks"
                     android:hint="Min 1"
                     android:text="1"
                     android:background="@drawable/border"
@@ -273,7 +239,7 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/investAmt"
+                    android:id="@+id/historyInvestAmt"
                     android:hint="Min 100"
                     android:text="100"
                     android:background="@drawable/border"
@@ -315,7 +281,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/transactionCharges"
+                    android:id="@+id/historyTransactionCharges"
                     android:text="00.00"
                     android:textSize="20sp"
                     android:fontFamily="serif"
@@ -351,7 +317,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/totalCost"
+                    android:id="@+id/historyTotalCost"
                     android:text="000000.00"
                     android:textSize="20sp"
                     android:fontFamily="serif"
@@ -387,7 +353,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/accountBalance"
+                    android:id="@+id/historyAccountBalance"
                     android:text="000000.00"
                     android:textSize="20sp"
                     android:fontFamily="@font/hammersmithoneregular"
@@ -406,35 +372,7 @@
 
         </LinearLayout>
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/timeout"
-            android:gravity="center"
-            android:textColor="#fff"
-            android:background="@color/colorPrimary"
-            android:fontFamily="@font/hammersmithone"
-            android:textSize="16dp"
-            android:layout_marginBottom="0dp"
-            android:layout_above="@+id/confirmButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="30dp"
-            android:text="Could not complete transaction. Unexpected network error occured."/>
 
-        <Button
-            android:layout_alignParentBottom="true"
-            android:id="@+id/confirmButton"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_border"
-            android:fontFamily="@font/hammersmithoneregular"
-            android:textColor="@color/greenText"
-            android:textSize="20sp"
-            android:text="continue" />
 
     </RelativeLayout>
 

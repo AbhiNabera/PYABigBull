@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull.UserActivities;
+package com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,12 +6,19 @@ import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardData;
+import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardRecyclerAdapter;
 import com.example.abhinabera.pyabigbull.R;
 
 public class TransactionsHistory extends AppCompatActivity {
@@ -42,6 +49,19 @@ public class TransactionsHistory extends AppCompatActivity {
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         changeToolbarFont(historyToolbar, this);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.historyRecycler);
+
+        TransactionsHistoryData itemsData[] = { new TransactionsHistoryData("Asian Paints", "BUY","100", "10000.00"),
+                new TransactionsHistoryData("Asian Paints", "BUY", "100", "10000.00"),
+                        new TransactionsHistoryData("Asian Paints", "BUY","100", "10000.00")};
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(TransactionsHistory.this));
+        TransactionsHistoryRecyclerAdapter mAdapter = new TransactionsHistoryRecyclerAdapter(itemsData);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(TransactionsHistory.this, LinearLayoutManager.VERTICAL));
+
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {

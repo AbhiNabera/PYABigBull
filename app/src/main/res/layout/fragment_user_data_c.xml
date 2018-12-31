@@ -177,7 +177,7 @@
                                             android:layout_marginLeft="5dp"
                                             android:textAlignment="viewStart"
                                             android:drawablePadding="5dp"
-                                            android:text="Gain/Loss amount"
+                                            android:text="Profit/Loss amount"
                                             android:textColor="#cac8c8"
                                             android:fontFamily="@font/hammersmithone"
                                             android:textSize="16sp" />
@@ -212,7 +212,7 @@
                                             android:layout_marginLeft="5dp"
                                             android:textAlignment="viewStart"
                                             android:drawablePadding="5dp"
-                                            android:text="Gain/Loss %"
+                                            android:text="Profit/Loss %"
                                             android:textColor="#cac8c8"
                                             android:fontFamily="@font/hammersmithone"
                                             android:textSize="16sp" />

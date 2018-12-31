@@ -50,29 +50,35 @@
         <activity
             android:name=".DataActivities.CurrencyActivity"
             android:screenOrientation="portrait" />
-       <activity android:name=".PurchaseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.Userstocks.UserStocks"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.TransactionsHistory"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.TermsAndConditions"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.About"
-            android:screenOrientation="portrait"></activity>
-
-        <activity android:name=".DataActivities.Nifty50.NiftyStocksIndividual"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".DataActivities.Nifty50.NiftyIndvGraphActivity"
-            android:screenOrientation="landscape"/>
-
-        <activity android:name=".DataActivities.Commodity.CommodityGraphActivity"
-            android:screenOrientation="landscape"/>
-
-        <activity android:name=".DataActivities.Nifty50.NiftyGraphActivity"
-            android:screenOrientation="landscape"></activity>
-
-        <activity android:name=".TransactionSummaryActivity"></activity></application>
+        <activity
+            android:name=".PurchaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.Userstocks.UserStocks"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.TransactionsHistory.TransactionsHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.TermsAndConditions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.About"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DataActivities.Nifty50.NiftyStocksIndividual"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DataActivities.Nifty50.NiftyIndvGraphActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".DataActivities.Commodity.CommodityGraphActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".DataActivities.Nifty50.NiftyGraphActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".TransactionSummaryActivity" />
+        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndi"></activity>
+    </application>
 
 </manifest>
