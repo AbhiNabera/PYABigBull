@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,6 +61,10 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
             JsonObject transaction = stocks.get(position).getAsJsonObject();
 
+            viewHolder.curentStockPrice.setText("Current price: "+transaction.get("current_price").getAsString());
+            viewHolder.estimatedChange.setText("("+new Utility().getRoundoffData(
+                    transaction.get("pchange").getAsString())+"%)");
+
             viewHolder.companyName.setText(transaction.get("name").getAsString() + "");
             viewHolder.quantity.setText("Q: " + transaction.get("qty").getAsString() + "");
             viewHolder.investment.setText(new Utility().getRoundoffData(transaction.get("total_amount").getAsString()) + "");
@@ -74,6 +79,14 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
             viewHolder.buyOrSell.setVisibility(View.GONE);
 
+            if(transaction.get("pchange").getAsDouble()>=0) {
+                viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.greenText));
+                viewHolder.estimatedChange.setTextColor(context.getResources().getColor(R.color.greenText));
+            }else {
+                viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.red));
+                viewHolder.estimatedChange.setTextColor(context.getResources().getColor(R.color.red));
+            }
+
         }else {
             viewHolder.stocks_divider_row.setText(stocks.get(position).get("type").getAsString().toUpperCase()+"");
         }
@@ -81,9 +94,10 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView companyName, quantity, investment, buyOrSell, txn_date, txn_id;
+        public TextView companyName, quantity, investment, buyOrSell, txn_date, txn_id, curentStockPrice, estimatedChange;
         public RelativeLayout transactionsHistoryRow;
         public TextView stocks_divider_row;
+        LinearLayout stockLayout;
 
         public ViewHolder(View itemLayoutView, int viewType) {
             super(itemLayoutView);
@@ -96,6 +110,12 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 transactionsHistoryRow = (RelativeLayout) itemLayoutView.findViewById(R.id.history);
                 txn_date = (TextView) itemLayoutView.findViewById(R.id.txn_date);
                 txn_id = (TextView) itemLayoutView.findViewById(R.id.txn_id);
+                curentStockPrice = (TextView) itemLayoutView.findViewById(R.id.currentStockPrice);
+                estimatedChange = (TextView) itemLayoutView.findViewById(R.id.estimatedChange);
+
+                stockLayout = (LinearLayout) itemLayoutView.findViewById(R.id.stockLayout);
+
+                stockLayout.setVisibility(View.VISIBLE);
 
                 transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
                     @Override

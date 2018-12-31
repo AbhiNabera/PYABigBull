@@ -82,7 +82,7 @@ public class UserDataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), UserStocks.class);
                 i.putExtra("name", "MY STOCKS");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -92,7 +92,7 @@ public class UserDataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), TransactionsHistory.class);
                 i.putExtra("name", "HISTORY");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -102,7 +102,7 @@ public class UserDataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), TermsAndConditions.class);
                 i.putExtra("name", "TERMS AND CONDITIONS");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -112,7 +112,7 @@ public class UserDataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), About.class);
                 i.putExtra("name", "ABOUT");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 

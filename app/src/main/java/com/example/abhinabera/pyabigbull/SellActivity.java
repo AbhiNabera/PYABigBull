@@ -3,11 +3,11 @@ package com.example.abhinabera.pyabigbull;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,8 +24,6 @@ import com.example.abhinabera.pyabigbull.Api.ApiInterface;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
-import com.example.abhinabera.pyabigbull.Login.OTPActivity;
-import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,9 +34,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseActivity extends AppCompatActivity {
+public class SellActivity extends AppCompatActivity {
 
-    android.support.v7.widget.Toolbar purchaseToolbar;
+    Toolbar purchaseToolbar;
     Typeface custom_font;
     TextView availableBalance, companyName, currentStockPrice, totalInvestment, transactionCharges, totalCost,
             accountBalance, timeout;
@@ -72,7 +70,6 @@ public class PurchaseActivity extends AppCompatActivity {
     double total_debit;
     double acc_bal;
     double change;
-    double shares_price;
     double percentchange;
     int stock_count;
     String txn_id;
@@ -89,9 +86,9 @@ public class PurchaseActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
-        
+
         apiInterface = new RetrofitClient().getCurrencyInterface();
-        purchaseToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.purchaseToolbar);
+        purchaseToolbar = (Toolbar) findViewById(R.id.purchaseToolbar);
         purchaseToolbar.setTitle("BUY STOCKS");
 
         availableBalance = (TextView) findViewById(R.id.availableBalance);
@@ -200,7 +197,6 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public void initializeAmt() {
 
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString().replace(",",""));
         aval_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString().replace(",",""));
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString().replace(",", ""));
         current_price = Double.parseDouble(currentStockPrice.getText().toString().trim().replace(",", ""));
@@ -215,20 +211,15 @@ public class PurchaseActivity extends AppCompatActivity {
 
         //**NO CHANGE: avail_balance, curent price, total_investment
 
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").
-                getAsString().replace(",","")) + current_price*quantity;
-
         total_debit = current_price*quantity + txn_charges*(quantity==0?0:1);
         acc_bal = aval_balance - total_debit;
-
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
-                .get("investment").getAsString()) + total_debit;
+                .get("investment").getAsString()) + current_price*quantity;
         stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject()
                 .get("stocks_count").getAsString()) + quantity;
 
-        change = acc_bal + shares_price - Double.parseDouble(userObject.get("data").getAsJsonObject().
+        change = acc_bal + total_investment - Double.parseDouble(userObject.get("data").getAsJsonObject().
                 get("start_balance").getAsString().replace(",", ""));
-
         percentchange = (change/Double.parseDouble(userObject.get("data").getAsJsonObject().
                 get("start_balance").getAsString().replace(",", "")))*100;
 
@@ -245,7 +236,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         if(acc_bal < 0 ) {
             new Utility().showDialog("INSUFFICIENT BALANCE",
-                    "You do not have enough balance in your account to buy this.", PurchaseActivity.this);
+                    "You do not have enough balance in your account to buy this.", SellActivity.this);
 
             return false;
         }
@@ -256,13 +247,13 @@ public class PurchaseActivity extends AppCompatActivity {
             new Utility().showDialog("INVALID AMOUNT",
                     "Total purchase amount must be less than 50% of initial alloted amount(" +
                             userObject.get("data").getAsJsonObject().get("start_balance").getAsString()
-                            + ").", PurchaseActivity.this);
+                            + ").", SellActivity.this);
 
             return false;
         }
 
         if(quantity == 0) {
-            Toast.makeText(PurchaseActivity.this, "Set quantity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SellActivity.this, "Set quantity", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -278,7 +269,6 @@ public class PurchaseActivity extends AppCompatActivity {
         JsonObject txn_history = new JsonObject();
         JsonObject transaction = new JsonObject();
 
-        account.addProperty("shares_price", shares_price+"");
         account.addProperty("avail_balance", accountBalance.getText().toString().trim()+"");
         account.addProperty("change", change+"");
         account.addProperty("investment", total_investment+"");
@@ -467,7 +457,7 @@ public class PurchaseActivity extends AppCompatActivity {
             statTimer();
 
         }else {
-            Toast.makeText(PurchaseActivity.this, "Unexpected error occured. " +
+            Toast.makeText(SellActivity.this, "Unexpected error occured. " +
                     "Please check your internet connection.", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -486,7 +476,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 timeout.setText("Session expired");
 
                 new Utility().showDialog("SESSION TIMEOUT",
-                        "You took longer than we expected. Please try again", PurchaseActivity.this);
+                        "You took longer than we expected. Please try again", SellActivity.this);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -591,7 +581,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public void getUserAccount() {
 
-        progressDialog = new Utility().showDialog("Please wait while we are getting your account info.", PurchaseActivity.this);
+        progressDialog = new Utility().showDialog("Please wait while we are getting your account info.", SellActivity.this);
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
@@ -657,7 +647,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public void executeTransaction(JsonObject object) {
 
-        progressDialog = new Utility().showDialog("Please wait for transaction to complete.", PurchaseActivity.this);
+        progressDialog = new Utility().showDialog("Please wait for transaction to complete.", SellActivity.this);
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().executeTransaction(object).enqueue(new Callback<JsonObject>() {
@@ -669,21 +659,21 @@ public class PurchaseActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
                     //TODO: go to summary
-                    Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
+                    Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }else {
-                    Toast.makeText(PurchaseActivity.this, "Intenal server error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "Intenal server error", Toast.LENGTH_SHORT).show();
                     try {
                         Log.d("txn error", ""+response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
+                    Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     startActivity(intent);
@@ -697,8 +687,8 @@ public class PurchaseActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 progressDialog.dismiss();
-                Toast.makeText(PurchaseActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
+                Toast.makeText(SellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 startActivity(intent);

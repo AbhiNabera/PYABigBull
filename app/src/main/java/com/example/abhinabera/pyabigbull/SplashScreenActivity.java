@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
+import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
 import com.example.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
@@ -204,8 +205,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
                         new Utility().showDialog("ACCOUNT 404",
                                 "Your account does not exist." +
-                                        "Please close your app and reopen gain.", SplashScreenActivity.this);
+                                        "You will be redirected to login again.", SplashScreenActivity.this);
                         FirebaseAuth.getInstance().signOut();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
+                                finish();
+                            }
+                        },1000);
+
                     } else {
                         if (response.body().get("isActive").getAsBoolean()) {
                             startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
