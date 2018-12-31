@@ -94,6 +94,7 @@ public class BoughtFragment extends Fragment {
             public void onRefresh() {
                 refreshLayout.setRefreshing(true);
                 //getBoughtList();
+                count = 0;
                 getTopCommodity();
                 getEURINR();
                 getGBPINR();
@@ -104,6 +105,7 @@ public class BoughtFragment extends Fragment {
 
         refreshLayout.setRefreshing(true);
         //getBoughtList();
+        count = 0;
         getTopCommodity();
         getEURINR();
         getGBPINR();
