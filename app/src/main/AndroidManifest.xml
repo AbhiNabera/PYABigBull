@@ -77,8 +77,8 @@
         <activity
             android:name=".DataActivities.Nifty50.NiftyGraphActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".TransactionSummaryActivity" />
-        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndi"></activity>
+        <activity android:name=".TransactionSummaryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndi" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

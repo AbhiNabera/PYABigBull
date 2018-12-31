@@ -1,25 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".UserActivities.About">
 
-    <android.support.design.widget.AppBarLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/aboutToolbarParent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/aboutToolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryDark"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="wrap_content"
+            android:id="@+id/aboutToolbarParent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/aboutToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimaryDark"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-</RelativeLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:layout_below="@+id/aboutToolbarParent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="CORE TEAM"
+                android:textSize="18sp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:textColor="#fff"/>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/niftyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:alpha="1"
+                android:background="#fff"
+                android:clickable="true"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nifty"
+                    android:padding="5dp">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/indiaflag"
+                        android:layout_width="192px"
+                        android:layout_height="192px"
+                        android:src="@drawable/ashoksakaria"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/nifty50"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@+id/indiaflag"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Ashok Sakaria"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/niftyDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:layout_below="@+id/nifty50"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="President"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/niftyCard1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:alpha="1"
+                android:background="#fff"
+                android:clickable="true"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nifty1"
+                    android:padding="5dp">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/indiaflag1"
+                        android:layout_width="192px"
+                        android:layout_height="192px"
+                        android:src="@drawable/rksanklecha"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/nifty501"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@+id/indiaflag1"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="R. K. Sanklecha"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/niftyDate1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:layout_below="@+id/nifty501"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Secretary"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/niftyCard11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:alpha="1"
+                android:background="#fff"
+                android:clickable="true"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nifty11"
+                    android:padding="5dp">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/indiaflag11"
+                        android:layout_width="192px"
+                        android:layout_height="192px"
+                        android:src="@drawable/rakeshnabera"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/nifty5011"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@+id/indiaflag11"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Rakesh Nabera"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/niftyDate11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:layout_below="@+id/nifty5011"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Director - Entertainment"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="DEVELOPMENT TEAM"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:textColor="#fff"/>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/niftyCard111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:alpha="1"
+                android:background="#fff"
+                android:clickable="true"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nifty111"
+                    android:padding="5dp">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/indiaflag111"
+                        android:layout_width="192px"
+                        android:layout_height="192px"
+                        android:src="@drawable/avinash"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/nifty50111"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@+id/indiaflag111"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Avinash Kumar Ranjan"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/niftyDate111"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:layout_below="@+id/nifty50111"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Contact - +91 9717215623"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/niftyCard1111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:alpha="1"
+                android:background="#fff"
+                android:clickable="true"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nifty1111"
+                    android:padding="5dp">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/indiaflag1111"
+                        android:layout_width="192px"
+                        android:layout_height="192px"
+                        android:src="@drawable/abhinabera"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/nifty501111"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@+id/indiaflag1111"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Abhinandan Nabera"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/niftyDate1111"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:layout_below="@+id/nifty501111"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:padding="5dp"
+                        android:text="Contact - +91 8939033399"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

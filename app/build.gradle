@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation 'com.jjoe64:graphview:4.2.2'
 }
