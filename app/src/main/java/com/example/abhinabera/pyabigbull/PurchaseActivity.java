@@ -165,35 +165,6 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
 
-        /*investAmt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty()) {
-
-                    invest_price = 0;
-                    updateAmounts();
-                    updateViews();
-
-                }else {
-
-                    invest_price = Double.parseDouble(editable.toString().trim());
-                    updateAmounts();
-                    updateViews();
-                }
-            }
-        });
-        */
-
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {

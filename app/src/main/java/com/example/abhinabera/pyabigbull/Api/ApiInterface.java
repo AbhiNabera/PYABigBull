@@ -43,6 +43,15 @@ public interface ApiInterface {
     @GET("playerinfo")
     Call<JsonObject> getPlayerinfo(@Query("phoneNumber") String phoneNumber);
 
+    @GET("txnHistory")
+    Call<JsonObject> getTxnHistory(@Query("phoneNumber") String phoneNumber);
+
+    @GET("buyList")
+    Call<JsonObject> getbuyList(@Query("phoneNumber") String phoneNumber);
+
+    @GET("sellList")
+    Call<JsonObject> getsellList(@Query("phoneNumber") String phoneNumber);
+
 
     /*
     appfeeds
