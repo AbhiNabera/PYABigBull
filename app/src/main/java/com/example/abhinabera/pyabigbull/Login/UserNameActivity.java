@@ -155,6 +155,7 @@ public class UserNameActivity extends AppCompatActivity {
                             pushDataInSP(phoneNumber, userName.getText().toString().trim());
 
                             startActivity(intent);
+                            finish();
                             break;
 
                         case "USERNAME_EXIST" :

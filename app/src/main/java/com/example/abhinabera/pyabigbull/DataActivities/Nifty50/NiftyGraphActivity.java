@@ -205,63 +205,70 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
                     //Log.d("graph response", ""+response.body());
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
+                    if(response.body().get("graph").getAsJsonObject().get("values") != null) {
 
-                            int i = 0;
-                            JsonElement lastElement = null;
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            graphView.removeAllSeries();
-                            series = new LineGraphSeries<>();
+                                int i = 0;
+                                JsonElement lastElement = null;
 
-                            //TODO: temp fix
-                            long prevTime = 0;
-                            String prevDate = "";
+                                graphView.removeAllSeries();
+                                series = new LineGraphSeries<>();
 
-                            for(JsonElement element: response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                //TODO: temp fix
+                                long prevTime = 0;
+                                String prevDate = "";
 
-                                long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
 
-                                if(time > prevTime) {
-                                    prevTime = time;
-                                    prevDate = element.getAsJsonObject().get("_time").getAsString();
-                                }else {
-                                    break;
+                                    long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+
+                                    if (time > prevTime) {
+                                        prevTime = time;
+                                        prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                    } else {
+                                        break;
+                                    }
+
+                                    if (i == 0) {
+
+                                        MIN = getDateFromString(element.getAsJsonObject().
+                                                get("_time").getAsString());
+
+                                    }
+
+                                    lastElement = element;
+                                    i++;
+
+                                    series.appendData(new DataPoint(
+                                                    time,
+                                                    getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                            , true, i);
+
                                 }
 
-                                if(i == 0) {
+                                MAX = getDateFromString(lastElement.getAsJsonObject().
+                                        get("_time").getAsString());
 
-                                    MIN = getDateFromString(element.getAsJsonObject().
-                                            get("_time").getAsString());
-
-                                }
-
-                                lastElement = element;
-                                i++;
-
-                                series.appendData(new DataPoint(
-                                        time,
-                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
-                                ,true, i);
-
+                                NiftyGraphActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setUpChart();
+                                        //series.resetData(dataPoints);
+                                        graphView.addSeries(series);
+                                        setScrollable();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
                             }
+                        });
 
-                            MAX = getDateFromString(lastElement.getAsJsonObject().
-                                    get("_time").getAsString());
-
-                            NiftyGraphActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setUpChart();
-                                    //series.resetData(dataPoints);
-                                    graphView.addSeries(series);
-                                    setScrollable();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                        }
-                    });
+                    } else {
+                        setUpBlankChart();
+                        progressBar.setVisibility(View.GONE);
+                    }
 
                 }else {
                     progressBar.setVisibility(View.GONE);
@@ -301,6 +308,15 @@ public class NiftyGraphActivity extends AppCompatActivity {
         series.setDrawBackground(true);
         series.setThickness(4);
         series.setAnimated(true);
+    }
+
+    public void setUpBlankChart() {
+
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(R.color.colorPrimary));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(R.color.colorPrimary));
+
+        graphView.removeAllSeries();
     }
 
     public void setScrollable() {

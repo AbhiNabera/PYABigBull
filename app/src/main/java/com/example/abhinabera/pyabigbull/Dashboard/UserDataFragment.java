@@ -23,7 +23,7 @@ import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.UserActivities.About;
 import com.example.abhinabera.pyabigbull.UserActivities.TermsAndConditions;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
-import com.example.abhinabera.pyabigbull.UserActivities.UserStocks;
+import com.example.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 

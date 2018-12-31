@@ -253,51 +253,55 @@ public class NiftyStocksIndividual extends AppCompatActivity {
 
                     Log.d("response", response.body()+"");
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
+                    if(response.body().get("graph").getAsJsonObject().get("values") != null) {
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            int i = 0;
+                                int i = 0;
 
-                            dataPoints = null;
+                                dataPoints = null;
 
-                            dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                    get("values").getAsJsonArray().size()];
+                                dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
+                                        get("values").getAsJsonArray().size()];
 
-                            JsonElement lastElement = null;
+                                JsonElement lastElement = null;
 
-                            for(JsonElement element: response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                dataPoints[i] = (new DataPoint(
-                                        getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                    dataPoints[i] = (new DataPoint(
+                                            getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
+                                            getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
 
-                                if(i == 0) {
+                                    if (i == 0) {
 
-                                    MIN = getDateFromString(element.getAsJsonObject().
-                                            get("_time").getAsString());
+                                        MIN = getDateFromString(element.getAsJsonObject().
+                                                get("_time").getAsString());
+
+                                    }
+
+                                    lastElement = element;
+                                    i++;
 
                                 }
 
-                                lastElement = element;
-                                i++;
+                                MAX = getDateFromString(lastElement.getAsJsonObject().
+                                        get("_time").getAsString());
 
+                                NiftyStocksIndividual.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setUpChart();
+                                        series.resetData(dataPoints);
+                                        graphView.addSeries(series);
+                                        setScrollable();
+                                    }
+                                });
                             }
+                        });
 
-                            MAX = getDateFromString(lastElement.getAsJsonObject().
-                                    get("_time").getAsString());
-
-                            NiftyStocksIndividual.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setUpChart();
-                                    series.resetData(dataPoints);
-                                    graphView.addSeries(series);
-                                    setScrollable();
-                                }
-                            });
-                        }
-                    });
-
+                    }else {
+                        setUpBlankChart();
+                    }
                 }else {
                     try {
                         Log.d("error", ""+response.errorBody().string());
@@ -343,6 +347,15 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         series.setDrawBackground(true);
         series.setThickness(2);
         series.setAnimated(true);
+    }
+
+    public void setUpBlankChart() {
+
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        graphView.removeAllSeries();
     }
 
     public void setScrollable() {

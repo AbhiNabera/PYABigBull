@@ -52,7 +52,7 @@
             android:screenOrientation="portrait" />
        <activity android:name=".PurchaseActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.UserStocks"
+        <activity android:name=".UserActivities.Userstocks.UserStocks"
             android:screenOrientation="portrait"/>
         <activity android:name=".UserActivities.TransactionsHistory"
             android:screenOrientation="portrait"/>
