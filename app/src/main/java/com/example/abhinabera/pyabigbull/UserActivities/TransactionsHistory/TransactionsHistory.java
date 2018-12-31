@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,15 +17,35 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardData;
 import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardRecyclerAdapter;
 import com.example.abhinabera.pyabigbull.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TransactionsHistory extends AppCompatActivity {
 
     Toolbar historyToolbar;
     Typeface custom_font;
+    SwipeRefreshLayout refreshLayout;
+    TransactionsHistoryRecyclerAdapter mAdapter;
+
+    JsonArray transactions;
+    ArrayList<JsonObject> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +54,11 @@ public class TransactionsHistory extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_transactions_history);
         getSupportActionBar().hide();
+
+        transactions = new JsonArray();
+        arrayList = new ArrayList<>();
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
 
         historyToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.historyToolbar);
         Intent i = getIntent();
@@ -52,16 +78,22 @@ public class TransactionsHistory extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.historyRecycler);
 
-        TransactionsHistoryData itemsData[] = { new TransactionsHistoryData("Asian Paints", "BUY","100", "10000.00"),
-                new TransactionsHistoryData("Asian Paints", "BUY", "100", "10000.00"),
-                        new TransactionsHistoryData("Asian Paints", "BUY","100", "10000.00")};
-
         recyclerView.setLayoutManager(new LinearLayoutManager(TransactionsHistory.this));
-        TransactionsHistoryRecyclerAdapter mAdapter = new TransactionsHistoryRecyclerAdapter(itemsData);
+        mAdapter = new TransactionsHistoryRecyclerAdapter(TransactionsHistory.this,
+                arrayList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(TransactionsHistory.this, LinearLayoutManager.VERTICAL));
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getTransactionHistory();
+            }
+        });
+
+        refreshLayout.setRefreshing(true);
+        getTransactionHistory();
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -86,5 +118,41 @@ public class TransactionsHistory extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
+    }
+
+    public void getTransactionHistory() {
+
+        refreshLayout.setRefreshing(true);
+
+        new RetrofitClient().getInterface().getTxnHistory(FirebaseAuth.getInstance().getCurrentUser().
+                getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                refreshLayout.setRefreshing(false);
+
+                if(response.isSuccessful()) {
+
+                    arrayList.clear();
+                    transactions = response.body().get("data").getAsJsonArray();
+                    for (JsonElement jsonElement: transactions) {
+                        arrayList.add(jsonElement.getAsJsonObject());
+                    }
+                    mAdapter.notifyDataSetChanged();
+
+                }else {
+                    Toast.makeText(TransactionsHistory.this, "Network error", Toast.LENGTH_SHORT).show();
+                }
+
+                refreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(TransactionsHistory.this, "Network error", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 }

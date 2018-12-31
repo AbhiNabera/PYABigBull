@@ -1,5 +1,7 @@
 package com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,15 +11,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual;
 import com.example.abhinabera.pyabigbull.R;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<TransactionsHistoryRecyclerAdapter.ViewHolder> {
-    private TransactionsHistoryData[] itemsData;
+    private List<JsonObject> transactions;
+    public Activity context;
 
-    public TransactionsHistoryRecyclerAdapter(TransactionsHistoryData[] itemsData) {
-        this.itemsData = itemsData;
+    public TransactionsHistoryRecyclerAdapter(Activity context, List<JsonObject> transactions) {
+        this.transactions = transactions;
+        this.context = context;
+        sdf = new SimpleDateFormat("dd MMM yyyy");
     }
+
+    SimpleDateFormat sdf;
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -34,15 +49,30 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.companyName.setText(itemsData[position].getCompanyName());
-        viewHolder.quantity.setText(itemsData[position].getQuantity());
-        viewHolder.buyOrSell.setText(itemsData[position].getBuyOrSell());
-        viewHolder.investment.setText(itemsData[position].getInvestment());
+        JsonObject transaction = transactions.get(position).getAsJsonObject().get("txn_summary").getAsJsonObject();
+
+        viewHolder.companyName.setText(transaction.get("name").getAsString()+"");
+        viewHolder.quantity.setText("Q: "+transaction.get("qty").getAsString()+"");
+        viewHolder.buyOrSell.setText(transactions.get(position).getAsJsonObject().get("txn_type").getAsString().toUpperCase()+"");
+        viewHolder.investment.setText(new Utility().getRoundoffData(transaction.get("total_amount").getAsString())+"");
+
+        viewHolder.txn_id.setText(transaction.get("txn_id").getAsString()+"");
+        try {
+            viewHolder.txn_date.setText(sdf.format(new Date(transaction.get("timestamp").getAsLong()))+"");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(viewHolder.buyOrSell.getText().toString().trim().equalsIgnoreCase("SELL")) {
+            viewHolder.buyOrSell.setTextColor(context.getResources().getColor(R.color.red));
+        }else {
+            viewHolder.buyOrSell.setTextColor(context.getResources().getColor(R.color.greenText));
+        }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView companyName, quantity, investment, buyOrSell;
+        public TextView companyName, quantity, investment, buyOrSell, txn_date, txn_id;
         public RelativeLayout transactionsHistoryRow;
 
         public ViewHolder(View itemLayoutView) {
@@ -52,12 +82,15 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
             investment = (TextView) itemLayoutView.findViewById(R.id.historyTotalInvestment);
             buyOrSell = (TextView) itemLayoutView.findViewById(R.id.historyBuyOrSell);
             transactionsHistoryRow = (RelativeLayout) itemLayoutView.findViewById(R.id.history);
+            txn_date = (TextView) itemLayoutView.findViewById(R.id.txn_date);
+            txn_id = (TextView) itemLayoutView.findViewById(R.id.txn_id);
 
             transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndi.class);
                     itemLayoutView.getContext().startActivity(i);
+                    context.overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             });
         }
@@ -65,6 +98,6 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
 
     @Override
     public int getItemCount() {
-        return itemsData.length;
+        return transactions.size();
     }
 }
