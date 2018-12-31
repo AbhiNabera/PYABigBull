@@ -23,7 +23,7 @@ public class TransactionSummaryActivity extends AppCompatActivity {
     Typeface custom_font;
     TextView availableBalance, companyName, currentStockPrice, totalInvestment, transactionCharges, totalCost,
             accountBalance, timeout, txn_id;
-    TextView numberStocks, investAmt;
+    TextView numberStocks/*, investAmt*/;
     Button confirm;
 
     @Override
@@ -47,7 +47,7 @@ public class TransactionSummaryActivity extends AppCompatActivity {
         accountBalance = (TextView) findViewById(R.id.accountBalance);
 
         numberStocks = (TextView) findViewById(R.id.numberStocks);
-        investAmt = (TextView) findViewById(R.id.investAmt);
+        //investAmt = (TextView) findViewById(R.id.investAmt);
         confirm = (Button) findViewById(R.id.confirmButton);
 
         timeout = (TextView) findViewById(R.id.timeout);
@@ -86,7 +86,7 @@ public class TransactionSummaryActivity extends AppCompatActivity {
             companyName.setText(""+json.get("transaction").getAsJsonObject().get("name").getAsString());
             currentStockPrice.setText(""+json.get("txn_summary").getAsJsonObject().get("buy_price").getAsString());
             numberStocks.setText(""+json.get("txn_summary").getAsJsonObject().get("qty").getAsString());
-            investAmt.setText(""+json.get("txn_summary").getAsJsonObject().get("invest_amt").getAsString());
+            //investAmt.setText(""+json.get("txn_summary").getAsJsonObject().get("invest_amt").getAsString());
             transactionCharges.setText(""+json.get("txn_summary").getAsJsonObject().get("txn_amt").getAsString());
             totalCost.setText(""+json.get("txn_summary").getAsJsonObject().get("total_amount").getAsString());
         }

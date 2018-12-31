@@ -42,7 +42,7 @@ public class PurchaseActivity extends AppCompatActivity {
     Typeface custom_font;
     TextView availableBalance, companyName, currentStockPrice, totalInvestment, transactionCharges, totalCost,
             accountBalance, timeout;
-    EditText numberStocks, investAmt;
+    EditText numberStocks/*, investAmt*/;
     Button confirm;
 
     private ProgressDialog progressDialog;
@@ -67,7 +67,7 @@ public class PurchaseActivity extends AppCompatActivity {
     double total_investment;
     double current_price;
     int quantity = 1;
-    double invest_price = 100;
+    //double invest_price = 100;
     double txn_charges;
     double total_debit;
     double acc_bal;
@@ -102,7 +102,7 @@ public class PurchaseActivity extends AppCompatActivity {
         accountBalance = (TextView) findViewById(R.id.accountBalance);
 
         numberStocks = (EditText) findViewById(R.id.numberStocks);
-        investAmt = (EditText) findViewById(R.id.investAmt);
+        //investAmt = (EditText) findViewById(R.id.investAmt);
         confirm = (Button) findViewById(R.id.confirmButton);
 
         timeout = (TextView) findViewById(R.id.timeout);
@@ -165,7 +165,7 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
 
-        investAmt.addTextChangedListener(new TextWatcher() {
+        /*investAmt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -192,6 +192,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 }
             }
         });
+        */
 
     }
 
@@ -231,7 +232,7 @@ public class PurchaseActivity extends AppCompatActivity {
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString().replace(",", ""));
         current_price = Double.parseDouble(currentStockPrice.getText().toString().trim().replace(",", ""));
         quantity = 1;
-        invest_price = Double.parseDouble(investAmt.getText().toString().trim().replace(",", ""));
+        //invest_price = Double.parseDouble(investAmt.getText().toString().trim().replace(",", ""));
         txn_charges = Double.parseDouble(transactionCharges.getText().toString().trim().replace(",", ""));
         total_debit = Double.parseDouble(totalCost.getText().toString().trim().replace(",", ""));
         acc_bal = Double.parseDouble(accountBalance.getText().toString().trim().replace(",", ""));
@@ -241,10 +242,10 @@ public class PurchaseActivity extends AppCompatActivity {
 
         //**NO CHANGE: avail_balance, curent price, total_investment
 
-        total_debit = invest_price*quantity + txn_charges*(quantity==0||invest_price==0?0:1);
+        total_debit = current_price*quantity + txn_charges*(quantity==0?0:1);
         acc_bal = aval_balance - total_debit;
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
-                .get("investment").getAsString()) + invest_price*quantity;
+                .get("investment").getAsString()) + current_price*quantity;
         stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject()
                 .get("stocks_count").getAsString()) + quantity;
 
@@ -280,14 +281,6 @@ public class PurchaseActivity extends AppCompatActivity {
                             + ").", PurchaseActivity.this);
 
             return false;
-        }
-
-        if(type.equalsIgnoreCase("COMMODITY")) {
-
-            if(invest_price < 100){
-                Toast.makeText(PurchaseActivity.this, "Min price 100", Toast.LENGTH_SHORT).show();
-                return false;
-            }
         }
 
         if(quantity == 0) {
@@ -343,7 +336,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 transaction.addProperty("total_amount", total_debit+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
-                transaction.addProperty("invest_amt", invest_price+"");
+                //transaction.addProperty("invest_amt", invest_price+"");
                 transaction.addProperty("change", change+"");
                 transaction.addProperty("percentchange", percentchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
@@ -372,7 +365,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 transaction.addProperty("total_amount", total_debit+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
-                transaction.addProperty("invest_amt", invest_price+"");
+                //transaction.addProperty("invest_amt", invest_price+"");
                 transaction.addProperty("change", change+"");
                 transaction.addProperty("percentchange", percentchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
@@ -401,7 +394,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 transaction.addProperty("total_amount", total_debit+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
-                transaction.addProperty("invest_amt", invest_price+"");
+                //transaction.addProperty("invest_amt", invest_price+"");
                 transaction.addProperty("change", change+"");
                 transaction.addProperty("percentchange", percentchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
@@ -440,22 +433,21 @@ public class PurchaseActivity extends AppCompatActivity {
             switch (type) {
 
                 case "NIFTY" :
-                    investAmt.setEnabled(false);
                     currentStockPrice.setText(stockObject.get("NSE").getAsJsonObject().
                             get("lastvalue").getAsString().replace(",","")+"");
-                    investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
+                    //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
-                    investAmt.setText("100");
+                    //investAmt.setText("100");
                     currentStockPrice.setText(stockObject.get("lastprice").getAsString()+"");
                     break;
 
                 case "CURRENCY" :
-                    investAmt.setEnabled(false);
+                    //investAmt.setEnabled(false);
                     currentStockPrice.setText(stockObject.get("data").getAsJsonObject().
                             get("pricecurrent").getAsString().replace(",","")+"");
-                    investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
+                    //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
             }
@@ -468,19 +460,19 @@ public class PurchaseActivity extends AppCompatActivity {
             switch (type) {
 
                 case "NIFTY" :
-                    investAmt.setEnabled(false);
+                    //investAmt.setEnabled(false);
                     transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_nifty").getAsString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
-                    investAmt.setText("100");
+                    //investAmt.setText("100");
                     transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_commodity").getAsString().replace(",",""));
                     break;
 
                 case "CURRENCY" :
-                    investAmt.setEnabled(false);
+                    //investAmt.setEnabled(false);
                     transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_currency").getAsString().replace(",",""));
                     break;
