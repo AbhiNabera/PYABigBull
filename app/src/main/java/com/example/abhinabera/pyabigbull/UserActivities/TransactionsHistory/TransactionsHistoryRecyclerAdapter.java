@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,8 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndi.class);
+                    i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
+                    Log.d("transactionHistory", transactions.get(getAdapterPosition()).toString());
                     itemLayoutView.getContext().startActivity(i);
                     context.overridePendingTransition(R.anim.enter, R.anim.exit);
                 }

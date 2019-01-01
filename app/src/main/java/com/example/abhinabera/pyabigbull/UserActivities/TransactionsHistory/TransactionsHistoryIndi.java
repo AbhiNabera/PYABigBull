@@ -1,18 +1,26 @@
 package com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class TransactionsHistoryIndi extends AppCompatActivity {
@@ -20,7 +28,8 @@ public class TransactionsHistoryIndi extends AppCompatActivity {
     Toolbar historyIndiToolbar;
     Typeface custom_font;
     TextView txnID, investment, name, price, quantity, transCharge, totalCost;
-    
+    JsonObject transIndvObject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +38,7 @@ public class TransactionsHistoryIndi extends AppCompatActivity {
         setContentView(R.layout.activity_transactions_history_indi);
         getSupportActionBar().hide();
 
-        historyIndiToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.historyIndiToolbar);
+        historyIndiToolbar = (Toolbar) findViewById(R.id.historyIndiToolbar);
 
         historyIndiToolbar.setTitle("SUMMARY");
 
@@ -45,13 +54,26 @@ public class TransactionsHistoryIndi extends AppCompatActivity {
 
         changeToolbarFont(historyIndiToolbar, this);
 
+        JsonParser parser = new JsonParser();
+        JsonObject transIndHis = (JsonObject) parser.parse(getIntent().getStringExtra("transactionHistory"));
+
+        JsonObject transIndHisSum = transIndHis.get("txn_summary").getAsJsonObject();
+
         txnID = (TextView) findViewById(R.id.historyTxnId);
         investment = (TextView) findViewById(R.id.historyTotalInvestment);
         name = (TextView) findViewById(R.id.historyCompanyName);
         price = (TextView) findViewById(R.id.historyCurrentStockPrice);
-        quantity = (TextView) findViewById(R.id.historyQuantity);
+        quantity = (TextView) findViewById(R.id.historyNumberStocks);
         transCharge = (TextView) findViewById(R.id.historyTransactionCharges);
         totalCost = (TextView) findViewById(R.id.historyTotalCost);
+
+        txnID.setText(transIndHis.get("txn_id").getAsString());
+        investment.setText(new Utility().getRoundoffData(transIndHisSum.get("total_amount").getAsString()));
+        name.setText(transIndHis.get("name").getAsString());
+        price.setText(transIndHisSum.get("buy_price").getAsString());
+        quantity.setText(transIndHisSum.get("qty").getAsString());
+        transCharge.setText(transIndHisSum.get("txn_amt").getAsString());
+        totalCost.setText(transIndHisSum.get("total_amount").getAsString());
 
 
     }
