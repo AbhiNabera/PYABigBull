@@ -37,7 +37,7 @@ public class SoldFragment extends Fragment {
 
     ArrayList<JsonObject> arrayList;
 
-    StocksRecyclerAdapter stocksRecyclerAdapter;
+    SoldStocksRecyclerAdapter stocksRecyclerAdapter;
 
     public SoldFragment(){}
 
@@ -63,7 +63,7 @@ public class SoldFragment extends Fragment {
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList);
+        stocksRecyclerAdapter = new SoldStocksRecyclerAdapter(getActivity(), arrayList);
 
         recyclerView.setAdapter(stocksRecyclerAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -97,7 +97,7 @@ public class SoldFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("index").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "index");
+                        object.addProperty("TYPE", "index");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("index").getAsJsonArray()) {
@@ -108,7 +108,7 @@ public class SoldFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "commodity");
+                        object.addProperty("TYPE", "commodity");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray()) {
@@ -119,7 +119,7 @@ public class SoldFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "currency");
+                        object.addProperty("TYPE", "currency");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray()) {
@@ -127,7 +127,7 @@ public class SoldFragment extends Fragment {
                         }
                     }
 
-                    //stocksRecyclerAdapter.notifyDataSetChanged();
+                    stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {
                     Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();

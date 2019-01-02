@@ -302,6 +302,22 @@ public class SellActivity extends AppCompatActivity {
         accountBalancetv.setText(utility.getRoundoffData(acc_bal+"")+"");
         netchangeamounttv.setText(utility.getRoundoffData(netstockchange+""));
         netpecentchangetv.setText(utility.getRoundoffData(netpercenttockchange+"")+"%");
+
+        if(percentstockchange>=0) {
+            changeamounttv.setTextColor(getResources().getColor(R.color.greenText));
+            perchangetv.setTextColor(getResources().getColor(R.color.greenText));
+        }else {
+            changeamounttv.setTextColor(getResources().getColor(R.color.red));
+            perchangetv.setTextColor(getResources().getColor(R.color.red));
+        }
+
+        if(netpercenttockchange>=0) {
+            netchangeamounttv.setTextColor(getResources().getColor(R.color.greenText));
+            netpecentchangetv.setTextColor(getResources().getColor(R.color.greenText));
+        }else {
+            netchangeamounttv.setTextColor(getResources().getColor(R.color.red));
+            netpecentchangetv.setTextColor(getResources().getColor(R.color.red));
+        }
     }
 
     public boolean check() {
