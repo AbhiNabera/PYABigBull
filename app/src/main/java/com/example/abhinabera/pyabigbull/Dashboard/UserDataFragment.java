@@ -169,10 +169,10 @@ public class UserDataFragment extends Fragment {
             percentchangeText.setTextColor(getResources().getColor(R.color.red));
         }
 
-        myStocks.setText("My investment ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
+        myStocks.setText("My Portfolio ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
         .get("stocks_count").getAsString()+")");
 
-        transactionsHistory.setText("Transaction history ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
+        transactionsHistory.setText("Transaction History ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
         .get("txn_history").getAsJsonArray().size()+")");
 
         //expandableLayout.toggle();

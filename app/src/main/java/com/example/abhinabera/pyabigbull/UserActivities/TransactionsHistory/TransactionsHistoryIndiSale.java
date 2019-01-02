@@ -1,44 +1,38 @@
 package com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
+public class TransactionsHistoryIndiSale extends AppCompatActivity {
 
-public class TransactionsHistoryIndi extends AppCompatActivity {
-
-    Toolbar historyIndiToolbar;
+    android.support.v7.widget.Toolbar historyIndiToolbar;
     Typeface custom_font;
-    TextView txnID, investment, name, price, quantity, transCharge, totalCost;
-    JsonObject transIndvObject;
+    TextView txnID, name, bprice, sqty, sprice, netReturn, gainOrLoss, gainORLossPer, txnCharges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_transactions_history_indi);
+        setContentView(R.layout.activity_transactions_history_indi_sale);
         getSupportActionBar().hide();
 
-        historyIndiToolbar = (Toolbar) findViewById(R.id.historyIndiToolbar);
+        historyIndiToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.historyIndiToolbar);
 
         historyIndiToolbar.setTitle("SUMMARY");
 
@@ -60,25 +54,33 @@ public class TransactionsHistoryIndi extends AppCompatActivity {
         JsonObject transIndHisSum = transIndHis.get("txn_summary").getAsJsonObject();
 
         txnID = (TextView) findViewById(R.id.historyTxnId);
-        investment = (TextView) findViewById(R.id.historyTotalInvestment);
         name = (TextView) findViewById(R.id.historyCompanyName);
-        price = (TextView) findViewById(R.id.historyCurrentStockPrice);
-        quantity = (TextView) findViewById(R.id.historyNumberStocks);
-        transCharge = (TextView) findViewById(R.id.historyTransactionCharges);
-        totalCost = (TextView) findViewById(R.id.historyTotalCost);
+        bprice = (TextView) findViewById(R.id.historyCurrentStockPrice);
+        sqty = (TextView) findViewById(R.id.historyNumberStocks);
+        sprice = (TextView) findViewById(R.id.historySellPrice);
+        netReturn = (TextView) findViewById(R.id.historyNetReturn);
+        gainOrLoss = (TextView) findViewById(R.id.historyGainOrLoss);
+        gainORLossPer = (TextView) findViewById(R.id.historyGainOrLossPercent);
+        txnCharges = (TextView) findViewById(R.id.historyTransactionCharges);
 
-        txnID.setText(transIndHis.get("txn_id").getAsString());
-        investment.setText(new Utility().getRoundoffData(transIndHisSum.get("total_amount").getAsString()));
-        name.setText(transIndHis.get("name").getAsString());
-        price.setText(transIndHisSum.get("buy_price").getAsString());
-        quantity.setText(transIndHisSum.get("qty").getAsString());
-        transCharge.setText(transIndHisSum.get("txn_amt").getAsString());
-        totalCost.setText(transIndHisSum.get("total_amount").getAsString());
 
+        txnID.setText(transIndHisSum.get("txn_id").getAsString());
+        name.setText(transIndHisSum.get("name").getAsString());
+        bprice.setText(transIndHisSum.get("buy_price").getAsString());
+        sqty.setText(transIndHisSum.get("sell_qty").getAsString());
+        sprice.setText(transIndHisSum.get("sell_price").getAsString());
+        netReturn.setText(transIndHisSum.get("net_return").getAsString());
+        if (transIndHisSum.get("return_change").getAsString().startsWith("-")){
+            gainOrLoss.setTextColor(getResources().getColor(R.color.red));
+            gainORLossPer.setTextColor(getResources().getColor(R.color.red));
+        }
+        gainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("return_change").getAsString()));
+        gainORLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("return_percentchange").getAsString()));
+        txnCharges.setText(transIndHisSum.get("txn_amt").getAsString());
 
     }
 
-    public void changeToolbarFont(Toolbar toolbar, Activity context) {
+    public void changeToolbarFont(android.support.v7.widget.Toolbar toolbar, Activity context) {
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View view = toolbar.getChildAt(i);
             if (view instanceof TextView) {

@@ -177,22 +177,22 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         JsonObject object = stockIndvObject.get("NSE").getAsJsonObject();
 
         lastUpdate.setText(object.get("lastupdate").getAsString());
-        lastChange.setText(object.get("CHG").getAsString() + "(" + object.get("percentchange").getAsString() +"%)");
-        lastPrice.setText(object.get("lastvalue").getAsString());
+        lastChange.setText(new Utility().getRoundoffData(object.get("CHG").getAsString()) + "(" + new Utility().getRoundoffData(object.get("percentchange").getAsString()) +"%)");
+        lastPrice.setText(new Utility().getRoundoffData(object.get("lastvalue").getAsString()));
         volume.setText(object.get("volume").getAsString());
 
-        bidPrice.setText(object.get("bidprice").getAsString() + "(" + object.get("bidqty").getAsString() + ")");
-        offerPrice.setText(object.get("offerprice").getAsString() + "(" + object.get("offerqty").getAsString() + ")");
-        prevClose.setText(object.get("yesterdaysclose").getAsString());
-        openPrice.setText(object.get("todaysopen").getAsString());
-        vwap.setText(object.get("vwap").getAsString());
-        mktCap.setText(object.get("mktcap").getAsString() + "cr");
-        todaysHigh.setText(object.get("dayhigh").getAsString());
-        todaysLow.setText(object.get("daylow").getAsString());
-        wkHigh.setText(object.get("yearlyhigh").getAsString());
-        wkLow.setText(object.get("yearlylow").getAsString());
-        lPriceBand.setText(object.get("lcprice").getAsString());
-        uPriceBand.setText(object.get("ucprice").getAsString());
+        bidPrice.setText(new Utility().getRoundoffData(object.get("bidprice").getAsString()) + "(" + object.get("bidqty").getAsString() + ")");
+        offerPrice.setText(new Utility().getRoundoffData(object.get("offerprice").getAsString()) + "(" + object.get("offerqty").getAsString() + ")");
+        prevClose.setText(new Utility().getRoundoffData(object.get("yesterdaysclose").getAsString()));
+        openPrice.setText(new Utility().getRoundoffData(object.get("todaysopen").getAsString()));
+        vwap.setText(new Utility().getRoundoffData(object.get("vwap").getAsString()));
+        mktCap.setText(new Utility().getRoundoffData(object.get("mktcap").getAsString()) + "cr");
+        todaysHigh.setText(new Utility().getRoundoffData(object.get("dayhigh").getAsString()));
+        todaysLow.setText(new Utility().getRoundoffData(object.get("daylow").getAsString()));
+        wkHigh.setText(new Utility().getRoundoffData(object.get("yearlyhigh").getAsString()));
+        wkLow.setText(new Utility().getRoundoffData(object.get("yearlylow").getAsString()));
+        lPriceBand.setText(new Utility().getRoundoffData(object.get("lcprice").getAsString()));
+        uPriceBand.setText(new Utility().getRoundoffData(object.get("ucprice").getAsString()));
 
         if(Double.parseDouble(object.get("percentchange").getAsString()+"")>=0){
             lastChange.setTextColor(getResources().getColor(R.color.greenText));

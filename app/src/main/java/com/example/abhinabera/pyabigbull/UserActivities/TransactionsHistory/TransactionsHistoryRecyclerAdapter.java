@@ -1,24 +1,19 @@
 package com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual;
 import com.example.abhinabera.pyabigbull.R;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -91,11 +86,19 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
             transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndi.class);
-                    i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
-                    Log.d("transactionHistory", transactions.get(getAdapterPosition()).toString());
-                    itemLayoutView.getContext().startActivity(i);
-                    context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    if(transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString().equals("buy")) {
+                        Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiPurchase.class);
+                        i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
+                        Log.d("transactionHistory", transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString());
+                        itemLayoutView.getContext().startActivity(i);
+                        context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
+                    else{
+                        Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiSale.class);
+                        i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
+                        itemLayoutView.getContext().startActivity(i);
+                        context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
                 }
             });
         }

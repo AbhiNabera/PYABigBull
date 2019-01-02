@@ -137,8 +137,8 @@ public class NiftyOverviewFragment extends Fragment {
         JsonObject object = nifty50.body().get("indices").getAsJsonObject();
 
         lastUpdate.setText(""+object.get("lastupdated").getAsString());
-        lastPrice.setText(""+object.get("lastprice").getAsString());
-        lastChange.setText(""+object.get("change").getAsString() + "(" + object.get("percentchange").getAsString() +"%)");
+        lastPrice.setText(""+new Utility().getRoundoffData(object.get("lastprice").getAsString()));
+        lastChange.setText(""+new Utility().getRoundoffData(object.get("change").getAsString()) + "(" + new Utility().getRoundoffData(object.get("percentchange").getAsString()) +"%)");
 
         if(Double.parseDouble(object.get("percentchange").getAsString()+"")>=0){
             lastChange.setTextColor(getResources().getColor(R.color.greenText));
@@ -146,17 +146,17 @@ public class NiftyOverviewFragment extends Fragment {
             lastChange.setTextColor(getResources().getColor(R.color.red));
         }
 
-        openPrice.setText(""+object.get("open").getAsString());
-        prevClose.setText(""+object.get("prevclose").getAsString());
-        todaysHigh.setText(""+object.get("high").getAsString());
-        todaysLow.setText(""+object.get("low").getAsString());
-        wkHigh.setText(""+object.get("yearlyhigh").getAsString());
-        wkLow.setText(""+object.get("yearlylow").getAsString());
+        openPrice.setText(""+new Utility().getRoundoffData(object.get("open").getAsString()));
+        prevClose.setText(""+new Utility().getRoundoffData(object.get("prevclose").getAsString()));
+        todaysHigh.setText(""+new Utility().getRoundoffData(object.get("high").getAsString()));
+        todaysLow.setText(""+new Utility().getRoundoffData(object.get("low").getAsString()));
+        wkHigh.setText(""+new Utility().getRoundoffData(object.get("yearlyhigh").getAsString()));
+        wkLow.setText(""+new Utility().getRoundoffData(object.get("yearlylow").getAsString()));
 
-        thirtyDays.setText(""+object.get("dayavg30").getAsString());
-        fiftyDays.setText(""+object.get("dayavg50").getAsString());
-        oneFiftyDays.setText(""+object.get("dayavg150").getAsString());
-        twoHundredDays.setText(""+object.get("dayavg200").getAsString());
+        thirtyDays.setText(""+new Utility().getRoundoffData(object.get("dayavg30").getAsString()));
+        fiftyDays.setText(""+new Utility().getRoundoffData(object.get("dayavg50").getAsString()));
+        oneFiftyDays.setText(""+new Utility().getRoundoffData(object.get("dayavg150").getAsString()));
+        twoHundredDays.setText(""+new Utility().getRoundoffData(object.get("dayavg200").getAsString()));
 
     }
 

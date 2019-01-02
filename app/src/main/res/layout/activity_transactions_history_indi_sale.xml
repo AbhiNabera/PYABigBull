@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/historyIndiToolbarParent"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/historyIndiToolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/colorPrimaryDark"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+                </android.support.design.widget.AppBarLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Transaction ID"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:id="@+id/historyTxnId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="00000.00"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Name"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyCompanyName"
+                        android:text="XYZ"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Buy Price"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyCurrentStockPrice"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Sell Quantity"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyNumberStocks"
+                        android:hint="Min 1"
+                        android:text="1"
+                        android:background="@drawable/border"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:inputType="number"
+                        android:textSize="18sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/colorPrimary"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Sell Price"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historySellPrice"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Net Return"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyNetReturn"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Buy Amount(min 100)"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyInvestAmt"
+                        android:hint="Min 100"
+                        android:text="100"
+                        android:background="@drawable/border"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:inputType="numberDecimal"
+                        android:textSize="18sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/colorPrimary"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Transaction Charges"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyTransactionCharges"
+                        android:text="00.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Profit/Loss"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyGainOrLoss"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/greenText"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Profit/Loss %"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyGainOrLossPercent"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/greenText"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Account Balance"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyAccountBalance"
+                        android:text="000000.00"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

@@ -144,12 +144,12 @@ public class CurrencyActivity extends AppCompatActivity {
 
         lastUpdate.setText(utility.getFormattedDate(""+currencyObject.get("data").getAsJsonObject().
                 get("lastupd_epoch").getAsString()));
-        lastChange.setText(currencyObject.get("data").getAsJsonObject().get("CHANGE").getAsString() + "(" + pchange + "%)");
+        lastChange.setText(new Utility().getRoundoffData(currencyObject.get("data").getAsJsonObject().get("CHANGE").getAsString()) + "(" + pchange + "%)");
 
-        currentPrice.setText(currencyObject.get("data").getAsJsonObject().get("pricecurrent").getAsString());
-        prevClose.setText(currencyObject.get("data").getAsJsonObject().get("priceprevclose").getAsString());
-        todaysHigh.setText(currencyObject.get("data").getAsJsonObject().get("HIGH").getAsString());
-        todaysLow.setText(currencyObject.get("data").getAsJsonObject().get("LOW").getAsString());
+        currentPrice.setText(new Utility().getRoundoffData(currencyObject.get("data").getAsJsonObject().get("pricecurrent").getAsString()));
+        prevClose.setText(new Utility().getRoundoffData(currencyObject.get("data").getAsJsonObject().get("priceprevclose").getAsString()));
+        todaysHigh.setText(new Utility().getRoundoffData(currencyObject.get("data").getAsJsonObject().get("HIGH").getAsString()));
+        todaysLow.setText(new Utility().getRoundoffData(currencyObject.get("data").getAsJsonObject().get("LOW").getAsString()));
 
         if(Double.parseDouble(pchange)>=0) {
             lastChange.setTextColor(getResources().getColor(R.color.greenText));

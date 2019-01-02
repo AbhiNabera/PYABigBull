@@ -107,6 +107,7 @@ public class Utility {
     }
 
     public String getRoundoffData(String value) {
+        value = value.replace(",","");
         String val = String.format("%.2f",( Float.parseFloat(value.replace(",",""))));
         return val;
     }

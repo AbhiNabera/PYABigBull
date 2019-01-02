@@ -77,10 +77,19 @@
         <activity
             android:name=".DataActivities.Nifty50.NiftyGraphActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".SellActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.Userstocks.BoughtStocksSummaryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".TransactionSummaryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndi" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SellActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.Userstocks.BoughtStocksSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransactionSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiSale"></activity>
     </application>
 
 </manifest>

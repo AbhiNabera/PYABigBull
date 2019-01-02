@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 
@@ -46,11 +47,11 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
         viewHolder.companyName.setText(stockList.get(position).get("shortname").getAsString().trim()+"");
-        viewHolder.price.setText(stockList.get(position).get("lastvalue").getAsString().trim()+"");
+        viewHolder.price.setText(new Utility().getRoundoffData(stockList.get(position).get("lastvalue").getAsString()).trim()+"");
         viewHolder.volume.setText("Vol: " + stockList.get(position).get("volume").getAsString().trim()+"");
-        viewHolder.boxPrice.setText(stockList.get(position).get("change").getAsString().trim()+"");
+        viewHolder.boxPrice.setText(new Utility().getRoundoffData(stockList.get(position).get("change").getAsString()).trim()+"");
 
-        String pchange = stockList.get(position).get("percentchange").getAsString().trim()+"";
+        String pchange = new Utility().getRoundoffData(stockList.get(position).get("percentchange").getAsString()).trim()+"";
         viewHolder.boxPercent.setText(pchange);
 
         if(Double.parseDouble(pchange)>=0) {

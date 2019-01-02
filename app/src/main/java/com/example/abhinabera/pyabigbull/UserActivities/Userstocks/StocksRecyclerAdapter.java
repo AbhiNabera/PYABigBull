@@ -3,7 +3,6 @@ package com.example.abhinabera.pyabigbull.UserActivities.Userstocks;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.SellActivity;
-import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistoryIndi;
 import com.google.gson.JsonObject;
 
 import net.cachapa.expandablelayout.ExpandableLayout;

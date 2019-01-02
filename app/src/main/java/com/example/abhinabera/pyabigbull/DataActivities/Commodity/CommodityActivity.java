@@ -208,30 +208,30 @@ public class CommodityActivity extends AppCompatActivity {
         JsonElement element = jsonObjects.get(pos);
         lastUpdate.setText(element.getAsJsonObject().get("ent_date").getAsString());
         volume.setText(element.getAsJsonObject().get("volume").getAsString());
-        lastChange.setText(element.getAsJsonObject().get("change").getAsString() + "(" +
-                element.getAsJsonObject().get("percentchange").getAsString() + "%)");
-        lastPrice.setText(element.getAsJsonObject().get("lastprice").getAsString());
+        lastChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("change").getAsString()) + "(" +
+                new Utility().getRoundoffData(element.getAsJsonObject().get("percentchange").getAsString().replace(",","")) + "%)");
+        lastPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("lastprice").getAsString().replace(",","")));
 
-        bidPrice.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("bidprice").getAsString() + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+        bidPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("bidprice").getAsString().replace(",", "")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
                 .get("bidqty").getAsString() + ")");
-        offerPrice.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("offerprice").getAsString() + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+        offerPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("offerprice").getAsString().replace(",","")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
                 .get("offerqty").getAsString() + ")");
 
-        openInterest.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("open_int").getAsString());
-        OIChange.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("oi_change").getAsString() + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+        openInterest.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("open_int").getAsString().replace(",","")));
+        OIChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("oi_change").getAsString().replace(",","")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
                 .get("oi_percchg").getAsString() + "%)");
-        highPrice.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("high").getAsString());
-        lowPrice.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("low").getAsString());
-        open.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("open").getAsString());
-        previousClose.setText(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("prev_close").getAsString());
+        highPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("high").getAsString().replace(",","")));
+        lowPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("low").getAsString().replace(",","")));
+        open.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("open").getAsString().replace(",","")));
+        previousClose.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                .get("prev_close").getAsString().replace(",","")));
 
         if(Double.parseDouble(element.getAsJsonObject().get("percentchange").getAsString()+"")>=0){
             lastChange.setTextColor(getResources().getColor(R.color.greenText));

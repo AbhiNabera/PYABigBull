@@ -83,7 +83,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:drawablePadding="10dp"
-                                android:text="Account balance"
+                                android:text="Account Balance"
                                 android:textColor="#b9b6b6"
                                 android:fontFamily="@font/hammersmithone"
                                 android:textSize="18sp" />
@@ -177,7 +177,7 @@
                                             android:layout_marginLeft="5dp"
                                             android:textAlignment="viewStart"
                                             android:drawablePadding="5dp"
-                                            android:text="Profit/Loss amount"
+                                            android:text="Profit/Loss Amount"
                                             android:textColor="#cac8c8"
                                             android:fontFamily="@font/hammersmithone"
                                             android:textSize="16sp" />
@@ -261,7 +261,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/investment"
                                     android:drawablePadding="10dp"
-                                    android:text="My investment"
+                                    android:text="My Portfolio"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
@@ -285,7 +285,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/txnhistory"
                                     android:drawablePadding="10dp"
-                                    android:text="Transaction history"
+                                    android:text="Transaction History"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
@@ -309,7 +309,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/termsandcondition"
                                     android:drawablePadding="10dp"
-                                    android:text="Terms and conditions"
+                                    android:text="Terms and Conditions"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
@@ -333,7 +333,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/logout"
                                     android:drawablePadding="10dp"
-                                    android:text="Log out"
+                                    android:text="Logout"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
@@ -357,7 +357,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/aboutus"
                                     android:drawablePadding="10dp"
-                                    android:text="About us"
+                                    android:text="About Us"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />

@@ -216,7 +216,7 @@ public class DataFragment extends Fragment {
         Utility utility = new Utility();
 
         niftyDate.setText(""+object.get("lastupdated").getAsString());
-        nifty50Rate.setText(/*utility.getRoundoffData*/(object.get("lastprice").getAsString()+""));
+        nifty50Rate.setText(utility.getRoundoffData(object.get("lastprice").getAsString().replace(",","")+""));
         nifty50BoxRate.setText(utility.getRoundoffData(object.get("change").getAsString()+""));
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         nifty50BoxPercent.setText(pchange+"%");
@@ -232,7 +232,7 @@ public class DataFragment extends Fragment {
         Utility utility = new Utility();
 
         goldDate.setText("MCX: " + (object.get("lastupdate").getAsString()+""));
-        goldRate.setText("" + /*utility.getRoundoffData*/(object.get("lastprice").getAsString()+""));
+        goldRate.setText(utility.getRoundoffData(object.get("lastprice").getAsString().replace(",","")+""));
         goldBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         goldBoxPercent.setText("" + pchange + "%");
@@ -249,7 +249,7 @@ public class DataFragment extends Fragment {
         Utility utility = new Utility();
 
         silverDate.setText("MCX: " + object.get("lastupdate").getAsString()+"");
-        silverRate.setText(/*utility.getRoundoffData*/("" + object.get("lastprice").getAsString()));
+        silverRate.setText(utility.getRoundoffData(object.get("lastprice").getAsString().replace(",","")+ ""));
         silverBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         silverBoxPercent.setText("" + pchange + "%");
@@ -266,7 +266,7 @@ public class DataFragment extends Fragment {
         Utility utility = new Utility();
 
         crudeoilDate.setText("MCX: " + object.get("lastupdate").getAsString()+"");
-        crudeoilRate.setText(/*utility.getRoundoffData*/("" + object.get("lastprice").getAsString()));
+        crudeoilRate.setText(utility.getRoundoffData(object.get("lastprice").getAsString().replace(",","")+""));
         crudeoilBoxRate.setText(utility.getRoundoffData("" + object.get("change").getAsString()));
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         crudeoilBoxPercent.setText("" + pchange + "%");
