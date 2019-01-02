@@ -30,7 +30,7 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
     public TransactionsHistoryRecyclerAdapter(Activity context, List<JsonObject> transactions) {
         this.transactions = transactions;
         this.context = context;
-        sdf = new SimpleDateFormat("dd MMM yyyy");
+        sdf = new SimpleDateFormat("dd/MMM/yyyy");
     }
 
     SimpleDateFormat sdf;
@@ -53,9 +53,7 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
         JsonObject transaction = transactions.get(position).getAsJsonObject().get("txn_summary").getAsJsonObject();
 
         viewHolder.companyName.setText(transaction.get("name").getAsString()+"");
-        viewHolder.quantity.setText("Q: "+transaction.get("qty").getAsString()+"");
         viewHolder.buyOrSell.setText(transactions.get(position).getAsJsonObject().get("txn_type").getAsString().toUpperCase()+"");
-        viewHolder.investment.setText(new Utility().getRoundoffData(transaction.get("total_amount").getAsString())+"");
 
         viewHolder.txn_id.setText(transaction.get("txn_id").getAsString()+"");
         try {
@@ -65,9 +63,13 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
         }
 
         if(viewHolder.buyOrSell.getText().toString().trim().equalsIgnoreCase("SELL")) {
-            viewHolder.buyOrSell.setTextColor(context.getResources().getColor(R.color.red));
-        }else {
+            viewHolder.quantity.setText("Q: "+transaction.get("sell_qty").getAsString()+"");
+            viewHolder.investment.setText(new Utility().getRoundoffData(transaction.get("net_return").getAsString())+"");
             viewHolder.buyOrSell.setTextColor(context.getResources().getColor(R.color.greenText));
+        }else {
+            viewHolder.quantity.setText("Q: "+transaction.get("qty").getAsString()+"");
+            viewHolder.investment.setText(new Utility().getRoundoffData(transaction.get("total_amount").getAsString())+"");
+            viewHolder.buyOrSell.setTextColor(context.getResources().getColor(R.color.red));
         }
     }
 

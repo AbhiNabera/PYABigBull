@@ -37,8 +37,14 @@ public interface ApiInterface {
     @GET("adminSettings")
     Call<JsonObject> getAdminSettings();
 
+    @POST("transaction")
+    Call<JsonObject> performTransaction(@Body JsonObject object);
+
     @POST("buytransaction")
     Call<JsonObject> executeTransaction(@Body JsonObject object);
+
+    @POST("selltransaction")
+    Call<JsonObject> executesellTransaction(@Body JsonObject object);
 
     @GET("playerinfo")
     Call<JsonObject> getPlayerinfo(@Query("phoneNumber") String phoneNumber);

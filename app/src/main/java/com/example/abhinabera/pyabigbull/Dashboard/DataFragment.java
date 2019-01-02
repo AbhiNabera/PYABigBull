@@ -33,8 +33,8 @@ import retrofit2.Response;
 
 public class DataFragment extends Fragment {
 
-    private static int count = 0;
-    private static int MAXCOUNT = 5;
+    private int count = 0;
+    private int MAXCOUNT = 5;
 
     Response<JsonObject> nifty50, usd, eur, gbp;
 

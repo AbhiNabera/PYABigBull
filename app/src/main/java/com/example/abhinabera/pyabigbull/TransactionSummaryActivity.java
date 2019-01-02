@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
@@ -26,31 +27,28 @@ public class TransactionSummaryActivity extends AppCompatActivity {
     TextView numberStocks/*, investAmt*/;
     Button confirm;
 
+    TextView availableBalancetv, companyNametv, currentStockPricetv, buyStockPicetv, investmenttv, totalInvestmenttv,
+            transactionChargestv,
+            returnstv, changeamounttv, perchangetv, netchangeamounttv, netpecentchangetv, accountBalancetv, timeouttv;
+    LinearLayout txnLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_transaction_summary);
+
+        if(getIntent().getStringExtra("type").equalsIgnoreCase("buy")) {
+            setContentView(R.layout.activity_transaction_summary);
+        }else if(getIntent().getStringExtra("type").equalsIgnoreCase("sell")) {
+            setContentView(R.layout.activity_sell_summary);
+        }
+
         getSupportActionBar().hide();
 
         purchaseToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.purchaseToolbar);
         purchaseToolbar.setTitle("Trnsaction summary");
-
-        txn_id = (TextView) findViewById(R.id.txn_id);
-        availableBalance = (TextView) findViewById(R.id.availableBalance);
-        companyName = (TextView) findViewById(R.id.companyName);
-        currentStockPrice = (TextView) findViewById(R.id.currentStockPrice);
-        totalInvestment = (TextView) findViewById(R.id.totalInvestment);
-        transactionCharges = (TextView) findViewById(R.id.transactionCharges);
-        totalCost = (TextView) findViewById(R.id.totalCost);
-        accountBalance = (TextView) findViewById(R.id.accountBalance);
-
-        numberStocks = (TextView) findViewById(R.id.numberStocks);
-        //investAmt = (TextView) findViewById(R.id.investAmt);
-        confirm = (Button) findViewById(R.id.confirmButton);
-
-        timeout = (TextView) findViewById(R.id.timeout);
 
         purchaseToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         purchaseToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -63,6 +61,55 @@ public class TransactionSummaryActivity extends AppCompatActivity {
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         changeToolbarFont(purchaseToolbar, this);
+
+        if(getIntent().getStringExtra("type").equalsIgnoreCase("buy")) {
+            txn_id = (TextView) findViewById(R.id.txn_id);
+            availableBalance = (TextView) findViewById(R.id.availableBalance);
+            companyName = (TextView) findViewById(R.id.companyName);
+            currentStockPrice = (TextView) findViewById(R.id.currentStockPrice);
+            totalInvestment = (TextView) findViewById(R.id.totalInvestment);
+            transactionCharges = (TextView) findViewById(R.id.transactionCharges);
+            totalCost = (TextView) findViewById(R.id.totalCost);
+            accountBalance = (TextView) findViewById(R.id.accountBalance);
+
+            numberStocks = (TextView) findViewById(R.id.numberStocks);
+            //investAmt = (TextView) findViewById(R.id.investAmt);
+            confirm = (Button) findViewById(R.id.confirmButton);
+
+            timeout = (TextView) findViewById(R.id.timeout);
+
+        }else if(getIntent().getStringExtra("type").equalsIgnoreCase("sell")) {
+
+            availableBalancetv = (TextView) findViewById(R.id.availableBalance);
+            companyNametv = (TextView) findViewById(R.id.companyName);
+            currentStockPricetv = (TextView) findViewById(R.id.currentStockPrice);
+            totalInvestmenttv = (TextView) findViewById(R.id.totalInvestment);
+            transactionChargestv = (TextView) findViewById(R.id.transactionCharges);
+            returnstv = (TextView) findViewById(R.id.returns);
+            accountBalancetv = (TextView) findViewById(R.id.accountBalance);
+            buyStockPicetv = (TextView) findViewById(R.id.buyStockPrice);
+            investmenttv = (TextView) findViewById(R.id.investment);
+            changeamounttv = (TextView) findViewById(R.id.stockchange);
+            perchangetv = (TextView) findViewById(R.id.percentstockchange);
+            netchangeamounttv = (TextView) findViewById(R.id.netstockchange);
+            netpecentchangetv = (TextView) findViewById(R.id.percentnetstockchange);
+            txn_id = (TextView) findViewById(R.id.txn_id);
+
+            txnLayout = (LinearLayout) findViewById(R.id.txnLayout);
+
+            numberStocks = (TextView) findViewById(R.id.numberStocks);
+            //investAmt = (EditText) findViewById(R.id.investAmt);
+            confirm = (Button) findViewById(R.id.confirmButton);
+
+            timeouttv = (TextView) findViewById(R.id.timeout);
+
+            timeout = (TextView) findViewById(R.id.timeouttv);
+
+            timeouttv.setVisibility(View.GONE);
+
+            txnLayout.setVisibility(View.VISIBLE);
+        }
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +127,46 @@ public class TransactionSummaryActivity extends AppCompatActivity {
 
             JsonParser parser = new JsonParser();
             JsonObject json = (JsonObject) parser.parse(getIntent().getStringExtra("data"));
-            txn_id.setText(""+json.get("txn_id").getAsString());
-            availableBalance.setText(""+json.get("Account").getAsJsonObject().get("avail_balance").getAsString());
-            totalInvestment.setText(""+json.get("Account").getAsJsonObject().get("investment").getAsString());
-            companyName.setText(""+json.get("transaction").getAsJsonObject().get("name").getAsString());
-            currentStockPrice.setText(""+json.get("txn_summary").getAsJsonObject().get("buy_price").getAsString());
-            numberStocks.setText(""+json.get("txn_summary").getAsJsonObject().get("qty").getAsString());
-            //investAmt.setText(""+json.get("txn_summary").getAsJsonObject().get("invest_amt").getAsString());
-            transactionCharges.setText(""+json.get("txn_summary").getAsJsonObject().get("txn_amt").getAsString());
-            totalCost.setText(""+json.get("txn_summary").getAsJsonObject().get("total_amount").getAsString());
+
+            if(getIntent().getStringExtra("type").equalsIgnoreCase("buy")) {
+
+                JsonObject object = json.getAsJsonObject("Account")
+                        .getAsJsonObject("stocks_list")
+                        .getAsJsonObject("bought_items")
+                        .getAsJsonObject(getIntent().getStringExtra("product_type"))
+                        .getAsJsonObject(getIntent().getStringExtra("txn_id"));
+
+                txn_id.setText(""+object.get("txn_id").getAsString());
+                availableBalance.setText(""+json.get("Account").getAsJsonObject().get("avail_balance").getAsString());
+                totalInvestment.setText(""+json.getAsJsonObject("Account").get("investment").getAsString());
+                companyName.setText(""+object.get("name").getAsString());
+                currentStockPrice.setText(""+object.get("buy_price").getAsString());
+                numberStocks.setText(""+object.get("qty").getAsString());
+                transactionCharges.setText(""+object.get("txn_amt").getAsString());
+                totalCost.setText(""+object.get("total_amount").getAsString());
+
+            } else if(getIntent().getStringExtra("type").equalsIgnoreCase("sell")){
+
+                JsonObject object = json.getAsJsonObject("Account")
+                        .getAsJsonObject("stocks_list")
+                        .getAsJsonObject("sold_items")
+                        .getAsJsonObject(getIntent().getStringExtra("product_type"))
+                        .getAsJsonObject(getIntent().getStringExtra("txn_id"));
+
+                txn_id.setText(""+object.get("txn_id").getAsString());
+                availableBalancetv.setText(""+json.get("Account").getAsJsonObject().get("avail_balance").getAsString());
+                totalInvestmenttv.setText(""+json.getAsJsonObject("Account").get("investment").getAsString());
+                companyNametv.setText(""+object.get("name").getAsString());
+                currentStockPricetv.setText(""+object.get("sell_price").getAsString());
+                buyStockPicetv.setText(""+object.get("buy_price").getAsString());
+                numberStocks.setText(""+object.get("sell_qty").getAsString());
+                transactionCharges.setText(""+object.get("txn_amt").getAsString());
+                returnstv.setText(""+object.get("net_return").getAsString());
+                changeamounttv.setText(""+object.get("return_change").getAsString());
+                perchangetv.setText(""+object.get("percentchange").getAsString() + "%");
+                netchangeamounttv.setText(""+object.get("change").getAsString() + "");
+                netpecentchangetv.setText(""+object.get("percentchange").getAsString() + "%");
+            }
         }
     }
 

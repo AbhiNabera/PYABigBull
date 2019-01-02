@@ -12,10 +12,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/history"
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/stockLayout"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
@@ -109,9 +110,9 @@
         <RelativeLayout
             android:gravity="center_vertical"
             android:clickable="true"
+            android:layout_marginTop="-5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/history"
             android:padding="5dp">
 
             <TextView
@@ -171,6 +172,179 @@
 
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/expand"
+                app:srcCompat="@drawable/expand_more"
+                android:background="#fff"/>
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/expandableLayout"
+                app:el_expanded="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="Buy price"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/buyprice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="350"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="-5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="Quantity"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/buyquantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="350"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="-5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="Transaction charges"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/txncharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="350"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="Investment amount"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/investmentamount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/hammersmithoneregular"
+                            android:padding="5dp"
+                            android:text="350"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

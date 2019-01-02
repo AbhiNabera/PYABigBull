@@ -27,6 +27,7 @@ import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 
@@ -38,10 +39,14 @@ public class SellActivity extends AppCompatActivity {
 
     Toolbar purchaseToolbar;
     Typeface custom_font;
-    TextView availableBalance, companyName, currentStockPrice, totalInvestment, transactionCharges, totalCost,
-            accountBalance, timeout;
+    TextView availableBalancetv, companyNametv, currentStockPricetv, buyStockPicetv, investmenttv, totalInvestmenttv,
+            transactionChargestv,
+            returnstv, changeamounttv, perchangetv, netchangeamounttv, netpecentchangetv, accountBalancetv, timeouttv;
     EditText numberStocks/*, investAmt*/;
     Button confirm;
+
+    private String INTENT_DATA;
+    JsonObject INVESTMENT_PACKET;
 
     private ProgressDialog progressDialog;
 
@@ -52,6 +57,7 @@ public class SellActivity extends AppCompatActivity {
     int count = 0;
 
     private String type;
+    private String product_type;
     private String id;
     private String name;
 
@@ -61,49 +67,67 @@ public class SellActivity extends AppCompatActivity {
 
     CountDownTimer countDownTimer;
 
+    double start_balance;
     double aval_balance;
     double total_investment;
     double current_price;
-    int quantity = 1;
-    //double invest_price = 100;
+    double buyprice;
+    int quantity = 0;
+    double investmentamt;
+    double left_stockinvestment;
     double txn_charges;
-    double total_debit;
+    double netreturn;
+    double stockchangeamt;
+    double percentstockchange;
     double acc_bal;
-    double change;
-    double percentchange;
+    double netstockchange;
+    double netpercenttockchange;
+    double sharesprice;
     int stock_count;
     String txn_id;
     long timestamp;
+    int left_quantity = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_purchase);
+        setContentView(R.layout.activity_sell);
         getSupportActionBar().hide();
 
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
 
+        INTENT_DATA = getIntent().getStringExtra("data");
+
+        JsonParser parser = new JsonParser();
+        INVESTMENT_PACKET = (JsonObject) parser.parse(INTENT_DATA);
+
         apiInterface = new RetrofitClient().getCurrencyInterface();
         purchaseToolbar = (Toolbar) findViewById(R.id.purchaseToolbar);
-        purchaseToolbar.setTitle("BUY STOCKS");
+        purchaseToolbar.setTitle("SELL STOCKS");
 
-        availableBalance = (TextView) findViewById(R.id.availableBalance);
-        companyName = (TextView) findViewById(R.id.companyName);
-        currentStockPrice = (TextView) findViewById(R.id.currentStockPrice);
-        totalInvestment = (TextView) findViewById(R.id.totalInvestment);
-        transactionCharges = (TextView) findViewById(R.id.transactionCharges);
-        totalCost = (TextView) findViewById(R.id.totalCost);
-        accountBalance = (TextView) findViewById(R.id.accountBalance);
+        availableBalancetv = (TextView) findViewById(R.id.availableBalance);
+        companyNametv = (TextView) findViewById(R.id.companyName);
+        currentStockPricetv = (TextView) findViewById(R.id.currentStockPrice);
+        totalInvestmenttv = (TextView) findViewById(R.id.totalInvestment);
+        transactionChargestv = (TextView) findViewById(R.id.transactionCharges);
+        returnstv = (TextView) findViewById(R.id.returns);
+        accountBalancetv = (TextView) findViewById(R.id.accountBalance);
+        buyStockPicetv = (TextView) findViewById(R.id.buyStockPrice);
+        investmenttv = (TextView) findViewById(R.id.investment);
+        changeamounttv = (TextView) findViewById(R.id.stockchange);
+        perchangetv = (TextView) findViewById(R.id.percentstockchange);
+        netchangeamounttv = (TextView) findViewById(R.id.netstockchange);
+        netpecentchangetv = (TextView) findViewById(R.id.percentnetstockchange);
 
         numberStocks = (EditText) findViewById(R.id.numberStocks);
         //investAmt = (EditText) findViewById(R.id.investAmt);
         confirm = (Button) findViewById(R.id.confirmButton);
 
-        timeout = (TextView) findViewById(R.id.timeout);
+        timeouttv = (TextView) findViewById(R.id.timeout);
 
         purchaseToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         purchaseToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -123,14 +147,13 @@ public class SellActivity extends AppCompatActivity {
                 if(check()) {
                     //TODO: network call
                     txn_id = getTransId();
-                    JsonObject object = getTransactionData();
-                    Log.d("PurchaseActivity", ""+object);
+                    JsonObject object = setAccountData();
+                    Log.d("SellActivity", ""+object);
                     countDownTimer.cancel();
                     executeTransaction(object);
                 }
             }
         });
-
 
         getUserAccount();
         getAdminSettings();
@@ -155,10 +178,14 @@ public class SellActivity extends AppCompatActivity {
                     updateViews();
 
                 }else {
-
                     quantity = Integer.parseInt(editable.toString().trim());
-                    updateAmounts();
-                    updateViews();
+                    if(quantity > INVESTMENT_PACKET.get("qty").getAsInt()) {
+                        quantity = INVESTMENT_PACKET.get("qty").getAsInt();
+                        numberStocks.setText(INVESTMENT_PACKET.get("qty").getAsInt());
+                    } else {
+                        updateAmounts();
+                        updateViews();
+                    }
                 }
             }
         });
@@ -192,25 +219,64 @@ public class SellActivity extends AppCompatActivity {
     public String getTransId() {
         //%B for buy %S for sell
         timestamp = System.currentTimeMillis();
-        return "txn" + type.substring(0,2) + timestamp%100000000 + "" + id + "B";
+        return "txn" + type.substring(0,2) + timestamp%100000000 + "" + id + "S";
     }
 
     public void initializeAmt() {
 
+        start_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().
+                        get("start_balance").getAsString().replace(",", ""));
+        left_quantity = 0;
+        stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject().get("stocks_count").getAsString()
+                .replace(",",""));
+        sharesprice = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
+                .replace(",",""));
         aval_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString().replace(",",""));
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString().replace(",", ""));
-        current_price = Double.parseDouble(currentStockPrice.getText().toString().trim().replace(",", ""));
-        quantity = 1;
-        //invest_price = Double.parseDouble(investAmt.getText().toString().trim().replace(",", ""));
-        txn_charges = Double.parseDouble(transactionCharges.getText().toString().trim().replace(",", ""));
-        total_debit = Double.parseDouble(totalCost.getText().toString().trim().replace(",", ""));
-        acc_bal = Double.parseDouble(accountBalance.getText().toString().trim().replace(",", ""));
+        current_price = Double.parseDouble(currentStockPricetv.getText().toString().trim().replace(",", ""));
+        buyprice = Double.parseDouble(INVESTMENT_PACKET.get("buy_price").getAsString());
+        quantity = Integer.parseInt(INVESTMENT_PACKET.get("qty").getAsString());;
+        investmentamt = Double.parseDouble(INVESTMENT_PACKET.get("total_amount").getAsString());
+        left_stockinvestment = investmentamt;
+        txn_charges = Double.parseDouble(transactionChargestv.getText().toString().trim().replace(",", ""));
+        netreturn = 0;
+        stockchangeamt = 0;
+        percentstockchange = 0;
+        acc_bal = Double.parseDouble(accountBalancetv.getText().toString().trim().replace(",", ""));
+        netstockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("change").getAsString().replace(",",""));
+        netpercenttockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("percentchange").getAsString().replace(",",""));
     }
 
     public void updateAmounts() {
 
-        //**NO CHANGE: avail_balance, curent price, total_investment
+        netreturn = current_price*quantity - (quantity==0?0:txn_charges);
 
+        Log.d("netreturn", netreturn+"");
+        stockchangeamt = (current_price - buyprice) * quantity - (quantity==0?0:(INVESTMENT_PACKET.get("txn_amt").getAsDouble()
+                + txn_charges));
+
+        percentstockchange = (stockchangeamt/investmentamt) * 100;
+
+        acc_bal = aval_balance + netreturn;
+
+        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString()
+                .replace(",", "")) - buyprice*quantity;
+
+        sharesprice =  Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
+                .replace(",", "")) - buyprice*quantity;
+
+        netstockchange = acc_bal + sharesprice - start_balance;
+
+        netpercenttockchange = (netstockchange/start_balance) * 100;
+
+        stock_count = userObject.get("data").getAsJsonObject()
+                .get("stocks_count").getAsInt() - quantity;
+
+        left_quantity = INVESTMENT_PACKET.get("qty").getAsInt() - quantity;
+
+        left_stockinvestment = investmentamt - buyprice*quantity;
+
+        /*
         total_debit = current_price*quantity + txn_charges*(quantity==0?0:1);
         acc_bal = aval_balance - total_debit;
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
@@ -222,63 +288,61 @@ public class SellActivity extends AppCompatActivity {
                 get("start_balance").getAsString().replace(",", ""));
         percentchange = (change/Double.parseDouble(userObject.get("data").getAsJsonObject().
                 get("start_balance").getAsString().replace(",", "")))*100;
-
-        //Log.d("Amounts", aval_balance +" : " + total_investment + " : " + current_price + " : " +
-        //quantity +" : "+invest_price+" : "+txn_charges+" : "+total_debit+" : "+acc_bal);
+*/
+        Log.d("Amounts", ""+current_price+" : "+netreturn+" : "+aval_balance +" : " + total_investment + " : " + current_price + " : " +
+        quantity +" : "+txn_charges+" : "+acc_bal);
     }
 
     public void updateViews() {
-        totalCost.setText(total_debit+"");
-        accountBalance.setText(""+ acc_bal);
+
+        Utility utility = new Utility();
+        returnstv.setText(utility.getRoundoffData(netreturn+""));
+        changeamounttv.setText(utility.getRoundoffData(stockchangeamt+""));
+        perchangetv.setText(utility.getRoundoffData(percentstockchange+"")+"%");
+        accountBalancetv.setText(utility.getRoundoffData(acc_bal+"")+"");
+        netchangeamounttv.setText(utility.getRoundoffData(netstockchange+""));
+        netpecentchangetv.setText(utility.getRoundoffData(netpercenttockchange+"")+"%");
     }
 
     public boolean check() {
-
-        if(acc_bal < 0 ) {
-            new Utility().showDialog("INSUFFICIENT BALANCE",
-                    "You do not have enough balance in your account to buy this.", SellActivity.this);
-
-            return false;
-        }
-
-        if(total_debit > 0.5*Double.parseDouble(userObject.get("data").getAsJsonObject().
-                get("start_balance").getAsString().replace(",", ""))) {
-
-            new Utility().showDialog("INVALID AMOUNT",
-                    "Total purchase amount must be less than 50% of initial alloted amount(" +
-                            userObject.get("data").getAsJsonObject().get("start_balance").getAsString()
-                            + ").", SellActivity.this);
-
-            return false;
-        }
 
         if(quantity == 0) {
             Toast.makeText(SellActivity.this, "Set quantity", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        if(quantity > stock_count) {
+            Toast.makeText(SellActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
-    public JsonObject getTransactionData() {
+    public JsonObject setAccountData() {
 
-        JsonObject data = new JsonObject();
+        String type_key = "";
 
-        JsonObject account = new JsonObject();
-        JsonObject bought_item = new JsonObject();
-        JsonObject txn_history = new JsonObject();
+        JsonObject account_ref = userObject.get("data").getAsJsonObject();
+
+        JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
+
+        JsonObject txn_data = new JsonObject();
         JsonObject transaction = new JsonObject();
+        JsonObject txn_history = new JsonObject();
 
-        account.addProperty("avail_balance", accountBalance.getText().toString().trim()+"");
-        account.addProperty("change", change+"");
-        account.addProperty("investment", total_investment+"");
-        account.addProperty("percentchange", percentchange+"");
-        account.addProperty("stocks_count", stock_count);
+        account_ref.addProperty("shares_price", sharesprice+"");
+        account_ref.addProperty("avail_balance", acc_bal+"");
+        account_ref.addProperty("change", netstockchange+"");
+        account_ref.addProperty("investment", total_investment+"");
+        account_ref.addProperty("percentchange", netpercenttockchange+"");
+        account_ref.addProperty("stocks_count", stock_count);
 
         switch (type) {
 
-            case "NIFTY" :
-                data.addProperty("product_type", "index");
+            case "NIFTY":
+
+                type_key = "index";
+                product_type = "index";
 
                 txn_history.addProperty("comp_id", id);
                 txn_history.addProperty("comp_name", name);
@@ -288,113 +352,146 @@ public class SellActivity extends AppCompatActivity {
                 txn_history.addProperty("name", "NIFTY50");
                 txn_history.addProperty("timestamp", timestamp);
                 txn_history.addProperty("txn_id", txn_id);
-                txn_history.addProperty("txn_type", "buy");
+                txn_history.addProperty("txn_type", "sell");
                 txn_history.addProperty("type", "index");
 
-                bought_item.addProperty("ex","NSE");
-                bought_item.addProperty("id", "NIFTY");
-                bought_item.addProperty("ind_id","9");
-                bought_item.addProperty("name", "NIFTY50");
-                bought_item.addProperty("type", "index");
+                jsonformatter.child("stocks_list").child("sold_items").child("index").pushValue("ex","NSE");
+                jsonformatter.child("stocks_list").child("sold_items").child("index").pushValue("id", "NIFTY");
+                jsonformatter.child("stocks_list").child("sold_items").child("index").pushValue("ind_id","9");
+                jsonformatter.child("stocks_list").child("sold_items").child("index").pushValue("name", "NIFTY50");
+                jsonformatter.child("stocks_list").child("sold_items").child("index").pushValue("type", "index");
 
-                transaction.addProperty("buy_price",current_price+"");
+                transaction.addProperty("buy_price",buyprice+"");
+                transaction.addProperty("sell_price", current_price+"");
                 transaction.addProperty("id", id+"");
                 transaction.addProperty("name",name+"");
-                transaction.addProperty("qty", quantity+"");
+                transaction.addProperty("avail_qty", INVESTMENT_PACKET.get("qty").getAsInt()+"");
+                transaction.addProperty("sell_qty", quantity+"");
                 transaction.addProperty("timestamp", timestamp);
-                transaction.addProperty("total_amount", total_debit+"");
+                transaction.addProperty("net_return", netreturn+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
                 //transaction.addProperty("invest_amt", invest_price+"");
-                transaction.addProperty("change", change+"");
-                transaction.addProperty("percentchange", percentchange+"");
+                transaction.addProperty("return_change", stockchangeamt+"");
+                transaction.addProperty("return_percentchange", percentstockchange+"");
+                transaction.addProperty("change", netstockchange+"");
+                transaction.addProperty("percentchange", netpercenttockchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
 
                 break;
 
             case "COMMODITY" :
-                data.addProperty("product_type", "commodity");
+
+                type_key = "commodity";
+                product_type = "commodity";
 
                 txn_history.addProperty("ex", "MCX");
                 txn_history.addProperty("id", id+"");
                 txn_history.addProperty("name", name+"");
                 txn_history.addProperty("timestamp", timestamp);
                 txn_history.addProperty("txn_id", txn_id);
-                txn_history.addProperty("txn_type", "buy");
+                txn_history.addProperty("txn_type", "sell");
                 txn_history.addProperty("type", "commodity");
 
-                bought_item.addProperty("ex","MCX");
-                bought_item.addProperty("type", "commodity");
+                jsonformatter.child("stocks_list").child("sold_items").child("commodity").pushValue("ex","MCX");
+                jsonformatter.child("stocks_list").child("sold_items").child("commodity").pushValue("type", "commodity");
 
-                transaction.addProperty("buy_price",current_price+"");
+                transaction.addProperty("buy_price",buyprice+"");
+                transaction.addProperty("sell_price", current_price+"");
                 transaction.addProperty("id", id+"");
                 transaction.addProperty("name",name+"");
-                transaction.addProperty("qty", quantity+"");
+                transaction.addProperty("avail_qty", INVESTMENT_PACKET.get("qty").getAsInt()+"");
+                transaction.addProperty("sell_qty", quantity+"");
                 transaction.addProperty("timestamp", timestamp);
-                transaction.addProperty("total_amount", total_debit+"");
+                transaction.addProperty("net_return", netreturn+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
                 //transaction.addProperty("invest_amt", invest_price+"");
-                transaction.addProperty("change", change+"");
-                transaction.addProperty("percentchange", percentchange+"");
+                transaction.addProperty("return_change", stockchangeamt+"");
+                transaction.addProperty("return_percentchange", percentstockchange+"");
+                transaction.addProperty("change", netstockchange+"");
+                transaction.addProperty("percentchange", netpercenttockchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
 
                 break;
 
             case "CURRENCY" :
-                data.addProperty("product_type", "currency");
+
+                type_key = "currency";
+                product_type = "currency";
 
                 txn_history.addProperty("ex", "FOREX");
                 txn_history.addProperty("id", id+"");
                 txn_history.addProperty("name", name+"");
                 txn_history.addProperty("timestamp", timestamp);
                 txn_history.addProperty("txn_id", txn_id);
-                txn_history.addProperty("txn_type", "buy");
+                txn_history.addProperty("txn_type", "sell");
                 txn_history.addProperty("type", "currency");
 
-                bought_item.addProperty("ex","FOREX");
-                bought_item.addProperty("type", "currency");
+                jsonformatter.child("stocks_list").child("sold_items").child("currency").pushValue("ex","FOREX");
+                jsonformatter.child("stocks_list").child("sold_items").child("currency").pushValue("type", "currency");
 
-                transaction.addProperty("buy_price",current_price+"");
+                transaction.addProperty("buy_price",buyprice+"");
+                transaction.addProperty("sell_price", current_price+"");
                 transaction.addProperty("id", id+"");
                 transaction.addProperty("name",name+"");
-                transaction.addProperty("qty", quantity+"");
+                transaction.addProperty("avail_qty", INVESTMENT_PACKET.get("qty").getAsInt()+"");
+                transaction.addProperty("sell_qty", quantity+"");
                 transaction.addProperty("timestamp", timestamp);
-                transaction.addProperty("total_amount", total_debit+"");
+                transaction.addProperty("net_return", netreturn+"");
                 transaction.addProperty("txn_amt", txn_charges+"");
                 transaction.addProperty("txn_id", txn_id);
                 //transaction.addProperty("invest_amt", invest_price+"");
-                transaction.addProperty("change", change+"");
-                transaction.addProperty("percentchange", percentchange+"");
+                transaction.addProperty("return_change", stockchangeamt+"");
+                transaction.addProperty("return_percentchange", percentstockchange+"");
+                transaction.addProperty("change", netstockchange+"");
+                transaction.addProperty("percentchange", netpercenttockchange+"");
                 transaction.addProperty("acc_bal", acc_bal);
 
                 break;
+
         }
 
-        //txn_history.add("txn_summary", transaction);
+        txn_history.add("txn_summary", transaction);
 
-        data.addProperty("phoneNumber", FirebaseAuth.getInstance().
+        txn_data.addProperty("phoneNumber", FirebaseAuth.getInstance().
                 getCurrentUser().getPhoneNumber().substring(3).trim());
-        data.addProperty("txn_id", txn_id);
-        data.add("Account", account);
-        data.add("bought_item", bought_item);
-        data.add("transaction", transaction);
-        data.add("txn_history", txn_history);
-        data.add("txn_summary", transaction);
 
-        return data;
+        jsonformatter.child("stocks_list")
+                .child("sold_items").child(type_key).pushObject(txn_id, transaction);
+
+        jsonformatter.child("txn_history").pushObject(txn_id, txn_history);
+
+        if(left_quantity == 0) {
+
+        	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
+                    .remove(INVESTMENT_PACKET.get("txn_id").getAsString());
+
+        }else {
+
+        	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
+                    .child(INVESTMENT_PACKET.get("txn_id").getAsString()).pushValue("qty", ""+left_quantity);
+        	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
+                    .child(INVESTMENT_PACKET.get("txn_id").getAsString()).pushValue("total_amount", ""+left_stockinvestment);
+        }
+
+        txn_data.add("Account", account_ref);
+
+        return txn_data;
     }
 
     public void setPurchaseData() {
 
-        numberStocks.setText(""+1);
-        companyName.setText(""+name);
+        buyStockPicetv.setText(INVESTMENT_PACKET.get("buy_price").getAsString()+"");
+        numberStocks.setText(""+INVESTMENT_PACKET.get("qty").getAsString());
+        investmenttv.setText(""+INVESTMENT_PACKET.get("total_amount").getAsString());
+        companyNametv.setText(""+name);
 
         if(userObject != null) {
 
             if (userObject.get("data") != null) {
-                availableBalance.setText("" + userObject.get("data").getAsJsonObject().get("avail_balance").getAsString());
-                totalInvestment.setText("" + userObject.get("data").getAsJsonObject().get("investment").getAsString());
+                availableBalancetv.setText("" + userObject.get("data").getAsJsonObject().get("avail_balance").getAsString());
+                totalInvestmenttv.setText("" + userObject.get("data").getAsJsonObject().get("investment").getAsString());
             }
         }
 
@@ -402,19 +499,19 @@ public class SellActivity extends AppCompatActivity {
             switch (type) {
 
                 case "NIFTY" :
-                    currentStockPrice.setText(stockObject.get("NSE").getAsJsonObject().
+                    currentStockPricetv.setText(stockObject.get("NSE").getAsJsonObject().
                             get("lastvalue").getAsString().replace(",","")+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    currentStockPrice.setText(stockObject.get("lastprice").getAsString()+"");
+                    currentStockPricetv.setText(stockObject.get("lastprice").getAsString()+"");
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    currentStockPrice.setText(stockObject.get("data").getAsJsonObject().
+                    currentStockPricetv.setText(stockObject.get("data").getAsJsonObject().
                             get("pricecurrent").getAsString().replace(",","")+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
@@ -430,19 +527,19 @@ public class SellActivity extends AppCompatActivity {
 
                 case "NIFTY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_nifty").getAsString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_commodity").getAsString().replace(",",""));
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
                             get("trans_amt_currency").getAsString().replace(",",""));
                     break;
 
@@ -466,14 +563,14 @@ public class SellActivity extends AppCompatActivity {
 
     public void statTimer() {
 
-        countDownTimer = new CountDownTimer(60000, 1000) {
+        countDownTimer = new CountDownTimer(90000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timeout.setText("Remaining time..." + millisUntilFinished / 1000 + "s");
+                timeouttv.setText("Remaining time..." + millisUntilFinished / 1000 + "s");
             }
 
             public void onFinish() {
-                timeout.setText("Session expired");
+                timeouttv.setText("Session expired");
 
                 new Utility().showDialog("SESSION TIMEOUT",
                         "You took longer than we expected. Please try again", SellActivity.this);
@@ -594,7 +691,7 @@ public class SellActivity extends AppCompatActivity {
                     userObject = response.body();
                 }else {
                     try {
-                        Log.d("Purchase error", response.errorBody().string()+"");
+                        Log.d("SellActivity error", response.errorBody().string()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -650,7 +747,7 @@ public class SellActivity extends AppCompatActivity {
         progressDialog = new Utility().showDialog("Please wait for transaction to complete.", SellActivity.this);
         progressDialog.setCancelable(false);
 
-        new RetrofitClient().getInterface().executeTransaction(object).enqueue(new Callback<JsonObject>() {
+        new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -662,6 +759,9 @@ public class SellActivity extends AppCompatActivity {
                     Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "sell");
+                    intent.putExtra("txn_id", txn_id);
+                    intent.putExtra("product_type", product_type);
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);

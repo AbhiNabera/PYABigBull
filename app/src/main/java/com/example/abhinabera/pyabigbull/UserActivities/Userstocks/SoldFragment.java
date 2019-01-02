@@ -127,7 +127,7 @@ public class SoldFragment extends Fragment {
                         }
                     }
 
-                    stocksRecyclerAdapter.notifyDataSetChanged();
+                    //stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {
                     Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();

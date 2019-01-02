@@ -54,6 +54,7 @@ public class PurchaseActivity extends AppCompatActivity {
     int count = 0;
 
     private String type;
+    private String product_type;
     private String id;
     private String name;
 
@@ -126,7 +127,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 if(check()) {
                     //TODO: network call
                     txn_id = getTransId();
-                    JsonObject object = getTransactionData();
+                    JsonObject object = setTransactionData();
                     Log.d("PurchaseActivity", ""+object);
                     countDownTimer.cancel();
                     executeTransaction(object);
@@ -237,8 +238,8 @@ public class PurchaseActivity extends AppCompatActivity {
     }
 
     public void updateViews() {
-        totalCost.setText(total_debit+"");
-        accountBalance.setText(""+ acc_bal);
+        totalCost.setText(new Utility().getRoundoffData(total_debit+""));
+        accountBalance.setText(new Utility().getRoundoffData(""+ acc_bal));
     }
 
     public boolean check() {
@@ -269,26 +270,31 @@ public class PurchaseActivity extends AppCompatActivity {
         return true;
     }
 
-    public JsonObject getTransactionData() {
+    public JsonObject setTransactionData() {
+
+        String type_key = "";
+
+        JsonObject account_ref = userObject.get("data").getAsJsonObject();
+
+        JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
 
         JsonObject data = new JsonObject();
 
-        JsonObject account = new JsonObject();
-        JsonObject bought_item = new JsonObject();
         JsonObject txn_history = new JsonObject();
         JsonObject transaction = new JsonObject();
 
-        account.addProperty("shares_price", shares_price+"");
-        account.addProperty("avail_balance", accountBalance.getText().toString().trim()+"");
-        account.addProperty("change", change+"");
-        account.addProperty("investment", total_investment+"");
-        account.addProperty("percentchange", percentchange+"");
-        account.addProperty("stocks_count", stock_count);
+        account_ref.addProperty("shares_price", shares_price+"");
+        account_ref.addProperty("avail_balance", accountBalance.getText().toString().trim()+"");
+        account_ref.addProperty("change", change+"");
+        account_ref.addProperty("investment", total_investment+"");
+        account_ref.addProperty("percentchange", percentchange+"");
+        account_ref.addProperty("stocks_count", stock_count);
 
         switch (type) {
 
             case "NIFTY" :
-                data.addProperty("product_type", "index");
+                type_key = "index";
+                product_type = type_key;
 
                 txn_history.addProperty("comp_id", id);
                 txn_history.addProperty("comp_name", name);
@@ -301,11 +307,11 @@ public class PurchaseActivity extends AppCompatActivity {
                 txn_history.addProperty("txn_type", "buy");
                 txn_history.addProperty("type", "index");
 
-                bought_item.addProperty("ex","NSE");
-                bought_item.addProperty("id", "NIFTY");
-                bought_item.addProperty("ind_id","9");
-                bought_item.addProperty("name", "NIFTY50");
-                bought_item.addProperty("type", "index");
+                jsonformatter.child("stocks_list").child("bought_items").child("index").pushValue("ex","NSE");
+                jsonformatter.child("stocks_list").child("bought_items").child("index").pushValue("id", "NIFTY");
+                jsonformatter.child("stocks_list").child("bought_items").child("index").pushValue("ind_id","9");
+                jsonformatter.child("stocks_list").child("bought_items").child("index").pushValue("name", "NIFTY50");
+                jsonformatter.child("stocks_list").child("bought_items").child("index").pushValue("type", "index");
 
                 transaction.addProperty("buy_price",current_price+"");
                 transaction.addProperty("id", id+"");
@@ -323,7 +329,8 @@ public class PurchaseActivity extends AppCompatActivity {
                 break;
 
             case "COMMODITY" :
-                data.addProperty("product_type", "commodity");
+                type_key = "commodity";
+                product_type = type_key;
 
                 txn_history.addProperty("ex", "MCX");
                 txn_history.addProperty("id", id+"");
@@ -333,8 +340,8 @@ public class PurchaseActivity extends AppCompatActivity {
                 txn_history.addProperty("txn_type", "buy");
                 txn_history.addProperty("type", "commodity");
 
-                bought_item.addProperty("ex","MCX");
-                bought_item.addProperty("type", "commodity");
+                jsonformatter.child("stocks_list").child("bought_items").child("commodity").pushValue("ex","MCX");
+                jsonformatter.child("stocks_list").child("bought_items").child("commodity").pushValue("type", "commodity");
 
                 transaction.addProperty("buy_price",current_price+"");
                 transaction.addProperty("id", id+"");
@@ -352,7 +359,8 @@ public class PurchaseActivity extends AppCompatActivity {
                 break;
 
             case "CURRENCY" :
-                data.addProperty("product_type", "currency");
+                type_key = "currency";
+                product_type = type_key;
 
                 txn_history.addProperty("ex", "FOREX");
                 txn_history.addProperty("id", id+"");
@@ -362,8 +370,8 @@ public class PurchaseActivity extends AppCompatActivity {
                 txn_history.addProperty("txn_type", "buy");
                 txn_history.addProperty("type", "currency");
 
-                bought_item.addProperty("ex","FOREX");
-                bought_item.addProperty("type", "currency");
+                jsonformatter.child("stocks_list").child("bought_items").child("currency").pushValue("ex","FOREX");
+                jsonformatter.child("stocks_list").child("bought_items").child("currency").pushValue("type", "currency");
 
                 transaction.addProperty("buy_price",current_price+"");
                 transaction.addProperty("id", id+"");
@@ -381,16 +389,17 @@ public class PurchaseActivity extends AppCompatActivity {
                 break;
         }
 
-        //txn_history.add("txn_summary", transaction);
+        txn_history.add("txn_summary", transaction);
 
         data.addProperty("phoneNumber", FirebaseAuth.getInstance().
                 getCurrentUser().getPhoneNumber().substring(3).trim());
-        data.addProperty("txn_id", txn_id);
-        data.add("Account", account);
-        data.add("bought_item", bought_item);
-        data.add("transaction", transaction);
-        data.add("txn_history", txn_history);
-        data.add("txn_summary", transaction);
+        
+        data.add("Account", account_ref);
+
+        jsonformatter.child("stocks_list")
+                .child("bought_items").child(type_key).pushObject(txn_id, transaction);
+
+        jsonformatter.child("txn_history").pushObject(txn_id, txn_history);
 
         return data;
     }
@@ -400,11 +409,15 @@ public class PurchaseActivity extends AppCompatActivity {
         numberStocks.setText(""+1);
         companyName.setText(""+name);
 
+        Utility utility = new Utility();
+
         if(userObject != null) {
 
             if (userObject.get("data") != null) {
-                availableBalance.setText("" + userObject.get("data").getAsJsonObject().get("avail_balance").getAsString());
-                totalInvestment.setText("" + userObject.get("data").getAsJsonObject().get("investment").getAsString());
+                availableBalance.setText(utility.getRoundoffData("" + userObject.get("data")
+                        .getAsJsonObject().get("avail_balance").getAsString()));
+                totalInvestment.setText(utility.getRoundoffData("" + userObject.get("data")
+                        .getAsJsonObject().get("investment").getAsString()));
             }
         }
 
@@ -660,7 +673,7 @@ public class PurchaseActivity extends AppCompatActivity {
         progressDialog = new Utility().showDialog("Please wait for transaction to complete.", PurchaseActivity.this);
         progressDialog.setCancelable(false);
 
-        new RetrofitClient().getInterface().executeTransaction(object).enqueue(new Callback<JsonObject>() {
+        new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -672,6 +685,9 @@ public class PurchaseActivity extends AppCompatActivity {
                     Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "buy");
+                    intent.putExtra("txn_id", txn_id);
+                    intent.putExtra("product_type", product_type);
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);

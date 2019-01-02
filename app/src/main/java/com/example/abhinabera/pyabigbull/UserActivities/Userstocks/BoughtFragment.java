@@ -39,8 +39,10 @@ import retrofit2.Response;
 
 public class BoughtFragment extends Fragment {
 
-    private static int count = 0;
-    private static int MAXCOUNT = 5;
+    private int count = 0;
+    private int MAXCOUNT = 6;
+
+    private double index_txn_charges, commodity_txn_charges, currency_txn_charges;
 
     Response<JsonObject> usd, eur, gbp;
     JsonObject gold, silver, crudeoil;
@@ -95,6 +97,7 @@ public class BoughtFragment extends Fragment {
                 refreshLayout.setRefreshing(true);
                 //getBoughtList();
                 count = 0;
+                getTranactionCharges();
                 getTopCommodity();
                 getEURINR();
                 getGBPINR();
@@ -106,6 +109,7 @@ public class BoughtFragment extends Fragment {
         refreshLayout.setRefreshing(true);
         //getBoughtList();
         count = 0;
+        getTranactionCharges();
         getTopCommodity();
         getEURINR();
         getGBPINR();
@@ -131,7 +135,7 @@ public class BoughtFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("index").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "index");
+                        object.addProperty("TYPE", "index");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("index").getAsJsonArray()) {
@@ -141,7 +145,7 @@ public class BoughtFragment extends Fragment {
 
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString())) / Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString()) - index_txn_charges) / Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString())) * 100;
 
                             element.getAsJsonObject().
@@ -150,6 +154,9 @@ public class BoughtFragment extends Fragment {
                             element.getAsJsonObject().
                                     addProperty("pchange", pchange);
 
+                            element.getAsJsonObject().
+                                    addProperty("type", "NIFTY");
+
                             arrayList.add(element.getAsJsonObject());
                         }
                     }
@@ -157,7 +164,7 @@ public class BoughtFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "commodity");
+                        object.addProperty("TYPE", "commodity");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray()) {
@@ -167,7 +174,7 @@ public class BoughtFragment extends Fragment {
 
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString())) / Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString()) - commodity_txn_charges) / Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString())) * 100;
 
                             element.getAsJsonObject().
@@ -176,6 +183,9 @@ public class BoughtFragment extends Fragment {
                             element.getAsJsonObject().
                                     addProperty("pchange", pchange);
 
+                            element.getAsJsonObject().
+                                    addProperty("type", "COMMODITY");
+
                             arrayList.add(element.getAsJsonObject());
                         }
                     }
@@ -183,7 +193,7 @@ public class BoughtFragment extends Fragment {
                     if(response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray().size() !=0) {
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("type", "currency");
+                        object.addProperty("TYPE", "currency");
                         arrayList.add(object);
 
                         for (JsonElement element : response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray()) {
@@ -193,7 +203,7 @@ public class BoughtFragment extends Fragment {
 
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString())) / Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString()) - currency_txn_charges) / Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString())) * 100;
 
                             element.getAsJsonObject().
@@ -201,6 +211,9 @@ public class BoughtFragment extends Fragment {
 
                             element.getAsJsonObject().
                                     addProperty("pchange", pchange);
+
+                            element.getAsJsonObject().
+                                    addProperty("type", "CURRENCY");
 
                             arrayList.add(element.getAsJsonObject());
                         }
@@ -400,6 +413,36 @@ public class BoughtFragment extends Fragment {
                 count++;
                 hideSwipeRefresh();
                 Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getTranactionCharges() {
+
+        new RetrofitClient().getInterface().getAdminSettings().enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if(response.isSuccessful()) {
+                    index_txn_charges = Double.parseDouble(response.body().get("data").getAsJsonObject().
+                            get("trans_amt_nifty").getAsString().replace(",",""));
+
+                    commodity_txn_charges = Double.parseDouble(response.body().get("data").getAsJsonObject().
+                            get("trans_amt_commodity").getAsString().replace(",",""));
+
+                    currency_txn_charges = Double.parseDouble(response.body().get("data").getAsJsonObject().
+                            get("trans_amt_currency").getAsString().replace(",",""));
+                }
+
+                count++;
+                hideSwipeRefresh();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                count++;
+                hideSwipeRefresh();
             }
         });
     }
