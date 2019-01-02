@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -137,13 +138,13 @@ public class TransactionSummaryActivity extends AppCompatActivity {
                         .getAsJsonObject(getIntent().getStringExtra("txn_id"));
 
                 txn_id.setText(""+object.get("txn_id").getAsString());
-                availableBalance.setText(""+json.get("Account").getAsJsonObject().get("avail_balance").getAsString());
-                totalInvestment.setText(""+json.getAsJsonObject("Account").get("investment").getAsString());
+                availableBalance.setText(""+new Utility().getRoundoffData(json.get("Account").getAsJsonObject().get("avail_balance").getAsString()));
+                totalInvestment.setText(""+new Utility().getRoundoffData(json.getAsJsonObject("Account").get("investment").getAsString()));
                 companyName.setText(""+object.get("name").getAsString());
-                currentStockPrice.setText(""+object.get("buy_price").getAsString());
+                currentStockPrice.setText(""+new Utility().getRoundoffData(object.get("buy_price").getAsString()));
                 numberStocks.setText(""+object.get("qty").getAsString());
-                transactionCharges.setText(""+object.get("txn_amt").getAsString());
-                totalCost.setText(""+object.get("total_amount").getAsString());
+                transactionCharges.setText(""+new Utility().getRoundoffData(object.get("txn_amt").getAsString()));
+                totalCost.setText(""+new Utility().getRoundoffData(object.get("total_amount").getAsString()));
 
             } else if(getIntent().getStringExtra("type").equalsIgnoreCase("sell")){
 
@@ -154,18 +155,18 @@ public class TransactionSummaryActivity extends AppCompatActivity {
                         .getAsJsonObject(getIntent().getStringExtra("txn_id"));
 
                 txn_id.setText(""+object.get("txn_id").getAsString());
-                availableBalancetv.setText(""+json.get("Account").getAsJsonObject().get("avail_balance").getAsString());
-                totalInvestmenttv.setText(""+json.getAsJsonObject("Account").get("investment").getAsString());
+                availableBalancetv.setText(""+new Utility().getRoundoffData(json.get("Account").getAsJsonObject().get("avail_balance").getAsString()));
+                totalInvestmenttv.setText(""+new Utility().getRoundoffData(json.getAsJsonObject("Account").get("investment").getAsString()));
                 companyNametv.setText(""+object.get("name").getAsString());
-                currentStockPricetv.setText(""+object.get("sell_price").getAsString());
-                buyStockPicetv.setText(""+object.get("buy_price").getAsString());
+                currentStockPricetv.setText(""+new Utility().getRoundoffData(object.get("sell_price").getAsString()));
+                buyStockPicetv.setText(""+new Utility().getRoundoffData(object.get("buy_price").getAsString()));
                 numberStocks.setText(""+object.get("sell_qty").getAsString());
-                transactionCharges.setText(""+object.get("txn_amt").getAsString());
-                returnstv.setText(""+object.get("net_return").getAsString());
-                changeamounttv.setText(""+object.get("return_change").getAsString());
-                perchangetv.setText(""+object.get("percentchange").getAsString() + "%");
-                netchangeamounttv.setText(""+object.get("change").getAsString() + "");
-                netpecentchangetv.setText(""+object.get("percentchange").getAsString() + "%");
+                transactionCharges.setText(""+new Utility().getRoundoffData(object.get("txn_amt").getAsString()));
+                returnstv.setText(""+new Utility().getRoundoffData(object.get("net_return").getAsString()));
+                changeamounttv.setText(""+new Utility().getRoundoffData(object.get("return_change").getAsString()));
+                perchangetv.setText(""+new Utility().getRoundoffData(object.get("percentchange").getAsString() + "%"));
+                netchangeamounttv.setText(""+new Utility().getRoundoffData(object.get("change").getAsString() + ""));
+                netpecentchangetv.setText(""+new Utility().getRoundoffData(object.get("percentchange").getAsString() + "%"));
             }
         }
     }

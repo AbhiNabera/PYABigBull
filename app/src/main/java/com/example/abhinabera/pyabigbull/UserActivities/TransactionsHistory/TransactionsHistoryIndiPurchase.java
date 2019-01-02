@@ -70,10 +70,10 @@ public class TransactionsHistoryIndiPurchase extends AppCompatActivity {
         txnID.setText(transIndHis.get("txn_id").getAsString());
         investment.setText(new Utility().getRoundoffData(transIndHisSum.get("total_amount").getAsString()));
         name.setText(transIndHis.get("name").getAsString());
-        price.setText(transIndHisSum.get("buy_price").getAsString());
+        price.setText(new Utility().getRoundoffData(transIndHisSum.get("buy_price").getAsString()));
         quantity.setText(transIndHisSum.get("qty").getAsString());
-        transCharge.setText(transIndHisSum.get("txn_amt").getAsString());
-        totalCost.setText(transIndHisSum.get("total_amount").getAsString());
+        transCharge.setText(new Utility().getRoundoffData(transIndHisSum.get("txn_amt").getAsString()));
+        totalCost.setText(new Utility().getRoundoffData(transIndHisSum.get("total_amount").getAsString()));
 
 
     }

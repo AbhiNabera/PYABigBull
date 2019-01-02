@@ -67,13 +67,13 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
             Log.d("position", position+"");
 
-            viewHolder.buyprice.setText(transaction.get("buy_price").getAsString());
+            viewHolder.buyprice.setText(new Utility().getRoundoffData(transaction.get("buy_price").getAsString()));
             viewHolder.buyquantity.setText(transaction.get("qty").getAsString());
-            viewHolder.txncharge.setText(transaction.get("txn_amt").getAsString());
+            viewHolder.txncharge.setText(new Utility().getRoundoffData(transaction.get("txn_amt").getAsString()));
             viewHolder.investmentamount.setText(new Utility().getRoundoffData(
                     transaction.get("total_amount").getAsString()));
 
-            viewHolder.curentStockPrice.setText("Current price: "+transaction.get("current_price").getAsString());
+            viewHolder.curentStockPrice.setText("Current price: "+new Utility().getRoundoffData(transaction.get("current_price").getAsString()));
             viewHolder.estimatedChange.setText("("+new Utility().getRoundoffData(
                     transaction.get("pchange").getAsString())+"%)");
 

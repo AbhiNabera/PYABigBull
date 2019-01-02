@@ -67,9 +67,9 @@ public class SoldStocksRecyclerAdapter extends RecyclerView.Adapter<SoldStocksRe
 
             Log.d("position", position+"");
 
-            viewHolder.buyprice.setText(transaction.get("buy_price").getAsString());
+            viewHolder.buyprice.setText(new Utility().getRoundoffData(transaction.get("buy_price").getAsString()));
             viewHolder.sellquantity.setText(transaction.get("sell_qty").getAsString());
-            viewHolder.txncharge.setText(transaction.get("txn_amt").getAsString());
+            viewHolder.txncharge.setText(new Utility().getRoundoffData(transaction.get("txn_amt").getAsString()));
             viewHolder.returntamount.setText(new Utility().getRoundoffData(
                     transaction.get("net_return").getAsString())+"");
 

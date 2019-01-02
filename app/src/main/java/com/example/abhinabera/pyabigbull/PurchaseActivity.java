@@ -425,20 +425,20 @@ public class PurchaseActivity extends AppCompatActivity {
             switch (type) {
 
                 case "NIFTY" :
-                    currentStockPrice.setText(stockObject.get("NSE").getAsJsonObject().
-                            get("lastvalue").getAsString().replace(",","")+"");
+                    currentStockPrice.setText(new Utility().getRoundoffData(stockObject.get("NSE").getAsJsonObject().
+                            get("lastvalue").getAsString().replace(",",""))+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    currentStockPrice.setText(stockObject.get("lastprice").getAsString()+"");
+                    currentStockPrice.setText(new Utility().getRoundoffData(stockObject.get("lastprice").getAsString())+"");
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    currentStockPrice.setText(stockObject.get("data").getAsJsonObject().
-                            get("pricecurrent").getAsString().replace(",","")+"");
+                    currentStockPrice.setText(new Utility().getRoundoffData(stockObject.get("data").getAsJsonObject().
+                            get("pricecurrent").getAsString().replace(",",""))+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
@@ -453,20 +453,20 @@ public class PurchaseActivity extends AppCompatActivity {
 
                 case "NIFTY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_nifty").getAsString().replace(",",""));
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_nifty").getAsString().replace(",","")));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_commodity").getAsString().replace(",",""));
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_commodity").getAsString().replace(",","")));
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_currency").getAsString().replace(",",""));
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_currency").getAsString().replace(",","")));
                     break;
 
             }

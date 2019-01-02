@@ -498,16 +498,16 @@ public class SellActivity extends AppCompatActivity {
 
     public void setPurchaseData() {
 
-        buyStockPicetv.setText(INVESTMENT_PACKET.get("buy_price").getAsString()+"");
+        buyStockPicetv.setText(new Utility().getRoundoffData(INVESTMENT_PACKET.get("buy_price").getAsString())+"");
         numberStocks.setText(""+INVESTMENT_PACKET.get("qty").getAsString());
-        investmenttv.setText(""+INVESTMENT_PACKET.get("total_amount").getAsString());
+        investmenttv.setText(""+new Utility().getRoundoffData(INVESTMENT_PACKET.get("total_amount").getAsString()));
         companyNametv.setText(""+name);
 
         if(userObject != null) {
 
             if (userObject.get("data") != null) {
-                availableBalancetv.setText("" + userObject.get("data").getAsJsonObject().get("avail_balance").getAsString());
-                totalInvestmenttv.setText("" + userObject.get("data").getAsJsonObject().get("investment").getAsString());
+                availableBalancetv.setText("" + new Utility().getRoundoffData(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString()));
+                totalInvestmenttv.setText("" + new Utility().getRoundoffData(userObject.get("data").getAsJsonObject().get("investment").getAsString()));
             }
         }
 
@@ -515,20 +515,20 @@ public class SellActivity extends AppCompatActivity {
             switch (type) {
 
                 case "NIFTY" :
-                    currentStockPricetv.setText(stockObject.get("NSE").getAsJsonObject().
-                            get("lastvalue").getAsString().replace(",","")+"");
+                    currentStockPricetv.setText(new Utility().getRoundoffData(stockObject.get("NSE").getAsJsonObject().
+                            get("lastvalue").getAsString().replace(",",""))+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    currentStockPricetv.setText(stockObject.get("lastprice").getAsString()+"");
+                    currentStockPricetv.setText(new Utility().getRoundoffData(stockObject.get("lastprice").getAsString())+"");
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    currentStockPricetv.setText(stockObject.get("data").getAsJsonObject().
-                            get("pricecurrent").getAsString().replace(",","")+"");
+                    currentStockPricetv.setText(new Utility().getRoundoffData(stockObject.get("data").getAsJsonObject().
+                            get("pricecurrent").getAsString().replace(",",""))+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
 
@@ -543,20 +543,20 @@ public class SellActivity extends AppCompatActivity {
 
                 case "NIFTY" :
                     //investAmt.setEnabled(false);
-                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_nifty").getAsString().replace(",",""));
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_nifty").getAsString().replace(",","")));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_commodity").getAsString().replace(",",""));
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_commodity").getAsString().replace(",","")));
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    transactionChargestv.setText("" + adminSettings.get("data").getAsJsonObject().
-                            get("trans_amt_currency").getAsString().replace(",",""));
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                            get("trans_amt_currency").getAsString().replace(",","")));
                     break;
 
             }

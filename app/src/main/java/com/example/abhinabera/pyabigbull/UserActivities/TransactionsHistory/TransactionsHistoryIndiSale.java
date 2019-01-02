@@ -66,17 +66,17 @@ public class TransactionsHistoryIndiSale extends AppCompatActivity {
 
         txnID.setText(transIndHisSum.get("txn_id").getAsString());
         name.setText(transIndHisSum.get("name").getAsString());
-        bprice.setText(transIndHisSum.get("buy_price").getAsString());
+        bprice.setText(new Utility().getRoundoffData(transIndHisSum.get("buy_price").getAsString()));
         sqty.setText(transIndHisSum.get("sell_qty").getAsString());
-        sprice.setText(transIndHisSum.get("sell_price").getAsString());
-        netReturn.setText(transIndHisSum.get("net_return").getAsString());
+        sprice.setText(new Utility().getRoundoffData(transIndHisSum.get("sell_price").getAsString()));
+        netReturn.setText(new Utility().getRoundoffData(transIndHisSum.get("net_return").getAsString()));
         if (transIndHisSum.get("return_change").getAsString().startsWith("-")){
             gainOrLoss.setTextColor(getResources().getColor(R.color.red));
             gainORLossPer.setTextColor(getResources().getColor(R.color.red));
         }
         gainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("return_change").getAsString()));
         gainORLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("return_percentchange").getAsString()));
-        txnCharges.setText(transIndHisSum.get("txn_amt").getAsString());
+        txnCharges.setText(new Utility().getRoundoffData(transIndHisSum.get("txn_amt").getAsString()));
 
     }
 
