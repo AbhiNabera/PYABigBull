@@ -212,6 +212,7 @@ public class SellActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        setResult(RESULT_OK);
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
@@ -350,7 +351,7 @@ public class SellActivity extends AppCompatActivity {
         account_ref.addProperty("avail_balance", acc_bal+"");
         account_ref.addProperty("change", netstockchange+"");
         account_ref.addProperty("investment", total_investment+"");
-        account_ref.addProperty("percentchange", netpercenttockchange+"");
+        account_ref.addProperty("percentchange", netpercenttockchange);
         account_ref.addProperty("stocks_count", stock_count);
 
         switch (type) {

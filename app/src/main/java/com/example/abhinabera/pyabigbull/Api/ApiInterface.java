@@ -46,7 +46,7 @@ public interface ApiInterface {
     @POST("selltransaction")
     Call<JsonObject> executesellTransaction(@Body JsonObject object);
 
-    @GET("playerinfo")
+    @GET("userinfo")
     Call<JsonObject> getPlayerinfo(@Query("phoneNumber") String phoneNumber);
 
     @GET("txnHistory")

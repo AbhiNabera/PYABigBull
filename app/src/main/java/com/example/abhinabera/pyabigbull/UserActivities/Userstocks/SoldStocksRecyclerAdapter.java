@@ -166,7 +166,7 @@ public class SoldStocksRecyclerAdapter extends RecyclerView.Adapter<SoldStocksRe
 
                 stockLayout = (LinearLayout) itemLayoutView.findViewById(R.id.stockLayout);
 
-                stockLayout.setVisibility(View.GONE);
+                stockLayout.setVisibility(View.VISIBLE);
 
                 expand.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -1,9 +1,14 @@
 package com.example.abhinabera.pyabigbull.UserActivities.Userstocks;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -40,6 +45,29 @@ public class SoldFragment extends Fragment {
     SoldStocksRecyclerAdapter stocksRecyclerAdapter;
 
     public SoldFragment(){}
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getSoldList();
+        }
+    };
+
+    @Override
+    public void onResume() {
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("soldFragment"));
+
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

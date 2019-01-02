@@ -27,10 +27,18 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
     private List<JsonObject> stocks;
     public Activity context;
 
-    public StocksRecyclerAdapter(Activity context, List<JsonObject> stocks) {
+    public StocksRecyclerAdapter(Activity context, List<JsonObject> stocks, ClickListener clickListener) {
         this.stocks = stocks;
         this.context = context;
         sdf = new SimpleDateFormat("dd/MMM/yyyy");
+        this.clickListener = clickListener;
+    }
+
+    ClickListener clickListener;
+
+    public interface ClickListener {
+
+        public void onItemClick(List<JsonObject> stocks, int position);
     }
 
     SimpleDateFormat sdf;
@@ -38,7 +46,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
     // Create new views (invoked by the layout manager)
     @Override
     public StocksRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                               int viewType) {
+                                                               int viewType ) {
         // create a new view
         View itemLayoutView = null;
         ViewHolder viewHolder = null;
@@ -143,16 +151,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(itemLayoutView.getContext(), SellActivity.class);
-                        i.putExtra("data", stocks.get(getAdapterPosition()).getAsJsonObject()+"");
-                        i.putExtra("type", stocks.get(getAdapterPosition()).getAsJsonObject()
-                                .get("type").getAsString());
-                        i.putExtra("id", stocks.get(getAdapterPosition()).getAsJsonObject()
-                                .get("id").getAsString());
-                        i.putExtra("name", stocks.get(getAdapterPosition()).getAsJsonObject()
-                                .get("name").getAsString());
-                        itemLayoutView.getContext().startActivity(i);
-                        context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                        clickListener.onItemClick(stocks, getAdapterPosition());
                     }
                 });
 

@@ -161,12 +161,12 @@ public class TransactionSummaryActivity extends AppCompatActivity {
                 currentStockPricetv.setText(""+new Utility().getRoundoffData(object.get("sell_price").getAsString()));
                 buyStockPicetv.setText(""+new Utility().getRoundoffData(object.get("buy_price").getAsString()));
                 numberStocks.setText(""+object.get("sell_qty").getAsString());
-                transactionCharges.setText(""+new Utility().getRoundoffData(object.get("txn_amt").getAsString()));
-                returnstv.setText(""+new Utility().getRoundoffData(object.get("net_return").getAsString()));
-                changeamounttv.setText(""+new Utility().getRoundoffData(object.get("return_change").getAsString()));
-                perchangetv.setText(""+new Utility().getRoundoffData(object.get("percentchange").getAsString() + "%"));
-                netchangeamounttv.setText(""+new Utility().getRoundoffData(object.get("change").getAsString() + ""));
-                netpecentchangetv.setText(""+new Utility().getRoundoffData(object.get("percentchange").getAsString() + "%"));
+                transactionChargestv.setText(""+object.get("txn_amt").getAsString());
+                returnstv.setText(""+object.get("net_return").getAsString());
+                changeamounttv.setText(""+object.get("return_change").getAsString());
+                perchangetv.setText(""+object.get("percentchange").getAsString() + "%");
+                netchangeamounttv.setText(""+object.get("change").getAsString() + "");
+                netpecentchangetv.setText(""+object.get("percentchange").getAsString() + "%");
             }
         }
     }

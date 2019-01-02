@@ -1,9 +1,11 @@
 package com.example.abhinabera.pyabigbull.UserActivities.Userstocks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,6 +21,7 @@ import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.SellActivity;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
@@ -33,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by AVINASH on 12/31/2018.
  */
@@ -43,6 +48,8 @@ public class BoughtFragment extends Fragment {
     private int MAXCOUNT = 6;
 
     private double index_txn_charges, commodity_txn_charges, currency_txn_charges;
+
+    int REQUEST_CODE = 1;
 
     Response<JsonObject> usd, eur, gbp;
     JsonObject gold, silver, crudeoil;
@@ -57,6 +64,39 @@ public class BoughtFragment extends Fragment {
     StocksRecyclerAdapter stocksRecyclerAdapter;
 
     public BoughtFragment(){}
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+
+            //unsuccessful transaction
+
+        }else {
+
+            Intent intent = new Intent("soldFragment");
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+            refreshLayout.setRefreshing(true);
+            count = 0;
+            getTranactionCharges();
+            getTopCommodity();
+            getEURINR();
+            getGBPINR();
+            getUSDINR();
+            getStockList();
+
+        }
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +125,21 @@ public class BoughtFragment extends Fragment {
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList);
+        stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList, new StocksRecyclerAdapter.ClickListener() {
+            @Override
+            public void onItemClick(List<JsonObject> stocks, int position) {
+                Intent i = new Intent(getActivity(), SellActivity.class);
+                i.putExtra("data", stocks.get(position).getAsJsonObject()+"");
+                i.putExtra("type", stocks.get(position).getAsJsonObject()
+                        .get("type").getAsString());
+                i.putExtra("id", stocks.get(position).getAsJsonObject()
+                        .get("id").getAsString());
+                i.putExtra("name", stocks.get(position).getAsJsonObject()
+                        .get("name").getAsString());
+                getActivity().startActivityForResult(i, REQUEST_CODE);
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
 
         recyclerView.setAdapter(stocksRecyclerAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -106,8 +160,8 @@ public class BoughtFragment extends Fragment {
             }
         });
 
+
         refreshLayout.setRefreshing(true);
-        //getBoughtList();
         count = 0;
         getTranactionCharges();
         getTopCommodity();
@@ -115,6 +169,7 @@ public class BoughtFragment extends Fragment {
         getGBPINR();
         getUSDINR();
         getStockList();
+
     }
 
     public void getBoughtList() {
