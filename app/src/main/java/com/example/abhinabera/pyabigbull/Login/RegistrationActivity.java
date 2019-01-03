@@ -39,7 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         i.putExtra("phoneNumber", mobileNumber.getText().toString().trim());
                         pushDataInSP(mobileNumber.getText().toString().trim());
                         startActivity(i);
-                        finish();
+                        //finish();
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     }
                 } else {

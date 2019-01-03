@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull.DataActivities.Commodity;
+package com.example.abhinabera.pyabigbull.DataActivities.Currency;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,14 +29,16 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommodityGraphActivity extends AppCompatActivity {
+public class CurrencyGraphActivity extends AppCompatActivity {
 
     GraphView graphView;
     Toolbar toolbar;
@@ -45,22 +47,17 @@ public class CommodityGraphActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     int selection = 0;
-    String type, symbol, expdt;
 
+    String symbol;
     LineGraphSeries<DataPoint> series;
     DataPoint[] dataPoints;
 
-    long MIN, MAX;
-
-    String[] periods = {"Interday", "Series"};
-    String[] periodId = {"i", "s"};
-
-    HashMap<String, Integer> monthmap;
-
-    private int YEAR = 2018;
-
     private Call<JsonObject> prevCall;
 
+    long MIN, MAX;
+
+    String[] periods = {"Interday", "Daily", "Weekly", "Monthly"};
+    String[] periodId = {"FX_INTRADAY","FX_DAILY","FX_WEEKLY","FX_MONTHLY"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,30 +67,13 @@ public class CommodityGraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nifty_graph);
         getSupportActionBar().hide();
 
-        monthmap = new HashMap<>();
-        monthmap.put("Jan", 1);
-        monthmap.put("Feb", 2);
-        monthmap.put("Mar", 3);
-        monthmap.put("Apr", 4);
-        monthmap.put("May", 5);
-        monthmap.put("Jun", 6);
-        monthmap.put("Jul", 7);
-        monthmap.put("Aug", 8);
-        monthmap.put("Sep", 9);
-        monthmap.put("Oct", 10);
-        monthmap.put("Nov", 11);
-        monthmap.put("Dec", 12);
-
-        symbol = getIntent().getStringExtra("id");
-        expdt = getIntent().getStringExtra("expdt");
+        symbol = getIntent().getStringExtra("symbol");
 
         toolbar = (Toolbar) findViewById(R.id.graphToolbar);
         graphView = (GraphView) findViewById(R.id.graph);
         titletext = (TextView) findViewById(R.id.title);
         periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        titletext.setText(getIntent().getStringExtra("id"));
 
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -114,7 +94,7 @@ public class CommodityGraphActivity extends AppCompatActivity {
                         prevCall.cancel();
                     }
                     selection = i;
-                    prevCall = getGraphData(selection, symbol, expdt);
+                    prevCall = getGraphData(selection);
                 }
             }
 
@@ -124,12 +104,9 @@ public class CommodityGraphActivity extends AppCompatActivity {
             }
         });
 
-        getGraphData(0, symbol, expdt);
+        getGraphData(0);
 
-        //setUpChart();
-        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(R.color.colorPrimary));
-        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(R.color.colorPrimary));
+        setUpBlankChart();
 
         graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
@@ -161,8 +138,21 @@ public class CommodityGraphActivity extends AppCompatActivity {
                 case 0:
                     return new SimpleDateFormat("HH:mm").format(new Date(value));
 
+                case 1:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 2:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 3:
+                    return new SimpleDateFormat("dd MMM").format(new Date(value));
+
+                case 4:
+                    return new SimpleDateFormat("MMM").format(new Date(value));
+
                 default:
-                    return new SimpleDateFormat("dd-MMM").format(new Date(value));
+                    return new SimpleDateFormat("MMM yyyy").format(new Date(value));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,13 +170,15 @@ public class CommodityGraphActivity extends AppCompatActivity {
             switch (selection) {
 
                 case 0:
-                    time = new SimpleDateFormat("dd MMM yyyy").format(new Date()) + " " +time;
-                    format = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                    format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    return format.parse(time).getTime();
+
+                case 1:
+                    format = new SimpleDateFormat("yyyy-MM-dd");
                     return format.parse(time).getTime();
 
                 default:
-                    time = time + " "+ YEAR;
-                    format = new SimpleDateFormat("dd-MMM yyyy");
+                    format = new SimpleDateFormat("yyyy-MM-dd");
                     return format.parse(time).getTime();
 
             }
@@ -201,130 +193,144 @@ public class CommodityGraphActivity extends AppCompatActivity {
         return Double.parseDouble(val.replace("," ,""));
     }
 
-    public Call<JsonObject> getGraphData(int selection, String symbol, String expdt) {
+    public Call<JsonObject> getGraphData(int selection) {
 
         progressBar.setVisibility(View.VISIBLE);
 
-
-        Call<JsonObject> call = new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityGraphURL(
-                periodId[selection], symbol, expdt
-        ));
+        Call<JsonObject> call = new RetrofitClient().getCurrencyGraphInterface().getData(new Utility()
+                .getCurrencyGraph(symbol, periodId[selection]));
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(!call.isCanceled()) {
-
                     if (response.isSuccessful()) {
 
-                        if (response.body().get("graph").getAsJsonObject().get("values") != null) {
+                        if (selection == 0) {
 
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
+                            if(response.body().getAsJsonObject("Time Series FX (5min)")!=null) {
 
-                                    int i = 0;
-                                    JsonElement lastElement = null;
+                                Log.d("not null", "call cancelled");
 
-                                    graphView.removeAllSeries();
-                                    series = new LineGraphSeries<>();
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    //TODO: temp fix
-                                    long prevTime = 0;
-                                    String prevDate = "";
+                                        ArrayList<Long> xAxis = new ArrayList<>();
+                                        ArrayList<Double> yAxis = new ArrayList<>();
 
-                                    long pointer = 0;
+                                        xAxis.clear();
+                                        yAxis.clear();
 
-                                    for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                        graphView.removeAllSeries();
+                                        //series = new LineGraphSeries<>();
 
-                                        long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+                                        JsonObject object = response.body().getAsJsonObject("Time Series FX (5min)");
+                                        Set<Map.Entry<String, JsonElement>> entrySet = object.entrySet();
 
-                                        //Log.d("time", prevTime+" : "+time);
+                                        for(Map.Entry<String, JsonElement> entry: entrySet) {
 
-                                        if (time == pointer) {
-                                            time = time == pointer ? (prevTime + 60000) : time;
-                                            prevTime = time;
-                                            //prevTime = time;
-                                            prevDate = element.getAsJsonObject().get("_time").getAsString();
-                                        } else if (time > pointer) {
-                                            pointer = time;
-                                            prevTime = pointer;
-                                        } else {
+                                            //Log.d("key", entry.getKey()+"");
+                                            //Log.d("value", entry.getValue().getAsJsonObject().get("4. close").getAsDouble()+"");
 
-                                            if (selection == 1) {
-                                                //becz of the date format
-                                                YEAR = 2019;
-                                                time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
-                                                pointer = time;
-                                                prevTime = time;
-                                            } else {
-                                                break;
-                                            }
+                                            xAxis.add( 0, getDateFromString(entry.getKey()));
+                                            yAxis.add( 0, entry.getValue().getAsJsonObject().get("4. close").getAsDouble());
                                         }
 
-                                        if (i == 0) {
+                                        Log.d("size", ""+xAxis.size()+":"+yAxis.size());
 
-                                            MIN = getDateFromString(element.getAsJsonObject().
-                                                    get("_time").getAsString());
+                                        int i=0;
 
+                                        DataPoint[] dataPoints = new DataPoint[xAxis.size()];
+
+                                        for(i=0; i< xAxis.size(); i++) {
+                                            dataPoints[i] = new DataPoint(xAxis.get(i),
+                                                    yAxis.get(i));
+                                            //series.appendData(new DataPoint(xAxis.get(i),
+                                            //        yAxis.get(i)), true, i);
                                         }
 
-                                        lastElement = element;
-                                        i++;
+                                        MIN = xAxis.get(0);
+                                        MAX = xAxis.get(i-1);
 
-                                        series.appendData(new DataPoint(
-                                                        time,
-                                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
-                                                , true, i);
+                                        series = new LineGraphSeries<>(dataPoints);
+                                        setUpChart();
+                                        graphView.addSeries(series);
 
                                     }
+                                });
 
-                                    if (lastElement != null)
-                                        MAX = getDateFromString(lastElement.getAsJsonObject().
-                                                get("_time").getAsString());
-                                    else {
-                                        MAX = 0;
-                                        MIN = 0;
-                                    }
+                            }
 
+                        }else {
 
-                                    CommodityGraphActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setUpChart();
-                                            //series.resetData(dataPoints);
-                                            graphView.addSeries(series);
-                                            setScrollable();
-                                            progressBar.setVisibility(View.GONE);
+                            if(response.body().getAsJsonObject("Time Series FX ("+periods[selection]+")")!=null) {
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        ArrayList<Long> xAxis = new ArrayList<>();
+                                        ArrayList<Double> yAxis = new ArrayList<>();
+
+                                        xAxis.clear();
+                                        yAxis.clear();
+
+                                        graphView.removeAllSeries();
+                                        //series = new LineGraphSeries<>();
+
+                                        JsonObject object = response.body().getAsJsonObject("Time Series FX ("+periods[selection]+")");
+                                        Set<Map.Entry<String, JsonElement>> entrySet = object.entrySet();
+
+                                        for(Map.Entry<String, JsonElement> entry: entrySet) {
+
+                                            //Log.d("key", entry.getKey()+"");
+                                            //Log.d("value", entry.getValue().getAsJsonObject().get("4. close").getAsDouble()+"");
+
+                                            xAxis.add( 0, getDateFromString(entry.getKey()));
+                                            yAxis.add( 0, entry.getValue().getAsJsonObject().get("4. close").getAsDouble());
                                         }
-                                    });
-                                }
-                            });
 
-                        } else {
-                            setUpBlankChart();
-                            progressBar.setVisibility(View.GONE);
+                                        Log.d("size", ""+xAxis.size()+":"+yAxis.size());
+
+                                        int i=0;
+
+                                        DataPoint[] dataPoints = new DataPoint[xAxis.size()];
+
+                                        for(i=0; i< xAxis.size(); i++) {
+                                            dataPoints[i] = new DataPoint(xAxis.get(i),
+                                                    yAxis.get(i));
+                                            //series.appendData(new DataPoint(xAxis.get(i),
+                                            //        yAxis.get(i)), true, i);
+                                        }
+
+                                        MIN = xAxis.get(0);
+                                        MAX = xAxis.get(i-1);
+
+                                        series = new LineGraphSeries<>(dataPoints);
+                                        setUpChart();
+                                        graphView.addSeries(series);
+
+                                    }
+                                });
+
+                            }
+
                         }
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(CommodityGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                     }
-
-                } else {
-                    Log.d("call cancelled", "Commodity graph");
                 }
+
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(CommodityGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         });
 
-        return call;
+       return call;
     }
 
     public void setUpChart() {
@@ -367,5 +373,6 @@ public class CommodityGraphActivity extends AppCompatActivity {
         graphView.getViewport().setScalable(true);
         //graphView.getViewport().setScrollableY(true);
         //graphView.getViewport().setScalableY(true);
+
     }
 }

@@ -63,4 +63,21 @@ public class RetrofitClient {
 
         return retrofit.create(ApiInterface.class);
     }
+
+    public ApiInterface getCurrencyGraphInterface() {
+
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Utility.CURR_GRAPH_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                //.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(ApiInterface.class);
+    }
 }

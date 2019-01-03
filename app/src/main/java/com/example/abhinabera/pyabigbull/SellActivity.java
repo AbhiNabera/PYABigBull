@@ -246,6 +246,15 @@ public class SellActivity extends AppCompatActivity {
         acc_bal = Double.parseDouble(accountBalancetv.getText().toString().trim().replace(",", ""));
         netstockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("change").getAsString().replace(",",""));
         netpercenttockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("percentchange").getAsString().replace(",",""));
+
+        if(companyNametv.getText().toString().trim().equalsIgnoreCase("SILVER")) {
+            current_price = current_price * 0.1;
+            currentStockPricetv.setText(new Utility().getRoundoffData(current_price+"")+"("+ "100gms" +")");
+        } else if(companyNametv.getText().toString().trim().equalsIgnoreCase("GOLD")) {
+            currentStockPricetv.setText(new Utility().getRoundoffData(current_price+"")+"("+ "10gms" +")");
+        } else if(companyNametv.getText().toString().trim().equalsIgnoreCase("CRUDEOIL")) {
+            currentStockPricetv.setText(new Utility().getRoundoffData(current_price+"")+"("+ "1bbl" +")");
+        }
     }
 
     public void updateAmounts() {

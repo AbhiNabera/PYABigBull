@@ -114,7 +114,7 @@ public class UserDataFragment extends Fragment {
                 Intent i = new Intent(getActivity(), About.class);
                 i.putExtra("name", "ABOUT");
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 

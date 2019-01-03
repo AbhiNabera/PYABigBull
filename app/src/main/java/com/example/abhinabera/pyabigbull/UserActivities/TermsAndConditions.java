@@ -65,7 +65,7 @@ public class TermsAndConditions extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        overridePendingTransition(R.anim.enter1, R.anim.exit1);
+        //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
     
     

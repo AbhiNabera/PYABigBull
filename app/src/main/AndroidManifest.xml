@@ -48,7 +48,7 @@
             android:name=".DataActivities.Commodity.CommodityActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DataActivities.CurrencyActivity"
+            android:name=".DataActivities.Currency.CurrencyActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PurchaseActivity"
@@ -83,6 +83,7 @@
         <activity
             android:name=".UserActivities.Userstocks.BoughtStocksSummaryActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".DataActivities.Currency.CurrencyGraphActivity" android:screenOrientation="landscape"/>
         <activity
             android:name=".TransactionSummaryActivity"
             android:screenOrientation="portrait" />

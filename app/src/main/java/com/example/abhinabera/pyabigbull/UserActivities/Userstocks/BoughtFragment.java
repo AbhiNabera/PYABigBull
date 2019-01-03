@@ -252,15 +252,18 @@ public class BoughtFragment extends Fragment {
                             double current_price = Double.parseDouble(commodity.get(element.getAsJsonObject().get("id").getAsString())
                                     .get("lastprice").getAsString().trim().replace(",",""));
 
+                            if(element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
+
+                                current_price = current_price*0.1;
+                            }
+
                             double current_value = current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) /*- index_txn_charges*/;
 
                             double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString())  - index_txn_charges;
+                                    get("total_amount").getAsString())  - commodity_txn_charges;
 
-                            double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
-                                    get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString()) - commodity_txn_charges) / Double.parseDouble(element.getAsJsonObject().
+                            double pchange = ((changeamount) / Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString())) * 100;
 
                             element.getAsJsonObject().
@@ -299,7 +302,7 @@ public class BoughtFragment extends Fragment {
                                     get("qty").getAsString()) /*- index_txn_charges*/;
 
                             double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
-                                    get("total_amount").getAsString()) - index_txn_charges;
+                                    get("total_amount").getAsString()) - currency_txn_charges;
 
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().

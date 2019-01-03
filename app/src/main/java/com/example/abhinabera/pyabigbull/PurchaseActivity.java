@@ -211,6 +211,15 @@ public class PurchaseActivity extends AppCompatActivity {
         txn_charges = Double.parseDouble(transactionCharges.getText().toString().trim().replace(",", ""));
         total_debit = Double.parseDouble(totalCost.getText().toString().trim().replace(",", ""));
         acc_bal = Double.parseDouble(accountBalance.getText().toString().trim().replace(",", ""));
+
+        if(companyName.getText().toString().trim().equalsIgnoreCase("SILVER")) {
+            current_price = current_price * 0.1;
+            currentStockPrice.setText(new Utility().getRoundoffData(current_price+"")+"("+ "100gms" +")");
+        } else if(companyName.getText().toString().trim().equalsIgnoreCase("GOLD")) {
+            currentStockPrice.setText(new Utility().getRoundoffData(current_price+"")+"("+ "10gms" +")");
+        } else if(companyName.getText().toString().trim().equalsIgnoreCase("CRUDEOIL")) {
+            currentStockPrice.setText(new Utility().getRoundoffData(current_price+"")+"("+ "1bbl" +")");
+        }
     }
 
     public void updateAmounts() {

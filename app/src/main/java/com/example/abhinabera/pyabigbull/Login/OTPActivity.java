@@ -213,14 +213,20 @@ public class OTPActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Intent intent = new Intent(OTPActivity.this, UserNameActivity.class);
                 intent.putExtra("phoneNumber", phoneNumber);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
 
             @Override
             public void onVerificationError() {
-                progressDialog.dismiss();
-                Toast.makeText(OTPActivity.this, "Verification error", Toast.LENGTH_SHORT).show();
+                try {
+                    progressDialog.dismiss();
+                    Toast.makeText(OTPActivity.this, "Verification error", Toast.LENGTH_SHORT).show();
 
+                }catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
                 //verify.setText("RETRY");
                 //verify.setEnabled(true);
                 //verify.setBackground(getDrawable(R.drawable.button_border));

@@ -23,6 +23,8 @@ public class Utility {
 
     public static String MONEY_CONTROL_CURRENCY_URL = "https://priceapi.moneycontrol.com";
 
+    public static String CURR_GRAPH_URL = "https://www.alphavantage.co";
+
     public static String MyPREF = "PAYBigBullPref";
 
 
@@ -48,6 +50,17 @@ public class Utility {
 
     public String getCommodityGraphURL(String type, String symbol, String expdt) {
         return "jsonapi/commodity/chart&format=json&type="+ type +"&symbol="+ symbol +"&expdt="+expdt+"&ex=MCX";
+    }
+
+    public String getCurrencyGraph(String symbol, String period) {
+        if(symbol.equalsIgnoreCase("FX_INTRADAY")){
+            return getINTRADAYCurrencyGraph(symbol, period);
+        }
+        return "query?function="+period+"&from_symbol="+ symbol +"&to_symbol=INR&apikey=WD6PJIRIDK5GRK02";
+    }
+
+    public String getINTRADAYCurrencyGraph(String symbol, String period) {
+        return "query?function=FX_INTRADAY&interval=5min&from_symbol="+ symbol +"&to_symbol=INR&apikey=WD6PJIRIDK5GRK02";
     }
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {
