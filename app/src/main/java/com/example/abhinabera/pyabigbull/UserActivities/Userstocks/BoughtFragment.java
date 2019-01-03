@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.SellActivity;
@@ -51,6 +53,10 @@ public class BoughtFragment extends Fragment {
 
     int REQUEST_CODE = 1;
 
+    int PORTFOLIO_VALUE = 0;
+
+    double ACCOUNT_BALANCE = 0;
+
     Response<JsonObject> usd, eur, gbp;
     JsonObject gold, silver, crudeoil;
     List<JsonObject> stockList;
@@ -58,6 +64,7 @@ public class BoughtFragment extends Fragment {
 
     SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
+    TextView portfolioValue, accountBal;
 
     ArrayList<JsonObject> arrayList;
 
@@ -121,6 +128,10 @@ public class BoughtFragment extends Fragment {
         currency = new HashMap<>();
         commodity = new HashMap<>();
 
+        ACCOUNT_BALANCE = Double.parseDouble(getActivity().getIntent().getStringExtra("acc_bal"));
+
+        accountBal = (TextView) view.findViewById(R.id.accountBalance);
+        portfolioValue = (TextView) view.findViewById(R.id.portfolioValue);
         recyclerView = (RecyclerView) view.findViewById(R.id.boughtRecycler);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
@@ -198,6 +209,12 @@ public class BoughtFragment extends Fragment {
                             double current_price = Double.parseDouble(map.get(element.getAsJsonObject().get("id").getAsString())
                                     .get("lastvalue").getAsString().trim().replace(",",""));
 
+                            double current_value = current_price*Integer.parseInt(element.getAsJsonObject().
+                                    get("qty").getAsString()) /*- index_txn_charges*/ ;
+
+                            double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString()) - index_txn_charges;
+
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString()) - index_txn_charges) / Double.parseDouble(element.getAsJsonObject().
@@ -210,9 +227,17 @@ public class BoughtFragment extends Fragment {
                                     addProperty("pchange", pchange);
 
                             element.getAsJsonObject().
+                                    addProperty("current_value", current_value);
+
+                            element.getAsJsonObject().
+                                    addProperty("changeamount", changeamount);
+
+                            element.getAsJsonObject().
                                     addProperty("type", "NIFTY");
 
                             arrayList.add(element.getAsJsonObject());
+
+                            PORTFOLIO_VALUE+=current_value;
                         }
                     }
 
@@ -227,6 +252,12 @@ public class BoughtFragment extends Fragment {
                             double current_price = Double.parseDouble(commodity.get(element.getAsJsonObject().get("id").getAsString())
                                     .get("lastprice").getAsString().trim().replace(",",""));
 
+                            double current_value = current_price*Integer.parseInt(element.getAsJsonObject().
+                                    get("qty").getAsString()) /*- index_txn_charges*/;
+
+                            double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString())  - index_txn_charges;
+
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString()) - commodity_txn_charges) / Double.parseDouble(element.getAsJsonObject().
@@ -236,12 +267,20 @@ public class BoughtFragment extends Fragment {
                                     addProperty("current_price", current_price);
 
                             element.getAsJsonObject().
+                                    addProperty("current_value", current_value);
+
+                            element.getAsJsonObject().
+                                    addProperty("changeamount", changeamount);
+
+                            element.getAsJsonObject().
                                     addProperty("pchange", pchange);
 
                             element.getAsJsonObject().
                                     addProperty("type", "COMMODITY");
 
                             arrayList.add(element.getAsJsonObject());
+
+                            PORTFOLIO_VALUE+=current_value;
                         }
                     }
 
@@ -256,6 +295,12 @@ public class BoughtFragment extends Fragment {
                             double current_price = Double.parseDouble(currency.get(element.getAsJsonObject().get("id").getAsString())
                                     .get("data").getAsJsonObject().get("pricecurrent").getAsString().trim().replace(",",""));
 
+                            double current_value = current_price*Integer.parseInt(element.getAsJsonObject().
+                                    get("qty").getAsString()) /*- index_txn_charges*/;
+
+                            double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                    get("total_amount").getAsString()) - index_txn_charges;
+
                             double pchange = ((current_price*Integer.parseInt(element.getAsJsonObject().
                                     get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
                                     get("total_amount").getAsString()) - currency_txn_charges) / Double.parseDouble(element.getAsJsonObject().
@@ -268,12 +313,24 @@ public class BoughtFragment extends Fragment {
                                     addProperty("pchange", pchange);
 
                             element.getAsJsonObject().
+                                    addProperty("current_value", current_value);
+
+                            element.getAsJsonObject().
+                                    addProperty("changeamount", changeamount);
+
+                            element.getAsJsonObject().
                                     addProperty("type", "CURRENCY");
 
                             arrayList.add(element.getAsJsonObject());
+
+                            PORTFOLIO_VALUE+=current_value;
                         }
                     }
 
+                    PORTFOLIO_VALUE += ACCOUNT_BALANCE;
+                    portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE+""));
+                    accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE+""));
+                    
                     stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {

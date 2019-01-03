@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,6 +30,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +55,10 @@ public class CommodityGraphActivity extends AppCompatActivity {
     String[] periods = {"Interday", "Series"};
     String[] periodId = {"i", "s"};
 
+    HashMap<String, Integer> monthmap;
+
+    private int YEAR = 2018;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,20 @@ public class CommodityGraphActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_nifty_graph);
         getSupportActionBar().hide();
+
+        monthmap = new HashMap<>();
+        monthmap.put("Jan", 1);
+        monthmap.put("Feb", 2);
+        monthmap.put("Mar", 3);
+        monthmap.put("Apr", 4);
+        monthmap.put("May", 5);
+        monthmap.put("Jun", 6);
+        monthmap.put("Jul", 7);
+        monthmap.put("Aug", 8);
+        monthmap.put("Sep", 9);
+        monthmap.put("Oct", 10);
+        monthmap.put("Nov", 11);
+        monthmap.put("Dec", 12);
 
         symbol = getIntent().getStringExtra("id");
         expdt = getIntent().getStringExtra("expdt");
@@ -159,7 +179,7 @@ public class CommodityGraphActivity extends AppCompatActivity {
                     return format.parse(time).getTime();
 
                 default:
-                    time = time + " "+ expdt.substring(5);
+                    time = time + " "+ YEAR;
                     format = new SimpleDateFormat("dd-MMM yyyy");
                     return format.parse(time).getTime();
 
@@ -203,15 +223,33 @@ public class CommodityGraphActivity extends AppCompatActivity {
                                 long prevTime = 0;
                                 String prevDate = "";
 
+                                long pointer = 0;
+
                                 for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
 
                                     long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
 
-                                    if (time > prevTime) {
+                                    //Log.d("time", prevTime+" : "+time);
+
+                                    if (time == pointer) {
+                                        time = time==pointer?(prevTime+60000):time;
                                         prevTime = time;
+                                        //prevTime = time;
                                         prevDate = element.getAsJsonObject().get("_time").getAsString();
-                                    } else {
-                                        break;
+                                    } else if(time > pointer){
+                                        pointer = time;
+                                        prevTime = pointer;
+                                    }else {
+
+                                        if(selection==1) {
+                                            //becz of the date format
+                                            YEAR = 2019;
+                                            time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+                                            pointer = time;
+                                            prevTime = time;
+                                        }else {
+                                            break;
+                                        }
                                     }
 
                                     if (i == 0) {
@@ -231,8 +269,14 @@ public class CommodityGraphActivity extends AppCompatActivity {
 
                                 }
 
-                                MAX = getDateFromString(lastElement.getAsJsonObject().
+                                if(lastElement!=null)
+                                    MAX = getDateFromString(lastElement.getAsJsonObject().
                                         get("_time").getAsString());
+                                else {
+                                    MAX=0;
+                                    MIN=0;
+                                }
+
 
                                 CommodityGraphActivity.this.runOnUiThread(new Runnable() {
                                     @Override

@@ -252,8 +252,13 @@ public class NiftyOverviewFragment extends Fragment {
 
                                 }
 
-                                MAX = getDateFromString(lastElement.getAsJsonObject().
-                                        get("_time").getAsString());
+                                if(lastElement!=null)
+                                    MAX = getDateFromString(lastElement.getAsJsonObject().
+                                            get("_time").getAsString());
+                                else {
+                                    MAX=0;
+                                    MIN=0;
+                                }
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override

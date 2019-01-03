@@ -81,6 +81,8 @@ public class UserDataFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), UserStocks.class);
                 i.putExtra("name", "MY PORTFOLIO");
+                i.putExtra("acc_bal", player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
+                        .get("avail_balance").getAsString());
                 startActivity(i);
                 //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
