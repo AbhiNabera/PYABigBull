@@ -19,6 +19,7 @@ import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.DataActivities.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Commodity.CommodityActivity;
+import com.example.abhinabera.pyabigbull.DataActivities.FixedDepositActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
@@ -40,12 +41,12 @@ public class DataFragment extends Fragment {
 
     JsonObject gold, silver, crudeoil;
 
-    CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard;
+    CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard, fixedDeposit;
 
     TextView niftyDate, goldDate, silverDate, crudeoilDate, dollarDate, euroDate, poundDate,
             nifty50Rate, goldRate, silverRate, crudeoilRate, dollarRate, euroRate, poundRate,
             nifty50BoxRate, goldBoxRate, silverBoxRate, crudeoilBoxRate, dollarBoxRate, euroBoxRate, poundBoxRate,
-            nifty50BoxPercent, goldBoxPercent, silverBoxPercent, crudeoilBoxPercent, dollarBoxPercent, euroBoxPercent, poundBoxPercent;
+            nifty50BoxPercent, goldBoxPercent, silverBoxPercent, crudeoilBoxPercent, dollarBoxPercent, euroBoxPercent, poundBoxPercent, fixedDepositDate;
 
     LinearLayout nifty50Box, goldBox, silverBox, crudeoilBox, dollarBox, euroBox, poundBox;
 
@@ -87,6 +88,7 @@ public class DataFragment extends Fragment {
         dollarCard = (CardView) view.findViewById(R.id.dollarCard);
         euroCard = (CardView) view.findViewById(R.id.euroCard);
         poundCard = (CardView) view.findViewById(R.id.poundCard);
+        fixedDeposit = (CardView) view.findViewById(R.id.fixedDepositCard);
 
         niftyDate = (TextView) view.findViewById(R.id.niftyDate);
         goldDate = (TextView) view.findViewById(R.id.goldDate);
@@ -116,6 +118,7 @@ public class DataFragment extends Fragment {
         dollarBoxPercent = (TextView) view.findViewById(R.id.dollarBoxPercent);
         euroBoxPercent = (TextView) view.findViewById(R.id.euroBoxPercent);
         poundBoxPercent = (TextView) view.findViewById(R.id.poundBoxPercent);
+        fixedDepositDate = (TextView) view.findViewById(R.id.fixedDepositDate);
 
         nifty50Box = (LinearLayout) view.findViewById(R.id.nifty50Box);
         goldBox = (LinearLayout) view.findViewById(R.id.goldBox);
@@ -193,6 +196,15 @@ public class DataFragment extends Fragment {
                 i.putExtra("cardName", "POUND");
                 startActivity(i);
                 //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
+
+        fixedDeposit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), FixedDepositActivity.class);
+                i.putExtra("cardName", "FIXED DEPOSIT");
+                startActivity(i);
             }
         });
 

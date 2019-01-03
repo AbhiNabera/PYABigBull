@@ -89,7 +89,8 @@
         <activity
             android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
             android:screenOrientation="portrait" />
-        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiSale"></activity>
+        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiSale" />
+        <activity android:name=".DataActivities.FixedDepositActivity"></activity>
     </application>
 
 </manifest>
