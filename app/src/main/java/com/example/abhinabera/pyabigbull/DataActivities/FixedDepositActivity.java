@@ -45,6 +45,7 @@ public class FixedDepositActivity extends AppCompatActivity {
 
         changeToolbarFont(fixedDepositToolbar, this);
 
+        invest = (Button) findViewById(R.id.invest);
         invest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

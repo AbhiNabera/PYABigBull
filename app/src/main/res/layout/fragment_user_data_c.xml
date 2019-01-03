@@ -330,10 +330,10 @@
                                     android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:drawableLeft="@drawable/termsandcondition"
+                                    android:layout_marginLeft="23dp"
+                                    android:drawableLeft="@drawable/disclaimer"
                                     android:drawablePadding="10dp"
-                                    android:text="Disclaimer"
+                                    android:text=" Disclaimer"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
