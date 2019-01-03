@@ -306,6 +306,5 @@ public class CommodityGraphActivity extends AppCompatActivity {
         graphView.getViewport().setScalable(true);
         //graphView.getViewport().setScrollableY(true);
         //graphView.getViewport().setScalableY(true);
-
     }
 }

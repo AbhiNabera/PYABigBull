@@ -20,11 +20,11 @@ import java.util.List;
 
 public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoardRecyclerAdapter.ViewHolder> {
 
-    ArrayList<JsonObject> boardlist;
+    ArrayList<LeaderboardObject> boardlist;
 
     private Activity activity;
 
-    public LeaderBoardRecyclerAdapter(Activity activity, ArrayList<JsonObject> boardlist) {
+    public LeaderBoardRecyclerAdapter(Activity activity, ArrayList<LeaderboardObject> boardlist) {
         this.boardlist = boardlist;
         this.activity = activity;
     }
@@ -46,14 +46,12 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
+        viewHolder.userName.setText(boardlist.get(position).getUserName()+"");
         viewHolder.userRank.setText((position+1)+"");
-        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position).get("change")
-                .getAsString()+""));
-        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position).get("percentchange")
-                .getAsString()+"")+"%");
+        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position).getChange() +""));
+        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position).getPercentchange()+"")+"%");
 
-        if(boardlist.get(position).get("percentchange").getAsDouble()>=0) {
+        if(boardlist.get(position).getPercentchange()>=0) {
             viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.greenText));
         }else {
             viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.red));
