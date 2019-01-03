@@ -116,12 +116,598 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:padding="10dp"
-                android:id="@+id/boughtRecycler"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"/>
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp">
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/niftyCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nifty"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/nifty50"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="NIFTY50"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/nifty50CurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/niftyBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/niftyBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/niftyBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/niftyBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/goldCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:layout_below="@+id/niftyCard"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/gold"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/goldText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="GOLD"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/goldCurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/goldBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/goldBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/goldBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/goldBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/silverCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@+id/goldCard"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/silver"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/silverText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="SILVER"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/silverCurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/silverBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/silverBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/silverBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/silverBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/crudeOilCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_below="@+id/silverCard"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/crudeOil"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/crudeOilText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="CRUDEOIL"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/crudeOilCurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/crudeOilBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/crudeOilBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/crudeOilBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/crudeOilBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/currencyCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_below="@+id/crudeOilCard"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/currency"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/currencyText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="CURRENCY"
+                                android:textColor="#000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/currencyCurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/currencyBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/currencyBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/currencyBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/currencyBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/fixedDepositCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_below="@id/currencyCard"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="1"
+                        android:background="#fff"
+                        android:clickable="true"
+                        card_view:cardBackgroundColor="#fff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/fixedDeposit"
+                            android:padding="5dp">
+
+
+                            <TextView
+                                android:id="@+id/fixedDepositText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:layout_centerInParent="true"
+                                android:padding="5dp"
+                                android:text="FIXED DEPOSIT"
+                                android:textColor="#000"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/fixedDepositCurrentValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_toLeftOf="@+id/fixedDepositBox"
+                                android:fontFamily="@font/hammersmithoneregular"
+                                android:padding="5dp"
+                                android:text="000000.00"
+                                android:textColor="#000"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="75dp"
+                                android:layout_height="50dp"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/fixedDepositBox"
+                                android:layout_centerVertical="true"
+                                android:background="@color/greenText">
+
+                                <TextView
+                                    android:id="@+id/fixedDepositBoxProfit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="00.0"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/fixedDepositBoxProfitPercent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/hammersmithoneregular"
+                                    android:text="0.0%"
+                                    android:textColor="#fff"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
+
+            </ScrollView>
 
         </LinearLayout>
 

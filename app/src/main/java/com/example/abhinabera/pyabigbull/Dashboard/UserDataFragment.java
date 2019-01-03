@@ -21,6 +21,7 @@ import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.UserActivities.About;
+import com.example.abhinabera.pyabigbull.UserActivities.Disclaimer;
 import com.example.abhinabera.pyabigbull.UserActivities.TermsAndConditions;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.example.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks;
@@ -37,7 +38,7 @@ import retrofit2.Response;
 
 public class UserDataFragment extends Fragment {
 
-    TextView myStocks, transactionsHistory, termsAndConditions, about, logout;
+    TextView myStocks, transactionsHistory, termsAndConditions, disclaimer, about, logout;
     TextView userName, phoneNumber, balance, investmentText, changeText, percentchangeText;
 
     SwipeRefreshLayout refreshLayout;
@@ -62,6 +63,7 @@ public class UserDataFragment extends Fragment {
         myStocks = (TextView) view.findViewById(R.id.myStocksText);
         transactionsHistory = (TextView) view.findViewById(R.id.transactionsHistoryText);
         termsAndConditions = (TextView) view.findViewById(R.id.termsAndConditionsText);
+        disclaimer = (TextView) view.findViewById(R.id.disclaimerText);
         about = (TextView) view.findViewById(R.id.aboutText);
         logout = (TextView) view.findViewById(R.id.logoutText);
 
@@ -103,6 +105,16 @@ public class UserDataFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), TermsAndConditions.class);
                 i.putExtra("name", "TERMS AND CONDITIONS");
+                startActivity(i);
+                //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
+
+        disclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), Disclaimer.class);
+                i.putExtra("name", "DISCLAIMER");
                 startActivity(i);
                 //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }

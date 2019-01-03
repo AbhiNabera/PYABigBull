@@ -52,7 +52,8 @@ public class IntroActivity extends AppCompatActivity {
                 R.layout.intro_screen_1,
                 R.layout.intro_screen_2,
                 R.layout.intro_screen_3,
-                R.layout.intro_screen_4};
+                R.layout.intro_screen_4,
+                R.layout.intro_screen_5};
 
         // adding bottom dots
         addBottomDots(0);

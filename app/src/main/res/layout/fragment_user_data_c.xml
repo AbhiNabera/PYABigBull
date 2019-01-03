@@ -325,6 +325,30 @@
                                     android:background="@color/colorPrimaryDark"/>
 
                                 <TextView
+                                    android:id="@+id/disclaimerText"
+                                    android:gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:drawableLeft="@drawable/termsandcondition"
+                                    android:drawablePadding="10dp"
+                                    android:text="Disclaimer"
+                                    android:textColor="#b9b6b6"
+                                    android:fontFamily="@font/hammersmithone"
+                                    android:textSize="18sp" />
+
+                                <View
+                                    android:visibility="invisible"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginBottom="15dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/colorPrimaryDark"/>
+
+                                <TextView
                                     android:id="@+id/logoutText"
                                     android:gravity="center_vertical"
                                     android:layout_weight="1"
