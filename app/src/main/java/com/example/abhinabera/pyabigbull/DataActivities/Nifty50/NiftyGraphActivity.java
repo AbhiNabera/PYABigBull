@@ -249,8 +249,13 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
                                 }
 
-                                MAX = getDateFromString(lastElement.getAsJsonObject().
-                                        get("_time").getAsString());
+                                if(lastElement!=null)
+                                    MAX = getDateFromString(lastElement.getAsJsonObject().
+                                            get("_time").getAsString());
+                                else {
+                                    MAX=0;
+                                    MIN=0;
+                                }
 
                                 NiftyGraphActivity.this.runOnUiThread(new Runnable() {
                                     @Override

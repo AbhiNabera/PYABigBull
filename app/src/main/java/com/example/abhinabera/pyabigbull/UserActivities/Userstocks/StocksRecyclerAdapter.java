@@ -75,6 +75,9 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
             Log.d("position", position+"");
 
+            viewHolder.currentvalue.setText(new Utility().getRoundoffData(transaction.get("current_value").getAsString()));
+            viewHolder.changeamount.setText(new Utility().getRoundoffData(transaction.get("changeamount").getAsString()));
+
             viewHolder.buyprice.setText(new Utility().getRoundoffData(transaction.get("buy_price").getAsString()));
             viewHolder.buyquantity.setText(transaction.get("qty").getAsString());
             viewHolder.txncharge.setText(new Utility().getRoundoffData(transaction.get("txn_amt").getAsString()));
@@ -102,9 +105,11 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
             if(transaction.get("pchange").getAsDouble()>=0) {
                 viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.greenText));
                 viewHolder.estimatedChange.setTextColor(context.getResources().getColor(R.color.greenText));
+                viewHolder.changeamount.setTextColor(context.getResources().getColor(R.color.greenText));
             }else {
                 viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.red));
                 viewHolder.estimatedChange.setTextColor(context.getResources().getColor(R.color.red));
+                viewHolder.changeamount.setTextColor(context.getResources().getColor(R.color.red));
             }
 
         }else {
@@ -120,7 +125,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
         LinearLayout stockLayout;
         ImageView expand;
         ExpandableLayout expandableLayout;
-        TextView buyprice, buyquantity, txncharge, investmentamount;
+        TextView buyprice, buyquantity, txncharge, investmentamount, changeamount, currentvalue;
 
         public ViewHolder(View itemLayoutView, int viewType) {
             super(itemLayoutView);
@@ -139,6 +144,8 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 buyquantity = (TextView) itemLayoutView.findViewById(R.id.buyquantity);
                 txncharge = (TextView) itemLayoutView.findViewById(R.id.txncharge);
                 investmentamount = (TextView) itemLayoutView.findViewById(R.id.investmentamount);
+                changeamount = (TextView) itemLayoutView.findViewById(R.id.historyProfitOrLoss);
+                currentvalue = (TextView) itemLayoutView.findViewById(R.id.historyCurrentValue);
 
                 expand = (ImageView) itemLayoutView.findViewById(R.id.expand);
 

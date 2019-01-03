@@ -27,10 +27,10 @@
                 android:id="@+id/currentStockPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"
-                android:layout_alignParentRight="true"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:padding="5dp"
                 android:text="Current price: 230"
@@ -71,10 +71,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView

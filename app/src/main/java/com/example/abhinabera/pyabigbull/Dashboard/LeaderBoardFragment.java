@@ -140,7 +140,16 @@ public class LeaderBoardFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     boardlist.clear();
-                                    boardlist.addAll(leaderboardObjects);
+                                    if(leaderboardObjects.size()>10) {
+                                        int i = 0;
+                                        for (LeaderboardObject object: leaderboardObjects) {
+                                            i++;
+                                            boardlist.add(object);
+                                            if (i == 10) break;;
+                                        }
+                                    }else {
+                                        boardlist.addAll(leaderboardObjects);
+                                    }
                                     mAdapter.notifyDataSetChanged();
 
                                     userName.setText(user_object.getUserName());

@@ -35,7 +35,6 @@ public class UserStocks extends AppCompatActivity {
     private TabLayout investmentTabs;
     private ViewPager investmentViewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

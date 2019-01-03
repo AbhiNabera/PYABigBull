@@ -297,8 +297,13 @@ public class NiftyStocksIndividual extends AppCompatActivity {
 
                                 }
 
-                                MAX = getDateFromString(lastElement.getAsJsonObject().
-                                        get("_time").getAsString());
+                                if(lastElement!=null)
+                                    MAX = getDateFromString(lastElement.getAsJsonObject().
+                                            get("_time").getAsString());
+                                else {
+                                    MAX=0;
+                                    MIN=0;
+                                }
 
                                 NiftyStocksIndividual.this.runOnUiThread(new Runnable() {
                                     @Override
