@@ -187,63 +187,70 @@ public class CommodityGraphActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
-                    if(response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray().size() != 0) {
+                    if(response.body().get("graph").getAsJsonObject().get("values") != null) {
 
-                        if(response.body().get("graph").getAsJsonObject().get("values") != null) {
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
+                                int i = 0;
+                                JsonElement lastElement = null;
 
-                                    int i = 0;
+                                graphView.removeAllSeries();
+                                series = new LineGraphSeries<>();
 
-                                    dataPoints = null;
+                                //TODO: temp fix
+                                long prevTime = 0;
+                                String prevDate = "";
 
-                                    dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                            get("values").getAsJsonArray().size()];
+                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
 
-                                    JsonElement lastElement = null;
+                                    long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
 
-                                    for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                        dataPoints[i] = (new DataPoint(
-                                                getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                                getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+                                    if (time > prevTime) {
+                                        prevTime = time;
+                                        prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                    } else {
+                                        break;
+                                    }
 
-                                        if (i == 0) {
+                                    if (i == 0) {
 
-                                            MIN = getDateFromString(element.getAsJsonObject().
-                                                    get("_time").getAsString());
-
-                                        }
-
-                                        lastElement = element;
-                                        i++;
+                                        MIN = getDateFromString(element.getAsJsonObject().
+                                                get("_time").getAsString());
 
                                     }
 
-                                    MAX = getDateFromString(lastElement.getAsJsonObject().
-                                            get("_time").getAsString());
+                                    lastElement = element;
+                                    i++;
 
-                                    CommodityGraphActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setUpChart();
-                                            series.resetData(dataPoints);
-                                            graphView.addSeries(series);
-                                            setScrollable();
-                                            progressBar.setVisibility(View.GONE);
-                                        }
-                                    });
+                                    series.appendData(new DataPoint(
+                                                    time,
+                                                    getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                            , true, i);
+
                                 }
-                            });
 
-                        }
+                                MAX = getDateFromString(lastElement.getAsJsonObject().
+                                        get("_time").getAsString());
 
-                    }else {
+                                CommodityGraphActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setUpChart();
+                                        //series.resetData(dataPoints);
+                                        graphView.addSeries(series);
+                                        setScrollable();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        });
+
+                    } else {
                         setUpBlankChart();
                         progressBar.setVisibility(View.GONE);
                     }
-
                 }else {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(CommodityGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
@@ -260,10 +267,6 @@ public class CommodityGraphActivity extends AppCompatActivity {
     }
 
     public void setUpChart() {
-
-        graphView.removeAllSeries();
-
-        series = new LineGraphSeries<>();
 
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(MIN);

@@ -202,23 +202,31 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
 
                     if(response.body().get("graph").getAsJsonObject().get("values") != null) {
+
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
 
                                 int i = 0;
-
-                                dataPoints = null;
-
-                                dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                        get("values").getAsJsonArray().size()];
-
                                 JsonElement lastElement = null;
 
+                                graphView.removeAllSeries();
+                                series = new LineGraphSeries<>();
+
+                                //TODO: temp fix
+                                long prevTime = 0;
+                                String prevDate = "";
+
                                 for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                    dataPoints[i] = (new DataPoint(
-                                            getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                            getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+
+                                    long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+
+                                    if (time > prevTime) {
+                                        prevTime = time;
+                                        prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                    } else {
+                                        break;
+                                    }
 
                                     if (i == 0) {
 
@@ -230,6 +238,11 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
                                     lastElement = element;
                                     i++;
 
+                                    series.appendData(new DataPoint(
+                                                    time,
+                                                    getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                            , true, i);
+
                                 }
 
                                 MAX = getDateFromString(lastElement.getAsJsonObject().
@@ -239,16 +252,16 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         setUpChart();
-                                        series.resetData(dataPoints);
+                                        //series.resetData(dataPoints);
                                         graphView.addSeries(series);
-                                        //setScrollable();
+                                        setScrollable();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 });
                             }
                         });
 
-                    }else {
+                    } else {
                         setUpBlankChart();
                         progressBar.setVisibility(View.GONE);
                     }
@@ -269,10 +282,6 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
     }
 
     public void setUpChart() {
-
-        graphView.removeAllSeries();
-
-        series = new LineGraphSeries<>();
 
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(MIN);
