@@ -1,5 +1,6 @@
 package com.example.abhinabera.pyabigbull.LeaderBoardActivities;
 
+import android.app.Activity;
 import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,17 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
+import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoardRecyclerAdapter.ViewHolder> {
-    private LeaderBoardData[] itemsData;
 
-    public LeaderBoardRecyclerAdapter(LeaderBoardData[] itemsData) {
-        this.itemsData = itemsData;
+    ArrayList<JsonObject> boardlist;
+
+    private Activity activity;
+
+    public LeaderBoardRecyclerAdapter(Activity activity, ArrayList<JsonObject> boardlist) {
+        this.boardlist = boardlist;
+        this.activity = activity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -37,9 +46,18 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.userName.setText(itemsData[position].getUserName());
-        viewHolder.userRank.setText(itemsData[position].getUserRank());
-        viewHolder.imageId.setImageResource(itemsData[position].getImageId());
+        viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
+        viewHolder.userRank.setText((position+1)+"");
+        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position).get("change")
+                .getAsString()+""));
+        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position).get("percentchange")
+                .getAsString()+"")+"%");
+
+        if(boardlist.get(position).get("percentchange").getAsDouble()>=0) {
+            viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.greenText));
+        }else {
+            viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.red));
+        }
     }
 
     // inner class to hold a reference to each item of RecyclerView 
@@ -47,19 +65,21 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
 
         public TextView userName, userRank, userBoxPrice, userBoxPercent;
         public ImageView imageId;
+        LinearLayout leaderBoardItemBox;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             userName = (TextView) itemLayoutView.findViewById(R.id.leaderBoardUserName);
             userRank = (TextView) itemLayoutView.findViewById(R.id.leaderBoardRank);
             userBoxPrice = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
-            userBoxPercent = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
+            userBoxPercent = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPercent);
             imageId = (ImageView) itemLayoutView.findViewById(R.id.medal);
+            leaderBoardItemBox = (LinearLayout) itemLayoutView.findViewById(R.id.leaderBoardItemBox);
         }
     }
 
     @Override
     public int getItemCount() {
-        return itemsData.length;
+        return boardlist.size();
     }
 }

@@ -58,6 +58,8 @@ public interface ApiInterface {
     @GET("sellList")
     Call<JsonObject> getsellList(@Query("phoneNumber") String phoneNumber);
 
+    @GET("leaderboard")
+    Call<JsonObject> getLeaderboard();
 
     /*
     appfeeds

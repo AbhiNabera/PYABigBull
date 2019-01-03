@@ -42,10 +42,10 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="18dp"
                 android:background="@drawable/border"
-                android:drawableLeft="@drawable/ic_action_mobile"
+                android:drawableLeft="@drawable/ic_action_user"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:hint="Enter Full Name"
+                android:hint="Set username"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />
 
