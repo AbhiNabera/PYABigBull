@@ -418,6 +418,82 @@
                     android:background="@color/colorPrimaryDark"/>
 
                 <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Net Profit/Loss"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyNetGainOrLoss"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/greenText"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Net Profit/Loss %"
+                        android:fontFamily="@font/hammersmithone"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/historyNetGainOrLossPercent"
+                        android:text="0.00"
+                        android:textSize="20sp"
+                        android:fontFamily="serif"
+                        android:textColor="@color/greenText"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

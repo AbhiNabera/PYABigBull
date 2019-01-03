@@ -80,7 +80,7 @@ public class UserDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), UserStocks.class);
-                i.putExtra("name", "MY STOCKS");
+                i.putExtra("name", "MY PORTFOLIO");
                 startActivity(i);
                 //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }

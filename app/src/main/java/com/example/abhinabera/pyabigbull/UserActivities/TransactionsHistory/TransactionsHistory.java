@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
-import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardData;
 import com.example.abhinabera.pyabigbull.LeaderBoardActivities.LeaderBoardRecyclerAdapter;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.firebase.auth.FirebaseAuth;

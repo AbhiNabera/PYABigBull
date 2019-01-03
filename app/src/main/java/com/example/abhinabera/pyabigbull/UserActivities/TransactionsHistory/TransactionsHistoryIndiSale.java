@@ -18,11 +18,13 @@ import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.w3c.dom.Text;
+
 public class TransactionsHistoryIndiSale extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar historyIndiToolbar;
     Typeface custom_font;
-    TextView txnID, name, bprice, sqty, sprice, netReturn, gainOrLoss, gainORLossPer, txnCharges;
+    TextView txnID, name, bprice, sqty, sprice, netReturn, gainOrLoss, gainORLossPer, txnCharges, netGainOrLoss, netGainOrLossPer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class TransactionsHistoryIndiSale extends AppCompatActivity {
         gainOrLoss = (TextView) findViewById(R.id.historyGainOrLoss);
         gainORLossPer = (TextView) findViewById(R.id.historyGainOrLossPercent);
         txnCharges = (TextView) findViewById(R.id.historyTransactionCharges);
+        netGainOrLoss = (TextView) findViewById(R.id.historyNetGainOrLoss);
+        netGainOrLossPer = (TextView) findViewById(R.id.historyGainOrLossPercent);
 
 
         txnID.setText(transIndHisSum.get("txn_id").getAsString());
@@ -76,6 +80,12 @@ public class TransactionsHistoryIndiSale extends AppCompatActivity {
         }
         gainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("return_change").getAsString()));
         gainORLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("return_percentchange").getAsString()));
+        if(transIndHisSum.get("change").getAsString().startsWith("-")){
+            netGainOrLoss.setTextColor(getResources().getColor(R.color.red));
+            netGainOrLossPer.setTextColor(getResources().getColor(R.color.red));
+        }
+        netGainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("change").getAsString()));
+        netGainOrLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("percentchange").getAsString()));
         txnCharges.setText(new Utility().getRoundoffData(transIndHisSum.get("txn_amt").getAsString()));
 
     }

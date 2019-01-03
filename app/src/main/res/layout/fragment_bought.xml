@@ -9,12 +9,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:padding="10dp"
-            android:id="@+id/boughtRecycler"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"/>
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical|start"
+                    android:drawableLeft="@drawable/investment"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="Portfolio Value"
+                    android:drawablePadding="10dp"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/portfolioValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="0000000.00"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical|start"
+                    android:layout_marginTop="0dp"
+                    android:layout_alignParentRight="true"
+                    android:drawableLeft="@drawable/accountbal"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="Account Balance"
+                    android:drawablePadding="10dp"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/accountBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="0000000.00"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:padding="10dp"
+                android:id="@+id/boughtRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"/>
+
+        </LinearLayout>
+
+
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

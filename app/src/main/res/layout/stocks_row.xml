@@ -74,6 +74,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -136,6 +137,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:layout_marginTop="0dp"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:padding="5dp"
+                android:text="000000.00"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/historyCurrentValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="0dp"
                 android:layout_alignParentRight="true"
                 android:fontFamily="@font/hammersmithoneregular"
@@ -150,11 +166,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="0dp"
-                android:layout_toLeftOf="@+id/historyTotalInvestment"
+                android:visibility="gone"
+                android:layout_toLeftOf="@+id/historyCurrentValue"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:padding="5dp"
                 android:text="000"
                 android:textColor="@color/colorPrimary"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/historyProfitOrLoss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_toLeftOf="@+id/historyCurrentValue"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:padding="5dp"
+                android:text="00000.00"
+                android:textColor="@color/greenText"
                 android:textSize="15sp" />
 
             <TextView
@@ -163,6 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="0dp"
+                android:visibility="gone"
                 android:layout_toRightOf="@id/historyCompanyName"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:padding="5dp"
@@ -308,6 +339,7 @@
                         android:layout_marginTop="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
