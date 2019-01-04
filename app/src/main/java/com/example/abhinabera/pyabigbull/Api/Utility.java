@@ -25,6 +25,8 @@ public class Utility {
 
     public static String CURR_GRAPH_URL = "https://www.alphavantage.co";
 
+    public static double MAX_AMT = 1000000;
+
     public static String MyPREF = "PAYBigBullPref";
 
 

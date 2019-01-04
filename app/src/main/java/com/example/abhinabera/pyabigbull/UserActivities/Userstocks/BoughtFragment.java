@@ -98,6 +98,8 @@ public class BoughtFragment extends Fragment {
             Intent intent = new Intent("soldFragment");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
+            //ACCOUNT_BALANCE = 0;
+            PORTFOLIO_VALUE = 0;
             refreshLayout.setRefreshing(true);
             count = 0;
             getTranactionCharges();
@@ -179,6 +181,7 @@ public class BoughtFragment extends Fragment {
                 refreshLayout.setRefreshing(true);
                 //getBoughtList();
                 count = 0;
+                PORTFOLIO_VALUE = 0;
                 getTranactionCharges();
                 getTopCommodity();
                 getEURINR();

@@ -7,23 +7,37 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.abhinabera.pyabigbull.DataActivities.Currency.CurrencyActivity;
 import com.example.abhinabera.pyabigbull.FDPurchaseActivity;
 import com.example.abhinabera.pyabigbull.PurchaseActivity;
+import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
+import com.example.abhinabera.pyabigbull.JsonObjectFormatter;
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.SellActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FixedDepositActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar fixedDepositToolbar;
     Typeface custom_font;
     Button invest;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +57,8 @@ public class FixedDepositActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        invest = (Button) findViewById(R.id.invest);
 
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
@@ -85,4 +101,5 @@ public class FixedDepositActivity extends AppCompatActivity {
         //finish();
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
+
 }
