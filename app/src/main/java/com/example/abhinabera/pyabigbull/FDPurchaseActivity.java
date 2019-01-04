@@ -392,13 +392,13 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
                     //TODO: go to summary
-                    //Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
-                    //intent.putExtra("success", true);
-                    //intent.putExtra("data", object.toString());
-                    //intent.putExtra("type", "buy");
-                    //intent.putExtra("txn_id", txn_id);
-                    //intent.putExtra("product_type", product_type);
-                    //startActivity(intent);
+                    Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
+                    intent.putExtra("success", true);
+                    intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "buy");
+                    intent.putExtra("txn_id", txn_id);
+                    intent.putExtra("product_type", "fixed_deposit");
+                    startActivity(intent);
                     finish();
                     //overridePendingTransition(R.anim.enter, R.anim.exit);
                 }else {
@@ -409,7 +409,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
+                    Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     startActivity(intent);
@@ -424,7 +424,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 t.printStackTrace();
                 progressDialog.dismiss();
                 Toast.makeText(FDPurchaseActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
+                Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 startActivity(intent);

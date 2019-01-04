@@ -49,7 +49,7 @@ public class TransactionSummaryActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         purchaseToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.purchaseToolbar);
-        purchaseToolbar.setTitle("Trnsaction summary");
+        purchaseToolbar.setTitle("Transaction Summary");
 
         purchaseToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         purchaseToolbar.setNavigationOnClickListener(new View.OnClickListener() {

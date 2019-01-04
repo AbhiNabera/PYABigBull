@@ -101,7 +101,8 @@
         <activity
             android:name=".UserActivities.Userstocks.BoughtActivityIndi"
             android:screenOrientation="portrait" />
-        <activity android:name=".FDPurchaseActivity"></activity>
+        <activity android:name=".FDPurchaseActivity" />
+        <activity android:name=".TransactionFDSummaryActivity"></activity>
     </application>
 
 </manifest>
