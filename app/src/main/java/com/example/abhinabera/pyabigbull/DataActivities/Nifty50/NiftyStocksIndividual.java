@@ -3,7 +3,6 @@ package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-<<<<<<< Updated upstream
 import android.os.AsyncTask;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -60,26 +59,6 @@ public class NiftyStocksIndividual extends AppCompatActivity {
 
     long MIN, MAX;
 
-=======
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.example.abhinabera.pyabigbull.R;
-
-public class NiftyStocksIndividual extends AppCompatActivity {
-
-    android.support.v7.widget.Toolbar stocksIndiToolbar;
-    Typeface custom_font;
-    TextView bidPrice, offerPrice, prevClose, openPrice, vwap, todaysLow, todaysHigh, wkLow, wkHigh, lPriceBand, uPriceBand;
-    
->>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,23 +67,17 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         setContentView(R.layout.activity_nifty_stocks_individual);
         getSupportActionBar().hide();
 
-<<<<<<< Updated upstream
         lastUpdate = (TextView) findViewById(R.id.lastUpdate);
         lastChange = (TextView) findViewById(R.id.lastChangeTextView);
         lastPrice = (TextView) findViewById(R.id.lastPriceTextView);
         volume = (TextView) findViewById(R.id.volume);
 
-=======
->>>>>>> Stashed changes
         bidPrice = (TextView) findViewById(R.id.bidPriceTextView);
         offerPrice = (TextView) findViewById(R.id.offerPriceTextView);
         prevClose = (TextView) findViewById(R.id.prevCloseTextView);
         openPrice = (TextView) findViewById(R.id.openPriceTextView);
         vwap = (TextView) findViewById(R.id.VWAPTextView);
-<<<<<<< Updated upstream
         mktCap = (TextView) findViewById(R.id.mktCapextView);
-=======
->>>>>>> Stashed changes
         todaysLow = (TextView) findViewById(R.id.todaysLowTextView);
         todaysHigh = (TextView) findViewById(R.id.todaysHighTextView);
         wkLow = (TextView) findViewById(R.id.wkLowTextView);
@@ -112,22 +85,16 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         lPriceBand = (TextView) findViewById(R.id.lPriceBandTextView);
         uPriceBand = (TextView) findViewById(R.id.uPriceBandTextView);
 
-<<<<<<< Updated upstream
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
 
         graphView = (GraphView) findViewById(R.id.graph);
 
-=======
->>>>>>> Stashed changes
         stocksIndiToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.stocksIndiToolbar);
         Intent i = getIntent();
         stocksIndiToolbar.setTitle(i.getExtras().getString("companyName"));
 
-<<<<<<< Updated upstream
         id = i.getStringExtra("id");
 
-=======
->>>>>>> Stashed changes
         stocksIndiToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         stocksIndiToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +106,6 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         custom_font = ResourcesCompat.getFont(this, R.font.hammersmithone);
 
         changeToolbarFont(stocksIndiToolbar, this);
-<<<<<<< Updated upstream
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -180,8 +146,6 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         refreshLayout.setRefreshing(true);
         getStockIndividual();
         getGraphData(id);
-=======
->>>>>>> Stashed changes
     }
 
     public void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -204,7 +168,6 @@ public class NiftyStocksIndividual extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-<<<<<<< Updated upstream
         //finish();
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
@@ -419,9 +382,4 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         graphView.getViewport().setScalableY(true);
     }
 
-=======
-        finish();
-        overridePendingTransition(R.anim.enter1, R.anim.exit1);
-    }
->>>>>>> Stashed changes
 }
