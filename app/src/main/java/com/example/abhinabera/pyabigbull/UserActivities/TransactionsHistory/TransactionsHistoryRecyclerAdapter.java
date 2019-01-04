@@ -46,7 +46,6 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
         JsonObject transaction = transactions.get(position).getAsJsonObject().get("txn_summary").getAsJsonObject();
-
         viewHolder.companyName.setText(transaction.get("name").getAsString()+"");
         viewHolder.buyOrSell.setText(transactions.get(position).getAsJsonObject().get("txn_type").getAsString().toUpperCase()+"");
 
@@ -86,19 +85,25 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
             transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString().equals("buy")) {
-                        Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiPurchase.class);
-                        i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
-                        Log.d("transactionHistory", transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString());
-                        itemLayoutView.getContext().startActivity(i);
-                        context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    if(transactions.get(getAdapterPosition()).getAsJsonObject().get("id").getAsString().equals("FD")){
+                        transactionsHistoryRow.setClickable(false);
                     }
                     else{
-                        Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiSale.class);
-                        i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
-                        itemLayoutView.getContext().startActivity(i);
-                        context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                        if(transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString().equals("buy")) {
+                            Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiPurchase.class);
+                            i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
+                            Log.d("transactionHistory", transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString());
+                            itemLayoutView.getContext().startActivity(i);
+                            context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                        }
+                        else{
+                            Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiSale.class);
+                            i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
+                            itemLayoutView.getContext().startActivity(i);
+                            context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                        }
                     }
+
                 }
             });
         }
