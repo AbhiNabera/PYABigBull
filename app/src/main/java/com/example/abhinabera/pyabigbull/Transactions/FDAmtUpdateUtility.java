@@ -1,17 +1,12 @@
 package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
-import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.TransactionFDSummaryActivity;
-import com.example.abhinabera.pyabigbull.TransactionSummaryActivity;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

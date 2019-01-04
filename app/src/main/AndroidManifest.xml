@@ -84,7 +84,7 @@
             android:name=".DataActivities.Currency.CurrencyGraphActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".TransactionSummaryActivity"
+            android:name=".Transactions.TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
@@ -101,10 +101,10 @@
         <activity
             android:name=".UserActivities.Userstocks.BoughtActivityIndi"
             android:screenOrientation="portrait" />
-        <activity android:name=".TransactionFDSummaryActivity" />
+        <activity android:name=".Transactions.TransactionFDSummaryActivity" />
         <activity android:name=".Transactions.FDPurchaseActivity" />
         <activity android:name=".Transactions.FDSellActivity" />
-        <activity android:name=".TransactionsFDSellSumActivity"></activity>
+        <activity android:name=".Transactions.TransactionsFDSellSumActivity"></activity>
     </application>
 
 </manifest>

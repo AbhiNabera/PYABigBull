@@ -25,7 +25,6 @@ import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.TransactionSummaryActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -298,7 +297,7 @@ public class PurchaseActivity extends AppCompatActivity {
         JsonObject transaction = new JsonObject();
 
         account_ref.addProperty("shares_price", shares_price+"");
-        account_ref.addProperty("avail_balance", accountBalance.getText().toString().trim()+"");
+        account_ref.addProperty("avail_balance", /*accountBalance.getText().toString().trim()*/acc_bal+"");
         account_ref.addProperty("change", change+"");
         account_ref.addProperty("investment", total_investment+"");
         account_ref.addProperty("percentchange", percentchange);

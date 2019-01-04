@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

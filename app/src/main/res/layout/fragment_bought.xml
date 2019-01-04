@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
@@ -135,6 +136,7 @@
                         android:alpha="1"
                         android:background="#fff"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff">
 
                         <RelativeLayout
@@ -227,6 +229,7 @@
                         android:background="#fff"
                         android:layout_below="@+id/niftyCard"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff">
 
                         <RelativeLayout
@@ -319,6 +322,7 @@
                         android:alpha="1"
                         android:background="#fff"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff"
                         >
 
@@ -412,6 +416,7 @@
                         android:alpha="1"
                         android:background="#fff"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff"
                         >
 
@@ -505,6 +510,7 @@
                         android:alpha="1"
                         android:background="#fff"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff"
                         >
 
@@ -598,6 +604,7 @@
                         android:alpha="1"
                         android:background="#fff"
                         android:clickable="true"
+                        card_view:cardCornerRadius="0dp"
                         card_view:cardBackgroundColor="#fff">
 
                         <RelativeLayout
@@ -619,7 +626,7 @@
                                 android:padding="5dp"
                                 android:text="FIXED DEPOSIT"
                                 android:textColor="#000"
-                                android:textSize="15sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
 

@@ -46,6 +46,8 @@ public class DataFragment extends Fragment {
     private int count = 0;
     private int MAXCOUNT = 5;
 
+    private static boolean flag = true;
+
     Response<JsonObject> nifty50, usd, eur, gbp;
 
     JsonObject gold, silver, crudeoil, userObject;
@@ -76,7 +78,10 @@ public class DataFragment extends Fragment {
                 getEURINR();
                 getGBPINR();
                 getTopCommodity();
-                getFdInvestment();
+                if(flag) {
+                    getFdInvestment();
+                    flag = false;
+                }
             }
         },5);
     }
