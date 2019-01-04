@@ -69,11 +69,11 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
+        Log.d("position", position+"");
+
         if(stocks.get(position).get("TYPE")==null) {
 
             JsonObject transaction = stocks.get(position).getAsJsonObject();
-
-            Log.d("position", position+"");
 
             viewHolder.currentvalue.setText(new Utility().getRoundoffData(transaction.get("current_value").getAsString()));
             viewHolder.changeamount.setText(new Utility().getRoundoffData(transaction.get("changeamount").getAsString()));
@@ -84,7 +84,8 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
             viewHolder.investmentamount.setText(new Utility().getRoundoffData(
                     transaction.get("total_amount").getAsString()));
 
-            viewHolder.curentStockPrice.setText("Current price: "+new Utility().getRoundoffData(transaction.get("current_price").getAsString()));
+            viewHolder.curentStockPrice.setText("Current price: "+new Utility().getRoundoffData
+                    (transaction.get("current_price").getAsString()));
             viewHolder.estimatedChange.setText("("+new Utility().getRoundoffData(
                     transaction.get("pchange").getAsString())+"%)");
 
@@ -110,6 +111,10 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.red));
                 viewHolder.estimatedChange.setTextColor(context.getResources().getColor(R.color.red));
                 viewHolder.changeamount.setTextColor(context.getResources().getColor(R.color.red));
+            }
+
+            if(stocks.get(position).get("id").getAsString().equalsIgnoreCase("FD")) {
+                viewHolder.stockLayout.setVisibility(View.GONE);
             }
 
         }else {

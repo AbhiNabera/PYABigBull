@@ -27,6 +27,7 @@ import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.SellActivity;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -53,10 +54,22 @@ public class BoughtFragment extends Fragment {
     private double index_txn_charges, commodity_txn_charges, currency_txn_charges;
 
     int REQUEST_CODE = 1;
-
     int PORTFOLIO_VALUE = 0;
-
     double ACCOUNT_BALANCE = 0;
+
+    private double NIFTY_INVESTMENT = 0;
+    private double GOLD_INVESTMENT = 0;
+    private double SILVER_INVESTMENT = 0;
+    private double CRUDEOIL_INVESTMENT = 0;
+    private double CURRENCY_INVESTMENT = 0;
+    private double FD_INVESTMENT = 0;
+
+    private double NIFTY_CURRENTVALUE = 0;
+    private double GOLD_CURRENTVALUE = 0;
+    private double SILVER_CURRENTVALUE = 0;
+    private double CRUDEOIL_CURRENTVALUE = 0;
+    private double CURRENCY_CURRENTVALUE = 0;
+    private double FD_CURRENTVALUE = 0;
 
     Response<JsonObject> usd, eur, gbp;
     JsonObject gold, silver, crudeoil;
@@ -68,13 +81,42 @@ public class BoughtFragment extends Fragment {
     CardView niftyCard, goldCard, silverCard, crudeOilCard, currencyCard, fixedDepositCard;
     TextView portfolioValue, accountBal;
 
-    TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
+    /*TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
                 crudeOilCV, crudeOilProfit, crudeOilProfitPer, currencyCV, currencyProfit, currencyProfitPer, fixedDepositCV, fixedDepositProfit,
                 fixedDepositProfitPer;
-
-    ArrayList<JsonObject> arrayList;
+*/
+    ArrayList<JsonObject> arrayList, niftyList, goldList, silverList, crudeoilList, currencyList, fdList;
 
     StocksRecyclerAdapter stocksRecyclerAdapter;
+
+
+    public void getLoadFragmentData() {
+
+        NIFTY_INVESTMENT = 0;
+        GOLD_INVESTMENT = 0;
+        SILVER_INVESTMENT = 0;
+        CRUDEOIL_INVESTMENT = 0;
+        CURRENCY_INVESTMENT = 0;
+        FD_INVESTMENT = 0;
+
+        NIFTY_CURRENTVALUE = 0;
+        GOLD_CURRENTVALUE = 0;
+        SILVER_CURRENTVALUE = 0;
+        CRUDEOIL_CURRENTVALUE = 0;
+        CURRENCY_CURRENTVALUE = 0;
+        FD_CURRENTVALUE = 0;
+
+        refreshLayout.setRefreshing(true);
+        count = 0;
+        //ACCOUNT_BALANCE = 0;
+        PORTFOLIO_VALUE = 0;
+        getTranactionCharges();
+        getTopCommodity();
+        getEURINR();
+        getGBPINR();
+        getUSDINR();
+        getStockList();
+    }
 
     public BoughtFragment(){}
 
@@ -98,16 +140,6 @@ public class BoughtFragment extends Fragment {
             Intent intent = new Intent("soldFragment");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-            //ACCOUNT_BALANCE = 0;
-            PORTFOLIO_VALUE = 0;
-            refreshLayout.setRefreshing(true);
-            count = 0;
-            getTranactionCharges();
-            getTopCommodity();
-            getEURINR();
-            getGBPINR();
-            getUSDINR();
-            getStockList();
 
         }
 
@@ -129,8 +161,14 @@ public class BoughtFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fdList = new ArrayList<>();
         stockList = new ArrayList<>();
         arrayList = new ArrayList<>();
+        niftyList = new ArrayList<>();
+        goldList = new ArrayList<>();
+        silverList = new ArrayList<>();
+        crudeoilList = new ArrayList<>();
+        currencyList = new ArrayList<>();
 
         map = new HashMap<>();
         currency = new HashMap<>();
@@ -150,99 +188,103 @@ public class BoughtFragment extends Fragment {
         currencyCard = (CardView) view.findViewById(R.id.currencyCard);
         fixedDepositCard = (CardView) view.findViewById(R.id.fixedDepositCard);
 
-
-
-
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        /*stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList, new StocksRecyclerAdapter.ClickListener() {
-            @Override
-            public void onItemClick(List<JsonObject> stocks, int position) {
-                Intent i = new Intent(getActivity(), SellActivity.class);
-                i.putExtra("data", stocks.get(position).getAsJsonObject()+"");
-                i.putExtra("type", stocks.get(position).getAsJsonObject()
-                        .get("type").getAsString());
-                i.putExtra("id", stocks.get(position).getAsJsonObject()
-                        .get("id").getAsString());
-                i.putExtra("name", stocks.get(position).getAsJsonObject()
-                        .get("name").getAsString());
-                getActivity().startActivityForResult(i, REQUEST_CODE);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-            }
-        });
-
-        recyclerView.setAdapter(stocksRecyclerAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-
-        */
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.setRefreshing(true);
-                //getBoughtList();
-                count = 0;
-                PORTFOLIO_VALUE = 0;
-                getTranactionCharges();
-                getTopCommodity();
-                getEURINR();
-                getGBPINR();
-                getUSDINR();
-                getStockList();
+                getLoadFragmentData();
             }
         });
 
 
-        refreshLayout.setRefreshing(true);
-        count = 0;
-        getTranactionCharges();
-        getTopCommodity();
-        getEURINR();
-        getGBPINR();
-        getUSDINR();
-        getStockList();
+        getLoadFragmentData();
 
         niftyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                i.putExtra("cardName", "NIFTY50");
-                startActivity(i);
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "NIFTY50");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(niftyList) + "");
+                    i.putExtra("current_value", NIFTY_CURRENTVALUE);
+                    i.putExtra("investment", NIFTY_INVESTMENT);
+                    startActivity(i);
+                }
             }
         });
 
         goldCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "GOLD");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(goldList) + "");
+                    i.putExtra("current_value", GOLD_CURRENTVALUE);
+                    i.putExtra("investment", GOLD_INVESTMENT);
+                    startActivity(i);
+                }
             }
         });
 
         silverCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "SILVER");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(silverList) + "");
+                    i.putExtra("current_value", SILVER_CURRENTVALUE);
+                    i.putExtra("investment", SILVER_INVESTMENT);
+                    startActivity(i);
                 }
+            }
         });
 
         crudeOilCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "CRUDEOIL");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(crudeoilList) + "");
+                    i.putExtra("current_value", CRUDEOIL_CURRENTVALUE);
+                    i.putExtra("investment", CRUDEOIL_INVESTMENT);
+                    startActivity(i);
+                }
             }
         });
 
         currencyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                i.putExtra("cardName", "CURRENCY");
-                startActivity(i);
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "CURRENCY");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(currencyList) + "");
+                    i.putExtra("current_value", CURRENCY_CURRENTVALUE);
+                    i.putExtra("investment", CURRENCY_INVESTMENT);
+                    startActivity(i);
+                }
             }
         });
 
         fixedDepositCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!refreshLayout.isRefreshing()) {
+                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                    i.putExtra("cardName", "FIXED DEPOSIT");
+                    Gson gson = new Gson();
+                    i.putExtra("data", gson.toJson(fdList) + "");
+                    i.putExtra("current_value", FD_CURRENTVALUE);
+                    i.putExtra("investment", FD_INVESTMENT);
+                    startActivity(i);
+                }
             }
         });
 
@@ -257,10 +299,14 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                refreshLayout.setRefreshing(false);
-
                 if(response.isSuccessful()) {
 
+                    fdList.clear();
+                    niftyList.clear();
+                    goldList.clear();
+                    silverList.clear();
+                    crudeoilList.clear();
+                    currencyList.clear();
                     arrayList.clear();
 
                     if(response.body().get("data").getAsJsonObject().get("index").getAsJsonArray().size() !=0) {
@@ -303,6 +349,12 @@ public class BoughtFragment extends Fragment {
                             arrayList.add(element.getAsJsonObject());
 
                             PORTFOLIO_VALUE+=current_value;
+
+                            NIFTY_CURRENTVALUE+= current_value;
+                            NIFTY_INVESTMENT+= element.getAsJsonObject().
+                                            get("total_amount").getAsDouble();
+
+                            niftyList.add(element.getAsJsonObject());
                         }
                     }
 
@@ -349,6 +401,29 @@ public class BoughtFragment extends Fragment {
                             arrayList.add(element.getAsJsonObject());
 
                             PORTFOLIO_VALUE+=current_value;
+
+                            if(element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("GOLD")) {
+
+                                GOLD_CURRENTVALUE+= current_value;
+                                GOLD_INVESTMENT+= element.getAsJsonObject().
+                                        get("total_amount").getAsDouble();
+
+                                goldList.add(element.getAsJsonObject());
+
+                            }else if(element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
+
+                                SILVER_CURRENTVALUE+= current_value;
+                                SILVER_INVESTMENT+= element.getAsJsonObject().
+                                        get("total_amount").getAsDouble();
+                                silverList.add(element.getAsJsonObject());
+
+                            }else if(element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("CRUDEOIL")) {
+
+                                CRUDEOIL_CURRENTVALUE+= current_value;
+                                CRUDEOIL_INVESTMENT+= element.getAsJsonObject().
+                                        get("total_amount").getAsDouble();
+                                crudeoilList.add(element.getAsJsonObject());
+                            }
                         }
                     }
 
@@ -392,6 +467,64 @@ public class BoughtFragment extends Fragment {
                             arrayList.add(element.getAsJsonObject());
 
                             PORTFOLIO_VALUE+=current_value;
+
+                            CURRENCY_CURRENTVALUE+= current_value;
+                            CURRENCY_INVESTMENT+= element.getAsJsonObject().
+                                    get("total_amount").getAsDouble();
+
+                            currencyList.add(element.getAsJsonObject());
+                        }
+                    }
+
+                    if(response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray().size() !=0) {
+
+                        JsonObject object = new JsonObject();
+                        object.addProperty("TYPE", "fixed_deposit");
+                        arrayList.add(object);
+
+                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray()) {
+
+                            double current_value = element.getAsJsonObject().
+                                    get("current_value").getAsDouble() ;
+
+                            double investment = element.getAsJsonObject().
+                                    get("investment").getAsDouble();
+
+                            double changeamount = current_value - investment;
+
+                            double pchange = (changeamount/investment) * 100;
+
+                            element.getAsJsonObject().
+                                    addProperty("current_price", current_value);
+
+                            element.getAsJsonObject().
+                                    addProperty("pchange", pchange);
+
+                            element.getAsJsonObject().
+                                    addProperty("current_value", current_value);
+
+                            element.getAsJsonObject().
+                                    addProperty("changeamount", changeamount);
+
+                            element.getAsJsonObject().
+                                    addProperty("type", "fixed_deposit");
+
+                            element.getAsJsonObject().addProperty("txn_amt", 0.0);
+                            element.getAsJsonObject().addProperty("total_amount", element.getAsJsonObject().
+                                    get("investment").getAsDouble());
+                            element.getAsJsonObject().addProperty("buy_price", "10000");
+                            element.getAsJsonObject().addProperty("name", "FD");
+                            element.getAsJsonObject().addProperty("id", "FD");
+
+                            arrayList.add(element.getAsJsonObject());
+
+                            PORTFOLIO_VALUE+=current_value;
+
+                            FD_CURRENTVALUE+= current_value;
+                            FD_INVESTMENT+= element.getAsJsonObject().
+                                    get("investment").getAsDouble();
+
+                            fdList.add(element.getAsJsonObject());
                         }
                     }
 
@@ -404,6 +537,8 @@ public class BoughtFragment extends Fragment {
                 }else {
                     Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
                 }
+
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -633,5 +768,4 @@ public class BoughtFragment extends Fragment {
             getBoughtList();
         }
     }
-
 }

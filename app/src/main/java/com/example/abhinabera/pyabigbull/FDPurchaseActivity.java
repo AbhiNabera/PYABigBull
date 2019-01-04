@@ -254,6 +254,8 @@ public class FDPurchaseActivity extends AppCompatActivity {
         account_ref.addProperty("investment", investment+"");
         account_ref.addProperty("stocks_count", stocks_count);
 
+        transaction.addProperty("name", "Fixed deposit");
+        transaction.addProperty("id", "FD");
         transaction.addProperty("txn_id", txn_id);
         transaction.addProperty("investment", fdamount+"");
         transaction.addProperty("current_value", fdamount+"");
