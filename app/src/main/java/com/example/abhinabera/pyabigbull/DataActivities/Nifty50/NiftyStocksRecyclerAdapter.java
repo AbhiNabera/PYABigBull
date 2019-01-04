@@ -1,13 +1,19 @@
 package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
+<<<<<<< Updated upstream
 import android.content.Context;
+=======
+>>>>>>> Stashed changes
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< Updated upstream
 import android.widget.LinearLayout;
+=======
+>>>>>>> Stashed changes
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,8 +24,13 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
+<<<<<<< Updated upstream
     public List<JsonObject> stockList;
     public Context context;
+=======
+
+    private NiftyStocksData[] itemsData;
+>>>>>>> Stashed changes
 
     public NiftyStocksRecyclerAdapter(Context context, List<JsonObject> stockList) {
         this.stockList = stockList;
@@ -66,7 +77,10 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView companyName, price, volume, boxPrice, boxPercent;
+<<<<<<< Updated upstream
         public LinearLayout stockBox;
+=======
+>>>>>>> Stashed changes
         public RelativeLayout niftyStocksRow;
         public Activity mContext;
 
@@ -77,19 +91,30 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
             volume = (TextView) itemLayoutView.findViewById(R.id.niftyStocksVolume);
             boxPrice = (TextView) itemLayoutView.findViewById(R.id.niftyStocksBoxPrice);
             boxPercent = (TextView) itemLayoutView.findViewById(R.id.niftyStocksBoxPercent);
+<<<<<<< Updated upstream
             stockBox = (LinearLayout) itemLayoutView.findViewById(R.id.niftyStocksBox);
 
             niftyStocksRow = (RelativeLayout) itemLayoutView.findViewById(R.id.nifty);
+=======
+
+            niftyStocksRow = (RelativeLayout) itemLayoutView.findViewById(R.id.niftyStocksRow);
+>>>>>>> Stashed changes
 
             niftyStocksRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(itemLayoutView.getContext(), NiftyStocksIndividual.class);
                     i.putExtra("companyName", companyName.getText().toString());
+<<<<<<< Updated upstream
                     i.putExtra("id", stockList.get(getAdapterPosition()).get("id").getAsString());
                     itemLayoutView.getContext().startActivity(i);
                     //mContext = (Activity) itemLayoutView.getContext();
                     //mContext.overridePendingTransition(R.anim.enter, R.anim.exit);
+=======
+                    itemLayoutView.getContext().startActivity(i);
+                    mContext = (Activity) itemLayoutView.getContext();
+                    mContext.overridePendingTransition(R.anim.enter, R.anim.exit);
+>>>>>>> Stashed changes
                 }
             });
         }
