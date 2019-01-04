@@ -266,6 +266,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
         transaction.addProperty("id", "FD");
         transaction.addProperty("txn_id", txn_id);
         transaction.addProperty("investment", fdamount+"");
+        transaction.addProperty("total_amount", fdamount+"");
         transaction.addProperty("current_value", fdamount+"");
         transaction.addProperty("timestamp", timestamp+"");
         transaction.addProperty("lastupdate", timestamp+"");
@@ -349,7 +350,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
                         for(Map.Entry<String, JsonElement> entry: entrySet) {
 
-                            FD_TOTAL += entry.getValue().getAsJsonObject().get("current_value").getAsDouble();
+                            FD_TOTAL += entry.getValue().getAsJsonObject().get("investment").getAsDouble();
                         }
 
                         fd_total = FD_TOTAL;
@@ -434,7 +435,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                     intent.putExtra("product_type", "fixed_deposit");
                     startActivity(intent);
                     finish();
-                    //overridePendingTransition(R.anim.enter, R.anim.exit);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                 }else {
                     Toast.makeText(FDPurchaseActivity.this, "Intenal server error", Toast.LENGTH_SHORT).show();
                     try {

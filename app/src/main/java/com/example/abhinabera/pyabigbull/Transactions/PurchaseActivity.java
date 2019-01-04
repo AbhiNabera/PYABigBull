@@ -31,6 +31,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +52,8 @@ public class PurchaseActivity extends AppCompatActivity {
     private ApiInterface apiInterface;
 
     private String DATA_URL;
+
+    private double CURRENT_INVESTMENT = 0;
 
     int count = 0;
 
@@ -261,11 +265,11 @@ public class PurchaseActivity extends AppCompatActivity {
             return false;
         }
 
-        if(total_debit > 0.5*Double.parseDouble(userObject.get("data").getAsJsonObject().
+        if((CURRENT_INVESTMENT+total_debit) > 0.5*Double.parseDouble(userObject.get("data").getAsJsonObject().
                 get("start_balance").getAsString().replace(",", ""))) {
 
             new Utility().showDialog("INVALID AMOUNT",
-                    "Total purchase amount must be less than 50% of initial alloted amount(" +
+                    "Total investment must be less than 50% of initial alloted amount(" +
                             userObject.get("data").getAsJsonObject().get("start_balance").getAsString()
                             + ").", PurchaseActivity.this);
 
@@ -627,6 +631,80 @@ public class PurchaseActivity extends AppCompatActivity {
                     userObject = response.body();
 
                     //TODO: set limit amounts
+                    try {
+                        JsonObject fd_ref = userObject.getAsJsonObject("data");
+
+                        if(type.equalsIgnoreCase("nifty")) {
+
+                            fd_ref = userObject.getAsJsonObject("data")
+                                    .getAsJsonObject("stocks_list")
+                                    .getAsJsonObject("bought_items")
+                                    .getAsJsonObject("index");
+
+                        }else if(type.equalsIgnoreCase("commodity")){
+
+                            fd_ref = userObject.getAsJsonObject("data")
+                                    .getAsJsonObject("stocks_list")
+                                    .getAsJsonObject("bought_items")
+                                    .getAsJsonObject("commodity");
+
+                        }else if(type.equalsIgnoreCase("currency")) {
+
+                            fd_ref = userObject.getAsJsonObject("data")
+                                    .getAsJsonObject("stocks_list")
+                                    .getAsJsonObject("bought_items")
+                                    .getAsJsonObject("currency");
+                        }
+
+                        Set<Map.Entry<String, JsonElement>> entrySet = fd_ref.entrySet();
+
+                        CURRENT_INVESTMENT = 0;
+
+                        for(Map.Entry<String, JsonElement> entry: entrySet) {
+
+                            if(entry.getKey().contains("txn")) {
+
+                                if(type.equalsIgnoreCase("commodity")) {
+
+                                    switch (id) {
+
+                                        case "GOLD" :
+                                            if(entry.getKey().contains("GOLD")) {
+                                                CURRENT_INVESTMENT +=
+                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                            }
+                                            break;
+
+                                        case "SILVER" :
+                                            if(entry.getKey().contains("SILVER")) {
+                                                CURRENT_INVESTMENT +=
+                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                            }
+                                            break;
+
+                                        case "CRUDEOIL" :
+                                            if(entry.getKey().contains("CRUDEOIL")) {
+                                                CURRENT_INVESTMENT +=
+                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                            }
+                                            break;
+
+                                    }
+                                } else {
+                                    CURRENT_INVESTMENT +=
+                                            entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                }
+                            }
+                        }
+
+                        Log.d("TOTAL", ""+ CURRENT_INVESTMENT);
+
+                    }catch (NullPointerException e) {
+                        e.printStackTrace();
+                        CURRENT_INVESTMENT = 0;
+                        CURRENT_INVESTMENT = 0;
+                    }
+
                 }else {
                     try {
                         Log.d("Purchase error", response.errorBody().string()+"");

@@ -213,7 +213,7 @@ public class SellActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         setResult(RESULT_OK);
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
@@ -288,21 +288,6 @@ public class SellActivity extends AppCompatActivity {
 
         left_stockinvestment = investmentamt - buyprice*quantity;
 
-        /*
-        total_debit = current_price*quantity + txn_charges*(quantity==0?0:1);
-        acc_bal = aval_balance - total_debit;
-        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
-                .get("investment").getAsString()) + current_price*quantity;
-        stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject()
-                .get("stocks_count").getAsString()) + quantity;
-
-        change = acc_bal + total_investment - Double.parseDouble(userObject.get("data").getAsJsonObject().
-                get("start_balance").getAsString().replace(",", ""));
-        percentchange = (change/Double.parseDouble(userObject.get("data").getAsJsonObject().
-                get("start_balance").getAsString().replace(",", "")))*100;
-*/
-        Log.d("Amounts", ""+current_price+" : "+netreturn+" : "+aval_balance +" : " + total_investment + " : " + current_price + " : " +
-        quantity +" : "+txn_charges+" : "+acc_bal);
     }
 
     public void updateViews() {

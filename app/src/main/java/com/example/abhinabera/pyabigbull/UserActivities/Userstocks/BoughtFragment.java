@@ -126,9 +126,10 @@ public class BoughtFragment extends Fragment {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+        if (/*requestCode == REQUEST_CODE  && */resultCode  == RESULT_OK) {
 
             //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
 
         }else {
 

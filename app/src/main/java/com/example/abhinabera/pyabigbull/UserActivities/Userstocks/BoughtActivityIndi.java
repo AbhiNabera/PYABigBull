@@ -38,7 +38,7 @@ public class BoughtActivityIndi extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<JsonObject> arrayList;
     StocksRecyclerAdapter stocksRecyclerAdapter;
-    int REQUEST_CODE = 1;
+    int REQUEST_CODE = 2;
 
     private double CURRENT_VALUE = 0, INVESTMENT = 0;
 
@@ -47,9 +47,10 @@ public class BoughtActivityIndi extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+        if (/*requestCode == REQUEST_CODE  && */resultCode  == RESULT_OK) {
 
             //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
 
         }else {
             finish();
@@ -149,7 +150,8 @@ public class BoughtActivityIndi extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        setResult(RESULT_OK);
         finish();
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
