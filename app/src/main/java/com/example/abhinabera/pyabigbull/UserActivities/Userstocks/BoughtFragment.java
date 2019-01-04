@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,10 +77,12 @@ public class BoughtFragment extends Fragment {
     CardView niftyCard, goldCard, silverCard, crudeOilCard, currencyCard, fixedDepositCard;
     TextView portfolioValue, accountBal;
 
-    /*TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
+    TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
                 crudeOilCV, crudeOilProfit, crudeOilProfitPer, currencyCV, currencyProfit, currencyProfitPer, fixedDepositCV, fixedDepositProfit,
                 fixedDepositProfitPer;
-*/
+    
+    LinearLayout niftyBox, goldBox, silverBox, crudeOilBox, currencyBox, fixedDepositBox;
+
     ArrayList<JsonObject> arrayList, niftyList, goldList, silverList, crudeoilList, currencyList, fdList;
 
     StocksRecyclerAdapter stocksRecyclerAdapter;
@@ -184,6 +187,32 @@ public class BoughtFragment extends Fragment {
         currencyCard = (CardView) view.findViewById(R.id.currencyCard);
         fixedDepositCard = (CardView) view.findViewById(R.id.fixedDepositCard);
 
+        niftyBox = (LinearLayout) view.findViewById(R.id.niftyBox);
+        goldBox = (LinearLayout) view.findViewById(R.id.goldBox);
+        silverBox = (LinearLayout) view.findViewById(R.id.silverBox);
+        crudeOilBox = (LinearLayout) view.findViewById(R.id.crudeOilBox);
+        currencyBox = (LinearLayout) view.findViewById(R.id.currencyBox);
+        fixedDepositBox = (LinearLayout) view.findViewById(R.id.fixedDepositBox);
+
+        niftyCV = (TextView) view.findViewById(R.id.nifty50CurrentValue);
+        niftyProfit = (TextView) view.findViewById(R.id.niftyBoxProfit);
+        niftyProfitPer = (TextView) view.findViewById(R.id.niftyBoxProfitPercent);
+        goldCV = (TextView) view.findViewById(R.id.goldCurrentValue);
+        goldProfit = (TextView) view.findViewById(R.id.goldBoxProfit);
+        goldProfitPer = (TextView) view.findViewById(R.id.goldBoxProfitPercent);
+        silverCV = (TextView) view.findViewById(R.id.silverCurrentValue);
+        silverProfit = (TextView) view.findViewById(R.id.silverBoxProfit);
+        silverProfitPer = (TextView) view.findViewById(R.id.silverBoxProfitPercent);
+        crudeOilCV = (TextView) view.findViewById(R.id.crudeOilCurrentValue);
+        crudeOilProfit = (TextView) view.findViewById(R.id.crudeOilBoxProfit);
+        crudeOilProfitPer = (TextView) view.findViewById(R.id.crudeOilBoxProfitPercent);
+        currencyCV = (TextView) view.findViewById(R.id.currencyCurrentValue);
+        currencyProfit = (TextView) view.findViewById(R.id.currencyBoxProfit);
+        currencyProfitPer = (TextView) view.findViewById(R.id.currencyBoxProfitPercent);
+        fixedDepositCV = (TextView) view.findViewById(R.id.fixedDepositCurrentValue);
+        fixedDepositProfit = (TextView) view.findViewById(R.id.fixedDepositBoxProfit);
+        fixedDepositProfitPer = (TextView) view.findViewById(R.id.fixedDepositBoxProfitPercent);
+        
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -528,6 +557,65 @@ public class BoughtFragment extends Fragment {
                     portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE+""));
                     accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE+""));
                     
+                    niftyCV.setText(new Utility().getRoundoffData("" + NIFTY_CURRENTVALUE));
+                    goldCV.setText(new Utility().getRoundoffData("" + GOLD_CURRENTVALUE));
+                    silverCV.setText(new Utility().getRoundoffData("" + SILVER_CURRENTVALUE));
+                    crudeOilCV.setText(new Utility().getRoundoffData("" + CRUDEOIL_CURRENTVALUE));
+                    currencyCV.setText(new Utility().getRoundoffData("" + CURRENCY_CURRENTVALUE));
+                    fixedDepositCV.setText(new Utility().getRoundoffData("" + FD_CURRENTVALUE));
+                    
+                    niftyProfit.setText(new Utility().getRoundoffData("" + (NIFTY_CURRENTVALUE - NIFTY_INVESTMENT)));
+                    goldProfit.setText(new Utility().getRoundoffData("" + (GOLD_CURRENTVALUE - GOLD_INVESTMENT)));
+                    silverProfit.setText(new Utility().getRoundoffData("" + (SILVER_CURRENTVALUE - SILVER_INVESTMENT)));
+                    crudeOilProfit.setText(new Utility().getRoundoffData("" + (CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT)));
+                    currencyProfit.setText(new Utility().getRoundoffData("" + (CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT)));
+                    fixedDepositProfit.setText(new Utility().getRoundoffData("" + (FD_CURRENTVALUE - FD_INVESTMENT)));
+
+                    niftyProfitPer.setText(new Utility().getRoundoffData("" + ((NIFTY_CURRENTVALUE - NIFTY_INVESTMENT)/NIFTY_INVESTMENT * 100)) + "%");
+                    goldProfitPer.setText(new Utility().getRoundoffData("" + ((GOLD_CURRENTVALUE - GOLD_INVESTMENT)/GOLD_INVESTMENT * 100))+ "%");
+                    silverProfitPer.setText(new Utility().getRoundoffData("" + ((SILVER_CURRENTVALUE - SILVER_INVESTMENT)/SILVER_INVESTMENT * 100))+ "%");
+                    crudeOilProfitPer.setText(new Utility().getRoundoffData("" + ((CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT)/CRUDEOIL_INVESTMENT * 100))+ "%");
+                    currencyProfitPer.setText(new Utility().getRoundoffData("" + ((CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT)/CURRENCY_INVESTMENT * 100))+ "%");
+                    fixedDepositProfitPer.setText(new Utility().getRoundoffData("" + ((FD_CURRENTVALUE - FD_INVESTMENT)/FD_INVESTMENT * 100))+ "%");
+
+                    if(NIFTY_INVESTMENT == 0){
+                        niftyProfitPer.setText("0.00%");
+                    }
+                    if(GOLD_INVESTMENT == 0){
+                        goldProfitPer.setText("0.00%");
+                    }
+                    if(SILVER_INVESTMENT == 0){
+                        silverProfitPer.setText("0.00%");
+                    }
+                    if(CRUDEOIL_INVESTMENT == 0){
+                        crudeOilProfitPer.setText("0.00%");
+                    }
+                    if(CURRENCY_INVESTMENT == 0){
+                        currencyProfitPer.setText("0.00%");
+                    }
+                    if(FD_INVESTMENT == 0){
+                        fixedDepositProfitPer.setText("0.00%");
+                    }
+                    if (niftyProfit.getText().toString().startsWith("-")){
+                        niftyBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    if (goldProfit.getText().toString().startsWith("-")){
+                        goldBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    if (silverProfit.getText().toString().startsWith("-")){
+                        silverBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    if (crudeOilProfit.getText().toString().startsWith("-")){
+                        crudeOilBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    if (currencyProfit.getText().toString().startsWith("-")){
+                        currencyBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    if (fixedDepositProfit.getText().toString().startsWith("-")){
+                        fixedDepositBox.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    
+
                     //stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {

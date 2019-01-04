@@ -25,7 +25,9 @@ import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.TransactionFDSummaryActivity;
 import com.example.abhinabera.pyabigbull.TransactionSummaryActivity;
+import com.example.abhinabera.pyabigbull.TransactionsFDSellSumActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -85,7 +87,7 @@ public class FDSellActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         purchaseToolbar = (Toolbar) findViewById(R.id.purchaseToolbar);
-        purchaseToolbar.setTitle("BREAK FD");
+        purchaseToolbar.setTitle("REDEEM FD");
 
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
@@ -423,15 +425,15 @@ public class FDSellActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
                     //TODO: go to summary
-                    Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
+                    Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "sell");
                     intent.putExtra("txn_id", txn_id);
-                    intent.putExtra("product_type", product_type);
-                    //startActivity(intent);
+                    intent.putExtra("product_type", "fixed_deposit");
+                    startActivity(intent);
                     finish();
-                    //overridePendingTransition(R.anim.enter, R.anim.exit);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                 }else {
                     Toast.makeText(FDSellActivity.this, "Intenal server error", Toast.LENGTH_SHORT).show();
                     try {
@@ -440,7 +442,7 @@ public class FDSellActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
+                    Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     startActivity(intent);
@@ -455,7 +457,7 @@ public class FDSellActivity extends AppCompatActivity {
                 t.printStackTrace();
                 progressDialog.dismiss();
                 Toast.makeText(FDSellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
+                Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 startActivity(intent);
