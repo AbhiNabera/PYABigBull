@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,14 +24,22 @@ import com.example.abhinabera.pyabigbull.DataActivities.FixedDepositActivity;
 import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Transactions.FDAmtUpdateUtility;
+import com.example.abhinabera.pyabigbull.Transactions.FDPurchaseActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class DataFragment extends Fragment {
 
@@ -39,14 +48,15 @@ public class DataFragment extends Fragment {
 
     Response<JsonObject> nifty50, usd, eur, gbp;
 
-    JsonObject gold, silver, crudeoil;
+    JsonObject gold, silver, crudeoil, userObject;
 
     CardView niftyCard, goldCard, silverCard, crudeoilCard, dollarCard, euroCard, poundCard, fixedDeposit;
 
     TextView niftyDate, goldDate, silverDate, crudeoilDate, dollarDate, euroDate, poundDate,
             nifty50Rate, goldRate, silverRate, crudeoilRate, dollarRate, euroRate, poundRate,
             nifty50BoxRate, goldBoxRate, silverBoxRate, crudeoilBoxRate, dollarBoxRate, euroBoxRate, poundBoxRate,
-            nifty50BoxPercent, goldBoxPercent, silverBoxPercent, crudeoilBoxPercent, dollarBoxPercent, euroBoxPercent, poundBoxPercent, fixedDepositDate;
+            nifty50BoxPercent, goldBoxPercent, silverBoxPercent, crudeoilBoxPercent, dollarBoxPercent, euroBoxPercent,
+            poundBoxPercent, fixedDepositDate, fdinvestment;
 
     LinearLayout nifty50Box, goldBox, silverBox, crudeoilBox, dollarBox, euroBox, poundBox;
 
@@ -66,6 +76,7 @@ public class DataFragment extends Fragment {
                 getEURINR();
                 getGBPINR();
                 getTopCommodity();
+                getFdInvestment();
             }
         },5);
     }
@@ -119,6 +130,7 @@ public class DataFragment extends Fragment {
         euroBoxPercent = (TextView) view.findViewById(R.id.euroBoxPercent);
         poundBoxPercent = (TextView) view.findViewById(R.id.poundBoxPercent);
         fixedDepositDate = (TextView) view.findViewById(R.id.fixedDepositDate);
+        fdinvestment = (TextView) view.findViewById(R.id.fdinvestment);
 
         nifty50Box = (LinearLayout) view.findViewById(R.id.nifty50Box);
         goldBox = (LinearLayout) view.findViewById(R.id.goldBox);
@@ -343,6 +355,12 @@ public class DataFragment extends Fragment {
         }
     }
 
+    public void setFDCard() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        fixedDepositDate.setText(new Utility().getFormattedDate((System.currentTimeMillis()/1000)+""));
+        fdinvestment.setText(new Utility().getRoundoffData(sharedPreferences.getString("total_investment", "0.0")));
+    }
+
     public void getNifty50() {
 
         new NetworkUtility().getNifty50(new NetworkCallback() {
@@ -519,10 +537,62 @@ public class DataFragment extends Fragment {
         });
     }
 
+    public void getFdInvestment() {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        long current_timestamp = Calendar.getInstance().getTime().getTime();
+
+        if(sharedPreferences.getString("nextupdate", null) != null) {
+            if(current_timestamp > Long.parseLong(sharedPreferences.getString("nextupdate", null) )) {
+                Log.d("calling ", "fd update function");
+                getUserAccount();
+            }else{
+                setFDCard();
+            }
+        } else {
+            getUserAccount();
+        }
+    }
+
+    public void getUserAccount() {
+
+        new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
+                getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if(response.isSuccessful()) {
+                    //Log.d("response", response.body()+"");
+                    userObject = response.body();
+
+                    FDAmtUpdateUtility fdAmtUpdateUtility = new FDAmtUpdateUtility();
+                    fdAmtUpdateUtility.executeTransaction(fdAmtUpdateUtility.getUpdatedAmount(userObject),
+                            getActivity(), new FDAmtUpdateUtility.TaskListener() {
+                                @Override
+                                public void onComplete() {
+                                    setFDCard();
+                                }
+                            });
+
+                }else {
+                    try {
+                        Log.d("Fixed deposit error", response.errorBody().string()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void hideSwipeRefresh() {
         if(count == MAXCOUNT) {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-
 }

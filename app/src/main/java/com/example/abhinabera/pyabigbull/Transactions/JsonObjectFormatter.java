@@ -36,7 +36,6 @@ public class JsonObjectFormatter {
 
     public JsonObject pushValue(String key, String data) {
         parent.addProperty(key, data);
-
         return parent;
     }
 

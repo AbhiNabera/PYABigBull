@@ -2,6 +2,7 @@ package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -64,10 +65,13 @@ public class FDPurchaseActivity extends AppCompatActivity {
     double percentchange;
     int stocks_count;
     long timestamp ;
+    long lastupdate;
+    long nextupdate;
     String txn_id;
 
-    double FD_TOTAL;
-    double fd_total;
+    double FD_TOTAL = 0;
+    double fd_total = 0;
+    double TOTAL_AMOUNT = 0;
 
     CountDownTimer countDownTimer;
 
@@ -220,7 +224,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     public void updateAmount() {
 
-        fdamount = 10000 * fdqty; //check if base price is set by admin
+        fdamount = Utility.BASE_AMT * fdqty; //check if base price is set by admin
         acc_balance = avail_balance - fdamount;
         investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString()
                 .replace(",","")) + fdamount;
@@ -247,7 +251,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     public JsonObject setfddata() {
 
-        long nextupdate = getNextUpdae();
+        nextupdate = getNextUpdae();
 
         JsonObject account_ref = userObject.get("data").getAsJsonObject();
 
@@ -268,9 +272,12 @@ public class FDPurchaseActivity extends AppCompatActivity {
         transaction.addProperty("investment", fdamount+"");
         transaction.addProperty("total_amount", fdamount+"");
         transaction.addProperty("current_value", fdamount+"");
+
         transaction.addProperty("timestamp", timestamp+"");
-        transaction.addProperty("lastupdate", timestamp+"");
+        transaction.addProperty("lastupdate", lastupdate+"");
+        transaction.addProperty("starttime", lastupdate+"");
         transaction.addProperty("qty", fdqty+"");
+        transaction.addProperty("firstupdate", ""+nextupdate);
         transaction.addProperty("nextupdate", ""+nextupdate);
 
         txn_history.addProperty("id", "FD");
@@ -299,15 +306,35 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     public long getNextUpdae() {
 
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(timestamp);
+        calendar2.add(Calendar.DAY_OF_YEAR, 1);
+
+        Date date = calendar2.getTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+
+        String next_time = dateFormat.format(date) + " 00:00:00";
+
+        dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
+        try {
+            date = dateFormat.parse(next_time);
+            lastupdate = date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
         Date today = calendar.getTime();
 
         calendar.add(Calendar.DAY_OF_YEAR, 2);
         Date tomorrow = calendar.getTime();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+        dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
-        String next_time = dateFormat.format(tomorrow) + " 00:00:00";
+        next_time = dateFormat.format(tomorrow) + " 00:00:00";
 
         dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
@@ -351,6 +378,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         for(Map.Entry<String, JsonElement> entry: entrySet) {
 
                             FD_TOTAL += entry.getValue().getAsJsonObject().get("investment").getAsDouble();
+                            TOTAL_AMOUNT+= entry.getValue().getAsJsonObject().get("current_value").getAsDouble();
                         }
 
                         fd_total = FD_TOTAL;
@@ -361,12 +389,15 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         e.printStackTrace();
                         FD_TOTAL = 0;
                         fd_total = 0;
+                        TOTAL_AMOUNT = 0;
                     }
 
                     initializeAmount();
                     updateAmount();
                     setViews();
                     statTimer();
+
+                    //new FDAmtUpdateUtility().getUpdatedAmount(userObject);
 
                 }else {
                     try {
@@ -427,6 +458,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
                     //TODO: go to summary
+                    pushDataInSP();
                     Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
@@ -467,5 +499,14 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
+    }
+
+    public void pushDataInSP() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.putString("nextupdate", nextupdate+"");
+        editor.putString("total_investment", (TOTAL_AMOUNT+fdamount) + "");
+        editor.apply();
+        editor.commit();
     }
 }

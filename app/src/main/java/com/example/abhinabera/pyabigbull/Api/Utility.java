@@ -25,7 +25,13 @@ public class Utility {
 
     public static String CURR_GRAPH_URL = "https://www.alphavantage.co";
 
-    public static double MAX_AMT = 1000000;
+    public static double BASE_AMT = 10000;
+
+    public static double INTEREST_RATE_FIRST = 6.00;
+
+    public static double INTEREST_RATE_SECOND = 6.25;
+
+    public static double INTEREST_RATE_THIRD = 6.50;
 
     public static String MyPREF = "PAYBigBullPref";
 

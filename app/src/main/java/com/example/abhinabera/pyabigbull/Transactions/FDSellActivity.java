@@ -2,6 +2,7 @@ package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -77,6 +78,8 @@ public class FDSellActivity extends AppCompatActivity {
     String txn_id;
     long timestamp;
     int left_quantity = 0;
+
+    double TOTAL_AMOUNT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +161,7 @@ public class FDSellActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         setResult(RESULT_OK);
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
@@ -425,6 +428,7 @@ public class FDSellActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
                     //TODO: go to summary
+                    pushDataInSP();
                     Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                     intent.putExtra("success", true);
                     intent.putExtra("data", object.toString());
@@ -467,4 +471,13 @@ public class FDSellActivity extends AppCompatActivity {
         });
     }
 
+    public void pushDataInSP() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.putString("nextupdate", nextupdate+"");
+        editor.putString("total_investment", (Double.parseDouble(sharedPreferences
+                .getString("total_investment", "0")) - current_value) + "");
+        editor.apply();
+        editor.commit();
+    }
 }

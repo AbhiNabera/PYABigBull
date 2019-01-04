@@ -537,7 +537,7 @@ public class BoughtFragment extends Fragment {
                             element.getAsJsonObject().addProperty("txn_amt", 0.0);
                             element.getAsJsonObject().addProperty("total_amount", element.getAsJsonObject().
                                     get("investment").getAsDouble());
-                            element.getAsJsonObject().addProperty("buy_price", "10000");
+                            element.getAsJsonObject().addProperty("buy_price", Utility.BASE_AMT+"");
                             element.getAsJsonObject().addProperty("name", "FD");
                             element.getAsJsonObject().addProperty("id", "FD");
 
