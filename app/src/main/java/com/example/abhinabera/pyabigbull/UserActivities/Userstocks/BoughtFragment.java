@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,7 +65,12 @@ public class BoughtFragment extends Fragment {
 
     SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
+    CardView niftyCard, goldCard, silverCard, crudeOilCard, currencyCard, fixedDepositCard;
     TextView portfolioValue, accountBal;
+
+    TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
+                crudeOilCV, crudeOilProfit, crudeOilProfitPer, currencyCV, currencyProfit, currencyProfitPer, fixedDepositCV, fixedDepositProfit,
+                fixedDepositProfitPer;
 
     ArrayList<JsonObject> arrayList;
 
@@ -132,11 +138,21 @@ public class BoughtFragment extends Fragment {
 
         accountBal = (TextView) view.findViewById(R.id.accountBalance);
         portfolioValue = (TextView) view.findViewById(R.id.portfolioValue);
-        recyclerView = (RecyclerView) view.findViewById(R.id.boughtRecycler);
+        //recyclerView = (RecyclerView) view.findViewById(R.id.boughtRecycler);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList, new StocksRecyclerAdapter.ClickListener() {
+        niftyCard = (CardView) view.findViewById(R.id.niftyCard);
+        goldCard = (CardView) view.findViewById(R.id.goldCard);
+        silverCard = (CardView) view.findViewById(R.id.silverCard);
+        crudeOilCard = (CardView) view.findViewById(R.id.crudeOilCard);
+        currencyCard = (CardView) view.findViewById(R.id.currencyCard);
+        fixedDepositCard = (CardView) view.findViewById(R.id.fixedDepositCard);
+
+
+
+
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        /*stocksRecyclerAdapter = new StocksRecyclerAdapter(getActivity(), arrayList, new StocksRecyclerAdapter.ClickListener() {
             @Override
             public void onItemClick(List<JsonObject> stocks, int position) {
                 Intent i = new Intent(getActivity(), SellActivity.class);
@@ -156,6 +172,7 @@ public class BoughtFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
+        */
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -180,6 +197,51 @@ public class BoughtFragment extends Fragment {
         getGBPINR();
         getUSDINR();
         getStockList();
+
+        niftyCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                i.putExtra("cardName", "NIFTY50");
+                startActivity(i);
+            }
+        });
+
+        goldCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        silverCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                }
+        });
+
+        crudeOilCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        currencyCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                i.putExtra("cardName", "CURRENCY");
+                startActivity(i);
+            }
+        });
+
+        fixedDepositCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -334,7 +396,7 @@ public class BoughtFragment extends Fragment {
                     portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE+""));
                     accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE+""));
                     
-                    stocksRecyclerAdapter.notifyDataSetChanged();
+                    //stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {
                     Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();

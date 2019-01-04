@@ -81,18 +81,27 @@
             android:name=".SellActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UserActivities.Userstocks.BoughtStocksSummaryActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".DataActivities.Currency.CurrencyGraphActivity" android:screenOrientation="landscape"/>
+            android:name=".DataActivities.Currency.CurrencyGraphActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
             android:screenOrientation="portrait" />
-        <activity android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiSale" android:screenOrientation="portrait"/>
-        <activity android:name=".DataActivities.FixedDepositActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".UserActivities.Disclaimer" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".UserActivities.TransactionsHistory.TransactionsHistoryIndiSale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DataActivities.FixedDepositActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.Disclaimer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserActivities.Userstocks.BoughtActivityIndi"
+            android:screenOrientation="portrait" />
+        <activity android:name=".FDPurchaseActivity"></activity>
     </application>
 
 </manifest>

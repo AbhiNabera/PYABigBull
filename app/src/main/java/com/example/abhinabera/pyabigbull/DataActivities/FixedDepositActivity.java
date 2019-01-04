@@ -13,6 +13,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.abhinabera.pyabigbull.DataActivities.Currency.CurrencyActivity;
+import com.example.abhinabera.pyabigbull.FDPurchaseActivity;
+import com.example.abhinabera.pyabigbull.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 
 public class FixedDepositActivity extends AppCompatActivity {
@@ -49,7 +52,12 @@ public class FixedDepositActivity extends AppCompatActivity {
         invest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(FixedDepositActivity.this, FDPurchaseActivity.class);
+                i.putExtra("type", "FIXED DEPOSIT");
+                //i.putExtra("id", purchaseId);
+                //i.putExtra("name", id);
+                startActivity(i);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
     }
