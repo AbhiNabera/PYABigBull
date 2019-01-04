@@ -8,9 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +21,6 @@ import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.SellActivity;
-import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -140,7 +135,7 @@ public class BoughtFragment extends Fragment {
             Intent intent = new Intent("soldFragment");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-
+            getLoadFragmentData();
         }
 
     }
@@ -208,7 +203,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(niftyList) + "");
                     i.putExtra("current_value", NIFTY_CURRENTVALUE);
                     i.putExtra("investment", NIFTY_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });
@@ -223,7 +218,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(goldList) + "");
                     i.putExtra("current_value", GOLD_CURRENTVALUE);
                     i.putExtra("investment", GOLD_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });
@@ -238,7 +233,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(silverList) + "");
                     i.putExtra("current_value", SILVER_CURRENTVALUE);
                     i.putExtra("investment", SILVER_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });
@@ -253,7 +248,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(crudeoilList) + "");
                     i.putExtra("current_value", CRUDEOIL_CURRENTVALUE);
                     i.putExtra("investment", CRUDEOIL_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });
@@ -268,7 +263,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(currencyList) + "");
                     i.putExtra("current_value", CURRENCY_CURRENTVALUE);
                     i.putExtra("investment", CURRENCY_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });
@@ -283,7 +278,7 @@ public class BoughtFragment extends Fragment {
                     i.putExtra("data", gson.toJson(fdList) + "");
                     i.putExtra("current_value", FD_CURRENTVALUE);
                     i.putExtra("investment", FD_INVESTMENT);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_CODE);
                 }
             }
         });

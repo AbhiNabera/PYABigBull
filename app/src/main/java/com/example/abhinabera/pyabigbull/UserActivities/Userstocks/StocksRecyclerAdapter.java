@@ -2,7 +2,6 @@ package com.example.abhinabera.pyabigbull.UserActivities.Userstocks;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.SellActivity;
 import com.google.gson.JsonObject;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -130,6 +129,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
         LinearLayout stockLayout;
         ImageView expand;
         ExpandableLayout expandableLayout;
+        RelativeLayout nextact;
         TextView buyprice, buyquantity, txncharge, investmentamount, changeamount, currentvalue;
 
         public ViewHolder(View itemLayoutView, int viewType) {
@@ -156,11 +156,20 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
 
                 expandableLayout = (ExpandableLayout) itemLayoutView.findViewById(R.id.expandableLayout);
 
+                nextact = (RelativeLayout) itemLayoutView.findViewById(R.id.nextact);
+
                 stockLayout = (LinearLayout) itemLayoutView.findViewById(R.id.stockLayout);
 
                 stockLayout.setVisibility(View.VISIBLE);
 
                 transactionsHistoryRow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clickListener.onItemClick(stocks, getAdapterPosition());
+                    }
+                });
+
+                nextact.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         clickListener.onItemClick(stocks, getAdapterPosition());

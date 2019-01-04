@@ -14,12 +14,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
-import com.example.abhinabera.pyabigbull.PurchaseActivity;
+import com.example.abhinabera.pyabigbull.Transactions.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

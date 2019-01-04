@@ -19,9 +19,7 @@ import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.ApiInterface;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
-import com.example.abhinabera.pyabigbull.DataActivities.Commodity.CommodityActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.Commodity.CommodityGraphActivity;
-import com.example.abhinabera.pyabigbull.PurchaseActivity;
+import com.example.abhinabera.pyabigbull.Transactions.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonElement;
@@ -36,9 +34,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

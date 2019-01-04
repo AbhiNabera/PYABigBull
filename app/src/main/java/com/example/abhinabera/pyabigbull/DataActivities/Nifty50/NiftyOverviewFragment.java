@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +35,6 @@ import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import com.example.abhinabera.pyabigbull.Dashboard.NetworkUtility;
-import com.example.abhinabera.pyabigbull.PurchaseActivity;
-import com.example.abhinabera.pyabigbull.R;
-import com.google.gson.JsonObject;
-
-import java.io.IOException;
 
 import retrofit2.Response;
 

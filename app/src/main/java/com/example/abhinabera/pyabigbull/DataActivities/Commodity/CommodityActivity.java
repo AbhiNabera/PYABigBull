@@ -21,9 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyIndvGraphActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual;
-import com.example.abhinabera.pyabigbull.PurchaseActivity;
+import com.example.abhinabera.pyabigbull.Transactions.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.google.gson.JsonArray;

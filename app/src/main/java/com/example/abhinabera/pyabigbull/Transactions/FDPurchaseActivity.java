@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull;
+package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,15 +22,20 @@ import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
-import com.example.abhinabera.pyabigbull.DataActivities.FixedDepositActivity;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
+import com.example.abhinabera.pyabigbull.R;
+import com.example.abhinabera.pyabigbull.TransactionFDSummaryActivity;
+import com.example.abhinabera.pyabigbull.TransactionSummaryActivity;
+import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -127,6 +132,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //setfddata();
                 if(check()) {
                     txn_id = getTransId();
                     countDownTimer.cancel();
@@ -241,6 +247,8 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     public JsonObject setfddata() {
 
+        long nextupdate = getNextUpdae();
+
         JsonObject account_ref = userObject.get("data").getAsJsonObject();
 
         JsonObjectFormatter objectFormatter = new JsonObjectFormatter(account_ref);
@@ -262,6 +270,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
         transaction.addProperty("timestamp", timestamp+"");
         transaction.addProperty("lastupdate", timestamp+"");
         transaction.addProperty("qty", fdqty+"");
+        transaction.addProperty("nextupdate", ""+nextupdate);
 
         txn_history.addProperty("id", "FD");
         txn_history.addProperty("name", "Fixed deposit");
@@ -285,6 +294,31 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
         return data;
 
+    }
+
+    public long getNextUpdae() {
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_YEAR, 2);
+        Date tomorrow = calendar.getTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+
+        String next_time = dateFormat.format(tomorrow) + " 00:00:00";
+
+        dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
+        try {
+            tomorrow = dateFormat.parse(next_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("timestamp", tomorrow.getTime() + " : " + Calendar.DAY_OF_YEAR);
+
+        return tomorrow.getTime();
     }
 
     public void getUserAccount() {
@@ -409,7 +443,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
+                    Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     startActivity(intent);
@@ -424,7 +458,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 t.printStackTrace();
                 progressDialog.dismiss();
                 Toast.makeText(FDPurchaseActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FDPurchaseActivity.this, TransactionFDSummaryActivity.class);
+                Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 startActivity(intent);

@@ -155,6 +155,18 @@ public class SoldFragment extends Fragment {
                         }
                     }
 
+                    if(response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray().size() !=0) {
+
+                        JsonObject object = new JsonObject();
+                        object.addProperty("TYPE", "fixed_deposit");
+                        arrayList.add(object);
+
+                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray()) {
+                            arrayList.add(element.getAsJsonObject());
+                        }
+                    }
+
+
                     stocksRecyclerAdapter.notifyDataSetChanged();
 
                 }else {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,7 +20,8 @@ import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.SellActivity;
+import com.example.abhinabera.pyabigbull.Transactions.FDSellActivity;
+import com.example.abhinabera.pyabigbull.Transactions.SellActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +41,21 @@ public class BoughtActivityIndi extends AppCompatActivity {
     int REQUEST_CODE = 1;
 
     private double CURRENT_VALUE = 0, INVESTMENT = 0;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+
+            //unsuccessful transaction
+
+        }else {
+            finish();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +102,13 @@ public class BoughtActivityIndi extends AppCompatActivity {
         stocksRecyclerAdapter = new StocksRecyclerAdapter(BoughtActivityIndi.this, arrayList, new StocksRecyclerAdapter.ClickListener() {
             @Override
             public void onItemClick(List<JsonObject> stocks, int position) {
-                Intent i = new Intent(BoughtActivityIndi.this, SellActivity.class);
+                Intent i;
+                if(stocks.get(position).getAsJsonObject()
+                        .get("id").getAsString().equalsIgnoreCase("FD")) {
+                    i = new Intent(BoughtActivityIndi.this, FDSellActivity.class);
+                }else {
+                    i = new Intent(BoughtActivityIndi.this, SellActivity.class);
+                }
                 i.putExtra("data", stocks.get(position).getAsJsonObject()+"");
                 i.putExtra("type", stocks.get(position).getAsJsonObject()
                         .get("type").getAsString());
@@ -97,6 +120,7 @@ public class BoughtActivityIndi extends AppCompatActivity {
                 i.putExtra("investment", INVESTMENT);
                 startActivityForResult(i, REQUEST_CODE);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
+                //finish();
             }
         });
 

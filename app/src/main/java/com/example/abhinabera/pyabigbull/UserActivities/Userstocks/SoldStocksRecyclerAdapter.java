@@ -2,7 +2,6 @@ package com.example.abhinabera.pyabigbull.UserActivities.Userstocks;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
-import com.example.abhinabera.pyabigbull.SellActivity;
 import com.google.gson.JsonObject;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
