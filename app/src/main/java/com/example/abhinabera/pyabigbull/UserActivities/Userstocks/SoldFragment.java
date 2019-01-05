@@ -179,6 +179,7 @@ public class SoldFragment extends Fragment {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                refreshLayout.setRefreshing(false);
             }
         });
     }
