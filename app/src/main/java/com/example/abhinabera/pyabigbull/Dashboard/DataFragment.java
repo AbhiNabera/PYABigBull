@@ -603,4 +603,10 @@ public class DataFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
         return sharedPreferences.getString("total_investment", null);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

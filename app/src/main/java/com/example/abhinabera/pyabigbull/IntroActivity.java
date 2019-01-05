@@ -184,4 +184,10 @@ public class IntroActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

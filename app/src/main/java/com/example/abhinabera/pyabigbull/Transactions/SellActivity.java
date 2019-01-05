@@ -817,4 +817,10 @@ public class SellActivity extends AppCompatActivity {
             setPurchaseData();
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

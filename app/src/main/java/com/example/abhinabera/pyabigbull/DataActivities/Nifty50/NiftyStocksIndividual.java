@@ -381,4 +381,9 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         graphView.getViewport().setScalableY(true);
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

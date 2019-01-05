@@ -1,8 +1,6 @@
-package com.example.abhinabera.pyabigbull.LeaderBoardActivities;
+package com.example.abhinabera.pyabigbull.Dashboard.LeaderBoardActivities;
 
 import android.app.Activity;
-import android.graphics.Movie;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +14,14 @@ import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoardRecyclerAdapter.ViewHolder> {
 
-    ArrayList<LeaderboardObject> boardlist;
+    ArrayList<JsonObject> boardlist;
 
     private Activity activity;
 
-    public LeaderBoardRecyclerAdapter(Activity activity, ArrayList<LeaderboardObject> boardlist) {
+    public LeaderBoardRecyclerAdapter(Activity activity, ArrayList<JsonObject> boardlist) {
         this.boardlist = boardlist;
         this.activity = activity;
     }
@@ -46,12 +43,14 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.userName.setText(boardlist.get(position).getUserName()+"");
+        viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
         viewHolder.userRank.setText((position+1)+"");
-        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position).getChange() +""));
-        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position).getPercentchange()+"")+"%");
+        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position)
+                .get("current_change").getAsString() +""));
+        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position)
+                .get("current_pchange").getAsString()+"")+"%");
 
-        if(boardlist.get(position).getPercentchange()>=0) {
+        if(boardlist.get(position).get("current_pchange").getAsDouble()>=0) {
             viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.greenText));
         }else {
             viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.red));

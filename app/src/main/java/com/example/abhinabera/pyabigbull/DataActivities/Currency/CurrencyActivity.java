@@ -388,4 +388,10 @@ public class CurrencyActivity extends AppCompatActivity {
         graphView.getViewport().setScrollableY(true);
         graphView.getViewport().setScalableY(true);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

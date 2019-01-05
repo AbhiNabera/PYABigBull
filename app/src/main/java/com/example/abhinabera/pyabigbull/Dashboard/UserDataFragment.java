@@ -231,4 +231,10 @@ public class UserDataFragment extends Fragment {
         editor.apply();
         editor.commit();
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

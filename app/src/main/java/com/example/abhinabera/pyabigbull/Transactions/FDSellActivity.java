@@ -102,7 +102,7 @@ public class FDSellActivity extends AppCompatActivity {
         transactionCharges = (TextView) findViewById(R.id.transactionCharges);
         netReturn = (TextView) findViewById(R.id.returns);
         profit = (TextView) findViewById(R.id.stockchange);
-        profitPer = (TextView) findViewById(R.id.netstockchange);
+        profitPer = (TextView) findViewById(R.id.stockchange);
         accBal = (TextView) findViewById(R.id.accountBalance);
         netProfit = (TextView) findViewById(R.id.netstockchange);
         netProfitPer = (TextView) findViewById(R.id.percentnetstockchange);
@@ -233,10 +233,10 @@ public class FDSellActivity extends AppCompatActivity {
         investment.setText(utility.getRoundoffData(investmentamt+""));
         netReturn.setText(utility.getRoundoffData(netreturn+""));
         profit.setText(utility.getRoundoffData(stockchangeamt+""));
-        profitPer.setText(utility.getRoundoffData(percentstockchange+""));
+        profitPer.setText(utility.getRoundoffData(percentstockchange+"")+"%");
         accBal.setText(utility.getRoundoffData(acc_bal+""));
         netProfit.setText(utility.getRoundoffData(netstockchange+""));
-        netProfitPer.setText(utility.getRoundoffData(netpercenttockchange+""));
+        netProfitPer.setText(utility.getRoundoffData(netpercenttockchange+"")+"%");
 
         if(percentstockchange>=0) {
             profit.setTextColor(getResources().getColor(R.color.greenText));
@@ -472,5 +472,11 @@ public class FDSellActivity extends AppCompatActivity {
                 .getString("total_investment", "0")) - current_value) + "");
         editor.apply();
         editor.commit();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

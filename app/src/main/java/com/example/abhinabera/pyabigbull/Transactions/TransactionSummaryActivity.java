@@ -195,4 +195,10 @@ public class TransactionSummaryActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

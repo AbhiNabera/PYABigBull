@@ -90,4 +90,10 @@ public class MainActivity extends AppCompatActivity{
         adapter.addFragment(leaderBoardFragment);
         viewPager.setAdapter(adapter);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

@@ -86,4 +86,9 @@ public class FixedDepositActivity extends AppCompatActivity {
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

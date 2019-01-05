@@ -848,8 +848,12 @@ public class BoughtFragment extends Fragment {
 
     public void hideSwipeRefresh() {
         if(count == MAXCOUNT) {
-            refreshLayout.setRefreshing(false);
-            getBoughtList();
+            if(usd!=null && eur != null && gbp != null && gold != null && silver != null && crudeoil != null && stockList != null) {
+                refreshLayout.setRefreshing(false);
+                getBoughtList();
+            }else {
+                Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

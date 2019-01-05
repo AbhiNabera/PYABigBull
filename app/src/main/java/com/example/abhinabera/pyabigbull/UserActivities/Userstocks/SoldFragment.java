@@ -58,11 +58,10 @@ public class SoldFragment extends Fragment {
 
     @Override
     public void onResume() {
-
+        super.onResume();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
                 new IntentFilter("soldFragment"));
 
-        super.onResume();
     }
 
     @Override

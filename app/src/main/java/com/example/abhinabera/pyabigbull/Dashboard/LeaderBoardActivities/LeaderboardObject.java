@@ -1,4 +1,4 @@
-package com.example.abhinabera.pyabigbull.LeaderBoardActivities;
+package com.example.abhinabera.pyabigbull.Dashboard.LeaderBoardActivities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
