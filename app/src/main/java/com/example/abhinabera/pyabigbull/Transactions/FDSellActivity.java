@@ -452,6 +452,7 @@ public class FDSellActivity extends AppCompatActivity {
                     Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "sell");
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -467,6 +468,7 @@ public class FDSellActivity extends AppCompatActivity {
                 Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
+                intent.putExtra("type", "sell");
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);

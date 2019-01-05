@@ -798,6 +798,7 @@ public class SellActivity extends AppCompatActivity {
                     Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "sell");
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -812,6 +813,7 @@ public class SellActivity extends AppCompatActivity {
                 Toast.makeText(SellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
+                intent.putExtra("type", "sell");
                 intent.putExtra("data", object.toString());
                 startActivity(intent);
                 finish();

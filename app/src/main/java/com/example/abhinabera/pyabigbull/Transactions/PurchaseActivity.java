@@ -802,6 +802,7 @@ public class PurchaseActivity extends AppCompatActivity {
                     Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
+                    intent.putExtra("type", "buy");
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -817,6 +818,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 Intent intent = new Intent(PurchaseActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
+                intent.putExtra("type", "buy");
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);
