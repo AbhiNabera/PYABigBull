@@ -449,7 +449,7 @@ public class FDSellActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
+                    Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "sell");
@@ -465,7 +465,7 @@ public class FDSellActivity extends AppCompatActivity {
                 t.printStackTrace();
                 progressDialog.dismiss();
                 Toast.makeText(FDSellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FDSellActivity.this, TransactionsFDSellSumActivity.class);
+                Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 intent.putExtra("type", "sell");
