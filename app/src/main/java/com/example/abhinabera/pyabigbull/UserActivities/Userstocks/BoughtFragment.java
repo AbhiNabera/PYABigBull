@@ -857,6 +857,7 @@ public class BoughtFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
                 getBoughtList();
             }else {
+                refreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
             }
         }

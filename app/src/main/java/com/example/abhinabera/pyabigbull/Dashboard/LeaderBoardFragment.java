@@ -507,6 +507,7 @@ public class LeaderBoardFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
                 getLeaderboard();
             }else {
+                refreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
             }
         }
