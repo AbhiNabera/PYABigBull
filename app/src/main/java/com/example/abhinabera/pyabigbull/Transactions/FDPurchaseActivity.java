@@ -207,7 +207,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
         avail_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString()
                 .replace(",",""));
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString()
+        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
                 .replace(",",""));
         investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString()
                 .replace(",",""));
@@ -225,7 +225,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
         acc_balance = avail_balance - fdamount;
         investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString()
                 .replace(",","")) + fdamount;
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString()
+        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
                 .replace(",","")) + fdamount;
         stocks_count = Integer.parseInt(userObject.get("data").getAsJsonObject().get("stocks_count").getAsString()
                 .replace(",","")) + fdqty;

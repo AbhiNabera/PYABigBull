@@ -237,6 +237,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
                 .get("investment").getAsString()) + total_debit;
+
         stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject()
                 .get("stocks_count").getAsString()) + quantity;
 

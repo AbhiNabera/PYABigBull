@@ -99,9 +99,12 @@ public class FDAmtUpdateUtility {
         }catch (NullPointerException e) {
             e.printStackTrace();
 
-        }
+            JsonObject data = new JsonObject();
+            data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().substring(3));
+            data.add("Account", object.getAsJsonObject("data"));
 
-        return null;
+            return data;
+        }
     }
 
     public double getSimpleInterest(long noOfDays, JsonElement object) {

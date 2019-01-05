@@ -323,7 +323,7 @@ public class SellActivity extends AppCompatActivity {
             return false;
         }
 
-        if(quantity > stock_count) {
+        if(quantity > INVESTMENT_PACKET.get("qty").getAsInt()) {
             Toast.makeText(SellActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
             return false;
         }

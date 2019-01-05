@@ -50,7 +50,7 @@ public class BoughtFragment extends Fragment {
     private double index_txn_charges, commodity_txn_charges, currency_txn_charges;
 
     int REQUEST_CODE = 1;
-    int PORTFOLIO_VALUE = 0;
+    double PORTFOLIO_VALUE = 0;
     double ACCOUNT_BALANCE = 0;
 
     private double NIFTY_INVESTMENT = 0;
@@ -554,6 +554,7 @@ public class BoughtFragment extends Fragment {
                     }
 
                     PORTFOLIO_VALUE += ACCOUNT_BALANCE;
+
                     portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE+""));
                     accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE+""));
                     
@@ -671,7 +672,6 @@ public class BoughtFragment extends Fragment {
 
                         if(i==3) break;
                     }
-
 
                 }else{
                     try {
