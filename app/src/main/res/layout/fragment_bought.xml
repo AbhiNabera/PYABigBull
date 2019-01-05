@@ -90,18 +90,18 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:gravity="center_vertical|start"
-                        android:layout_marginTop="0dp"
                         android:layout_alignParentRight="true"
-                        android:fontFamily="@font/hammersmithoneregular"
-                        android:padding="5dp"
-                        android:text="Account Balance"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
                         android:drawablePadding="10dp"
+                        android:fontFamily="@font/hammersmithoneregular"
+                        android:gravity="center_vertical|start"
+                        android:padding="5dp"
+                        android:text="Available Balance"
                         android:textColor="#fff"
                         android:textSize="13sp" />
 
@@ -110,7 +110,47 @@
             </LinearLayout>
 
             <View
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/totalValueText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:layout_marginLeft="60dp"
+                    android:padding="5dp"
+                    android:text="Total Value"
+                    android:textColor="#fff"
+                    android:textSize="13sp" />
+
+
+                <TextView
+                    android:id="@+id/totalValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="75dp"
+                    android:fontFamily="@font/hammersmithoneregular"
+                    android:padding="5dp"
+                    android:text="0000000.00"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/colorPrimaryDark"

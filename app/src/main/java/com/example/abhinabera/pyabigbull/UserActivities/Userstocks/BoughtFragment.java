@@ -52,6 +52,7 @@ public class BoughtFragment extends Fragment {
     int REQUEST_CODE = 1;
     double PORTFOLIO_VALUE = 0;
     double ACCOUNT_BALANCE = 0;
+    double TOTAL_VALUE = 0;
 
     private double NIFTY_INVESTMENT = 0;
     private double GOLD_INVESTMENT = 0;
@@ -75,7 +76,7 @@ public class BoughtFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
     CardView niftyCard, goldCard, silverCard, crudeOilCard, currencyCard, fixedDepositCard;
-    TextView portfolioValue, accountBal;
+    TextView portfolioValue, accountBal, totalValue;
 
     TextView niftyCV, niftyProfit, niftyProfitPer, goldCV, goldProfit, goldProfitPer, silverCV, silverProfit, silverProfitPer,
                 crudeOilCV, crudeOilProfit, crudeOilProfitPer, currencyCV, currencyProfit, currencyProfitPer, fixedDepositCV, fixedDepositProfit,
@@ -108,6 +109,7 @@ public class BoughtFragment extends Fragment {
         count = 0;
         //ACCOUNT_BALANCE = 0;
         PORTFOLIO_VALUE = 0;
+        TOTAL_VALUE = 0;
         getTranactionCharges();
         getTopCommodity();
         getEURINR();
@@ -177,6 +179,7 @@ public class BoughtFragment extends Fragment {
 
         accountBal = (TextView) view.findViewById(R.id.accountBalance);
         portfolioValue = (TextView) view.findViewById(R.id.portfolioValue);
+        totalValue = (TextView) view.findViewById(R.id.totalValue);
         //recyclerView = (RecyclerView) view.findViewById(R.id.boughtRecycler);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
@@ -553,10 +556,12 @@ public class BoughtFragment extends Fragment {
                         }
                     }
 
-                    PORTFOLIO_VALUE += ACCOUNT_BALANCE;
+                    //PORTFOLIO_VALUE += ACCOUNT_BALANCE;
+                    TOTAL_VALUE = PORTFOLIO_VALUE + ACCOUNT_BALANCE;
 
                     portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE+""));
                     accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE+""));
+                    totalValue.setText(new Utility().getRoundoffData(TOTAL_VALUE+""));
                     
                     niftyCV.setText(new Utility().getRoundoffData("" + NIFTY_CURRENTVALUE));
                     goldCV.setText(new Utility().getRoundoffData("" + GOLD_CURRENTVALUE));
