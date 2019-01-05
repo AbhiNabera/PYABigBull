@@ -568,6 +568,7 @@ public class SellActivity extends AppCompatActivity {
         }else {
             Toast.makeText(SellActivity.this, "Unexpected error occured. " +
                     "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
             finish();
         }
 
@@ -800,6 +801,7 @@ public class SellActivity extends AppCompatActivity {
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "sell");
                     startActivity(intent);
+                    setResult(RESULT_OK);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
@@ -816,6 +818,7 @@ public class SellActivity extends AppCompatActivity {
                 intent.putExtra("type", "sell");
                 intent.putExtra("data", object.toString());
                 startActivity(intent);
+                setResult(RESULT_OK);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }

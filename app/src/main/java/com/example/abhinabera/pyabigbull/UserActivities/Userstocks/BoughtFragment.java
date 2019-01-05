@@ -635,6 +635,7 @@ public class BoughtFragment extends Fragment {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -852,6 +853,7 @@ public class BoughtFragment extends Fragment {
     }
 
     public void hideSwipeRefresh() {
+        Log.d("count", ""+count);
         if(count == MAXCOUNT) {
             if(usd!=null && eur != null && gbp != null && gold != null && silver != null && crudeoil != null && stockList != null) {
                 refreshLayout.setRefreshing(false);

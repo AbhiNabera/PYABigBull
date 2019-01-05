@@ -392,6 +392,7 @@ public class FDSellActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     Toast.makeText(FDSellActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
                     finish();
                 }
                 progressDialog.dismiss();
@@ -402,6 +403,7 @@ public class FDSellActivity extends AppCompatActivity {
                 t.printStackTrace();
                 progressDialog.dismiss();
                 Toast.makeText(FDSellActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -454,6 +456,7 @@ public class FDSellActivity extends AppCompatActivity {
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "sell");
                     startActivity(intent);
+                    setResult(RESULT_OK);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
@@ -470,6 +473,7 @@ public class FDSellActivity extends AppCompatActivity {
                 intent.putExtra("data", object.toString());
                 intent.putExtra("type", "sell");
                 startActivity(intent);
+                setResult(RESULT_OK);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }

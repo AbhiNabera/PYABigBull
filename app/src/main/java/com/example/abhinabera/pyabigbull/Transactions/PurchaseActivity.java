@@ -496,6 +496,7 @@ public class PurchaseActivity extends AppCompatActivity {
         }else {
             Toast.makeText(PurchaseActivity.this, "Unexpected error occured. " +
                     "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+            setPurchaseData();
             finish();
         }
 
@@ -804,6 +805,7 @@ public class PurchaseActivity extends AppCompatActivity {
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "buy");
                     startActivity(intent);
+                    setResult(RESULT_OK);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
@@ -819,6 +821,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 intent.putExtra("type", "buy");
+                setResult(RESULT_OK);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);
