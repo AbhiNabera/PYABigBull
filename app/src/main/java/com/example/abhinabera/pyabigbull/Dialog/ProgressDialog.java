@@ -9,13 +9,18 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.R;
 
+import cdflynn.android.library.checkview.CheckView;
+
 
 public class ProgressDialog extends DialogFragment {
 
+    LinearLayout checkLayout;
+    CheckView checkView;
     AlertDialog Adialog;
     OptionSelectListener optionSelectListener;
 
@@ -38,10 +43,11 @@ public class ProgressDialog extends DialogFragment {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.progress_dialog_box, null);
 
+        checkLayout = (LinearLayout) dialogView.findViewById(R.id.layoutsuccess);
+        checkView = (CheckView) dialogView.findViewById(R.id.check);
         TextView messageTv = (TextView) dialogView.findViewById(R.id.dialog_message);
 
         messageTv.setText(message);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Adialog = builder.setView(dialogView).create();
@@ -50,5 +56,10 @@ public class ProgressDialog extends DialogFragment {
         Adialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Adialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return Adialog;
+    }
+
+    public void check() {
+        checkLayout.setVisibility(View.VISIBLE);
+        checkView.check();
     }
 }

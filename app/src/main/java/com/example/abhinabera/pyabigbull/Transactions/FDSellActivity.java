@@ -416,7 +416,7 @@ public class FDSellActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
 
                 if(response.isSuccessful()) {
                     Log.d("data", ""+response.body());
@@ -428,9 +428,19 @@ public class FDSellActivity extends AppCompatActivity {
                     intent.putExtra("type", "sell");
                     intent.putExtra("txn_id", txn_id);
                     intent.putExtra("product_type", "fixed_deposit");
-                    startActivity(intent);
-                    finish();
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                    progressDialog.check();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            startActivity(intent);
+                            finish();
+                            overridePendingTransition(R.anim.enter, R.anim.exit);
+                        }
+                    },2000);
+
                 }else {
                     Toast.makeText(FDSellActivity.this, "Intenal server error", Toast.LENGTH_SHORT).show();
                     try {

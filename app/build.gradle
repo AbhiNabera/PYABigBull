@@ -47,6 +47,7 @@ dependencies {
 
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.cdflynn:checkview:v1.1'
 
     implementation 'com.jjoe64:graphview:4.2.2'
 }

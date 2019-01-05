@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -117,6 +118,21 @@ public class Utility {
         }catch (IllegalStateException e) {
             e.printStackTrace();
         }
+    }
+
+    public ProgressDialog showFragmentDialog(String msg, FragmentActivity activity){
+        ProgressDialog progressDialog = new ProgressDialog();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("dialog_msg", msg);
+        progressDialog.setArguments(bundle);
+        try {
+            progressDialog.show(activity.getSupportFragmentManager(), "1234");
+        }catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        return progressDialog;
     }
 
     public static boolean isOnline(Context context) {

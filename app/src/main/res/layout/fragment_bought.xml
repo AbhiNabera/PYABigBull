@@ -264,7 +264,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="1dp"
                         android:alpha="1"
                         android:background="#fff"
                         android:layout_below="@+id/niftyCard"
@@ -357,7 +357,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="1dp"
                         android:layout_below="@+id/goldCard"
                         android:alpha="1"
                         android:background="#fff"
@@ -451,7 +451,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="1dp"
                         android:layout_below="@+id/silverCard"
                         android:alpha="1"
                         android:background="#fff"
@@ -545,7 +545,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="1dp"
                         android:layout_below="@+id/crudeOilCard"
                         android:alpha="1"
                         android:background="#fff"
@@ -639,7 +639,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="1dp"
                         android:layout_below="@id/currencyCard"
                         android:alpha="1"
                         android:background="#fff"
@@ -731,8 +731,6 @@
             </android.support.v4.widget.NestedScrollView>
 
         </LinearLayout>
-
-
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -191,7 +191,7 @@ public class LeaderBoardFragment extends Fragment {
 
                                 long endtime = System.currentTimeMillis();
 
-                                Log.d("time elasped", "" + endtime);
+                                Log.d("time elasped", "" + (endtime - timestart));
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override

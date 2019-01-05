@@ -2,11 +2,15 @@ package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -32,9 +36,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FDAmtUpdateUtility {
 
-    Activity activity;
+    FragmentActivity activity;
 
     double TOTAL_AMOUNT = 0;
+
+    ProgressDialog progressDialog;
 
     long timestamp;
     long lastupdate;
@@ -52,6 +58,14 @@ public class FDAmtUpdateUtility {
 
         JsonObjectFormatter jsonObjectFormatter = new JsonObjectFormatter(object.getAsJsonObject("data"));
 
+        double avail_bal  = object.getAsJsonObject("data").get("avail_balance").getAsDouble();
+        double change = object.getAsJsonObject("data").get("change").getAsDouble();
+        double pchange = object.getAsJsonObject("data").get("percentchange").getAsDouble();
+        double shares_price = object.getAsJsonObject("data").get("shares_price").getAsDouble();
+        double start_balance = object.getAsJsonObject("data").get("start_balance").getAsDouble();
+
+        double SI_CHANGE = 0;
+
         try {
             JsonObject fd_ref = object.getAsJsonObject("data")
                     //.getAsJsonObject("Account")
@@ -65,6 +79,10 @@ public class FDAmtUpdateUtility {
 
             for(Map.Entry<String, JsonElement> entry: entrySet) {
 
+                double prevcurrent_val = entry.getValue().getAsJsonObject().get("current_value").getAsDouble();
+
+                Log.d("prev_current_val", ""+prevcurrent_val);
+
                 starttime = entry.getValue().getAsJsonObject().get("starttime").getAsLong();
                 timestamp = entry.getValue().getAsJsonObject().get("timestamp").getAsLong();
                 lastupdate = entry.getValue().getAsJsonObject().get("lastupdate").getAsLong();
@@ -73,6 +91,12 @@ public class FDAmtUpdateUtility {
 
                 double SI = getSimpleInterest(getTotalDayCount(current_timestamp, starttime), entry.getValue());
                 double current_value = entry.getValue().getAsJsonObject().get("investment").getAsDouble() + SI;
+
+                Log.d("current_val", ""+current_value);
+
+                SI_CHANGE += (current_value - prevcurrent_val);
+
+                Log.d("SI_CHANGE", ""+SI_CHANGE);
 
                 lastupdate = getLastUpdate();
                 nextupdate = getNextUpdate();
@@ -89,6 +113,17 @@ public class FDAmtUpdateUtility {
                 TOTAL_AMOUNT += current_value;
 
             }
+
+            avail_bal += SI_CHANGE;
+            change += SI_CHANGE;
+
+            pchange = ((avail_bal + shares_price - start_balance) / start_balance ) * 100;
+
+            Log.d("values", "avail: " + avail_bal + " : change : "+ change + ": pchange :" + pchange);
+
+            object.getAsJsonObject("data").addProperty("avail_balance", avail_bal + "");
+            object.getAsJsonObject("data").addProperty("change", change + "");
+            object.getAsJsonObject("data").addProperty("percentchange", pchange + "");
 
             JsonObject data = new JsonObject();
             data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().substring(3));
@@ -185,36 +220,45 @@ public class FDAmtUpdateUtility {
         return today.getTime();
     }
 
-    public void executeTransaction(JsonObject object, Activity activity, TaskListener taskListener) {
+    public void executeTransaction(JsonObject object, FragmentActivity activity, TaskListener taskListener) {
 
         this.activity = activity;
 
-        new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        try {
+            progressDialog = new Utility().showFragmentDialog("Please wait for fd updation to complete.", activity);
+            progressDialog.setCancelable(false);
 
-                if(response.isSuccessful()) {
-                    Log.d("data", ""+response.body());
-                    //TODO: go to summary
-                    pushDataInSP(activity);
-                    taskListener.onComplete();
-                }else {
-                    Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
-                    try {
-                        Log.d("txn error", ""+response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                    if (response.isSuccessful()) {
+                        Log.d("data", "" + response.body());
+                        //TODO: go to summary
+                        pushDataInSP(activity);
+                        progressDialog.dismiss();
+                        taskListener.onComplete();
+                    } else {
+                        Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
+                        try {
+                            Log.d("txn error", "" + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
+
                 }
 
-            }
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void pushDataInSP(Activity activity) {
