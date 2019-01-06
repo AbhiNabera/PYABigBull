@@ -22,41 +22,26 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/firstText"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/termsAndConditionsToolbarParent"
-        android:text="1. The game is only for fun and has no commercial or legal liability."
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/hammersmithone"
-        android:textSize="18sp"
-        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@id/termsAndConditionsToolbarParent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/secondText"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/firstText"
-        android:text="2. Admin has all the rights to remove or add any member."
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/hammersmithone"
-        android:textSize="18sp"
-        />
+        <TextView
+            android:id="@+id/firstText"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/termsAndConditionsToolbarParent"
+            android:text="@string/playing_conditions"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/hammersmithone"
+            android:textSize="18sp"
+            />
 
-    <TextView
-        android:id="@+id/thirdText"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/secondText"
-        android:text="3. The decision taken by the admin will be final in all cases."
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/hammersmithone"
-        android:textSize="18sp"
-        />
+    </ScrollView>
+
+
 
 </RelativeLayout>

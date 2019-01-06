@@ -257,6 +257,7 @@
                                     android:gravity="center_vertical"
                                     android:layout_weight="1"
                                     android:layout_width="wrap_content"
+                                    android:visibility="gone"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
                                     android:drawableLeft="@drawable/investment"
@@ -267,7 +268,7 @@
                                     android:textSize="18sp" />
 
                                 <View
-                                    android:visibility="invisible"
+                                    android:visibility="gone"
                                     android:layout_marginTop="15dp"
                                     android:layout_marginRight="10dp"
                                     android:layout_marginBottom="15dp"
@@ -280,6 +281,7 @@
                                     android:id="@+id/transactionsHistoryText"
                                     android:gravity="center_vertical"
                                     android:layout_weight="1"
+                                    android:layout_marginTop="15dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
@@ -306,10 +308,10 @@
                                     android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:drawableLeft="@drawable/termsandcondition"
+                                    android:layout_marginLeft="23dp"
+                                    android:drawableLeft="@drawable/disclaimer"
                                     android:drawablePadding="10dp"
-                                    android:text="Terms and Conditions"
+                                    android:text=" Playing Conditions"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />
@@ -330,10 +332,10 @@
                                     android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="23dp"
-                                    android:drawableLeft="@drawable/disclaimer"
+                                    android:layout_marginLeft="20dp"
+                                    android:drawableLeft="@drawable/termsandcondition"
                                     android:drawablePadding="10dp"
-                                    android:text=" Disclaimer"
+                                    android:text="Disclaimer"
                                     android:textColor="#b9b6b6"
                                     android:fontFamily="@font/hammersmithone"
                                     android:textSize="18sp" />

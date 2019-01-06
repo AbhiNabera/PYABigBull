@@ -134,9 +134,9 @@ public class NiftyOverviewFragment extends Fragment {
         lastChange.setText(""+new Utility().getRoundoffData(object.get("change").getAsString()) + "(" + new Utility().getRoundoffData(object.get("percentchange").getAsString()) +"%)");
 
         if(Double.parseDouble(object.get("percentchange").getAsString()+"")>=0){
-            lastChange.setTextColor(getResources().getColor(R.color.greenText));
+            lastChange.setTextColor(getActivity().getResources().getColor(R.color.greenText));
         }else{
-            lastChange.setTextColor(getResources().getColor(R.color.red));
+            lastChange.setTextColor(getActivity().getResources().getColor(R.color.red));
         }
 
         openPrice.setText(""+new Utility().getRoundoffData(object.get("open").getAsString()));
@@ -298,15 +298,15 @@ public class NiftyOverviewFragment extends Fragment {
         graphView.getViewport().setScrollableY(false);
         graphView.getViewport().setScalableY(false);
 
-        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(android.R.color.white));
-        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(android.R.color.white));
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getActivity().getResources().getColor(android.R.color.white));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getActivity().getResources().getColor(android.R.color.white));
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
         graphView.getGridLabelRenderer().setNumVerticalLabels(10);
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        graphView.getGridLabelRenderer().setTextSize(getResources().getDimension(R.dimen.smallGraphTextSize));
+        graphView.getGridLabelRenderer().setTextSize(getActivity().getResources().getDimension(R.dimen.smallGraphTextSize));
 
-        series.setColor(getResources().getColor(R.color.greenText));
-        series.setBackgroundColor(getResources().getColor(R.color.greenTextAlpha));
+        series.setColor(getActivity().getResources().getColor(R.color.greenText));
+        series.setBackgroundColor(getActivity().getResources().getColor(R.color.greenTextAlpha));
         series.setDrawBackground(true);
         series.setThickness(2);
         series.setAnimated(true);
@@ -315,8 +315,8 @@ public class NiftyOverviewFragment extends Fragment {
     public void setUpBlankChart() {
 
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
-        graphView.getGridLabelRenderer().setVerticalLabelsColor(getResources().getColor(R.color.colorPrimaryDark));
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         graphView.removeAllSeries();
     }

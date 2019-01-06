@@ -250,9 +250,9 @@ public class DataFragment extends Fragment {
         String pchange = utility.getRoundoffData(object.get("percentchange").getAsString());
         nifty50BoxPercent.setText(pchange+"%");
         if(Double.parseDouble(pchange)>=0) {
-            nifty50Box.setBackgroundColor(getResources().getColor(R.color.greenText));
+            nifty50Box.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            nifty50Box.setBackgroundColor(getResources().getColor(R.color.red));
+            nifty50Box.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -267,9 +267,9 @@ public class DataFragment extends Fragment {
         goldBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
-            goldBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            goldBox.setBackgroundColor(getResources().getColor(R.color.red));
+            goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -284,9 +284,9 @@ public class DataFragment extends Fragment {
         silverBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
-            silverBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            silverBox.setBackgroundColor(getResources().getColor(R.color.red));
+            silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -301,9 +301,9 @@ public class DataFragment extends Fragment {
         crudeoilBoxPercent.setText("" + pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
-            crudeoilBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            crudeoilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            crudeoilBox.setBackgroundColor(getResources().getColor(R.color.red));
+            crudeoilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -319,9 +319,9 @@ public class DataFragment extends Fragment {
 
 
         if(Double.parseDouble(pchange)>=0) {
-            dollarBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            dollarBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            dollarBox.setBackgroundColor(getResources().getColor(R.color.red));
+            dollarBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -337,9 +337,9 @@ public class DataFragment extends Fragment {
 
 
         if(Double.parseDouble(pchange)>=0) {
-            euroBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            euroBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            euroBox.setBackgroundColor(getResources().getColor(R.color.red));
+            euroBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 
@@ -354,9 +354,9 @@ public class DataFragment extends Fragment {
         poundBoxPercent.setText(pchange+"%");
 
         if(Double.parseDouble(pchange)>=0) {
-            poundBox.setBackgroundColor(getResources().getColor(R.color.greenText));
+            poundBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
         }else {
-            poundBox.setBackgroundColor(getResources().getColor(R.color.red));
+            poundBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
         }
     }
 

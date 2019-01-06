@@ -3,12 +3,18 @@ package com.example.abhinabera.pyabigbull.Dashboard;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.abhinabera.pyabigbull.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -19,6 +25,7 @@ public class MainActivity extends AppCompatActivity{
     DataFragment dataFragment;
     UserDataFragment userDataFragment;
     LeaderBoardFragment leaderBoardFragment;
+    PortofolioFragment portofolioFragment;
     MenuItem prevMenuItem;
 
     @Override
@@ -39,11 +46,14 @@ public class MainActivity extends AppCompatActivity{
                             case R.id.navigation_data:
                                 viewPager.setCurrentItem(0);
                                 break;
-                            case R.id.navigation_userdata:
+                            case R.id.navigation_portfolio:
                                 viewPager.setCurrentItem(1);
                                 break;
-                            case R.id.navigation_leaderboard:
+                            case R.id.navigation_userdata:
                                 viewPager.setCurrentItem(2);
+                                break;
+                            case R.id.navigation_leaderboard:
+                                viewPager.setCurrentItem(3);
                                 break;
                         }
                         return false;
@@ -78,16 +88,20 @@ public class MainActivity extends AppCompatActivity{
         });
 
         setupViewPager(viewPager);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         dataFragment = new DataFragment();
+        portofolioFragment = new PortofolioFragment();
         userDataFragment=new UserDataFragment();
         leaderBoardFragment = new LeaderBoardFragment();
         adapter.addFragment(dataFragment);
+        adapter.addFragment(portofolioFragment);
         adapter.addFragment(userDataFragment);
         adapter.addFragment(leaderBoardFragment);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         viewPager.setAdapter(adapter);
     }
 
@@ -95,5 +109,28 @@ public class MainActivity extends AppCompatActivity{
     public void onDestroy(){
         super.onDestroy();
         Runtime.getRuntime().gc();
+    }
+
+    private static class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
+
     }
 }

@@ -7,6 +7,11 @@
         android:title="Live" />
 
     <item
+        android:id="@+id/navigation_portfolio"
+        android:icon="@drawable/ic_bottom_portfolio"
+        android:title="Portfolio" />
+
+    <item
         android:id="@+id/navigation_userdata"
         android:icon="@drawable/ic_bottom_userdata"
         android:title="User" />

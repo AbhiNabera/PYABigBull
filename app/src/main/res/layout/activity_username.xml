@@ -44,9 +44,11 @@
                 android:background="@drawable/border"
                 android:drawableLeft="@drawable/ic_action_user"
                 android:drawablePadding="10dp"
+                android:singleLine="true"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:hint="Enter full name"
                 android:textAllCaps="true"
+                android:inputType="textCapCharacters"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />
 

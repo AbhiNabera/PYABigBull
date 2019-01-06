@@ -18,10 +18,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.example.abhinabera.pyabigbull.Dashboard.ViewPagerAdapter;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyOverviewFragment;
-import com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksFragment;
 import com.example.abhinabera.pyabigbull.R;
 
 import java.util.ArrayList;

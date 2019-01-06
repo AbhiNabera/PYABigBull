@@ -221,9 +221,9 @@ public class LeaderBoardFragment extends Fragment {
                                                 .get("current_pchange").getAsDouble() + "") + "%");
 
                                         if (user_object.get("current_change").getAsDouble() >= 0) {
-                                            linearLayout.setBackgroundColor(getResources().getColor(R.color.greenText));
+                                            linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                                         } else {
-                                            linearLayout.setBackgroundColor(getResources().getColor(R.color.red));
+                                            linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                                         }
                                     }
                                 });

@@ -175,7 +175,7 @@ public class BoughtFragment extends Fragment {
         currency = new HashMap<>();
         commodity = new HashMap<>();
 
-        ACCOUNT_BALANCE = Double.parseDouble(getActivity().getIntent().getStringExtra("acc_bal"));
+        //ACCOUNT_BALANCE = Double.parseDouble(getActivity().getIntent().getStringExtra("acc_bal"));
 
         accountBal = (TextView) view.findViewById(R.id.accountBalance);
         portfolioValue = (TextView) view.findViewById(R.id.portfolioValue);
