@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Transactions.PurchaseActivity;
@@ -203,45 +204,60 @@ public class CommodityActivity extends AppCompatActivity {
     }
 
     public void setCommodityCard() {
-        JsonElement element = jsonObjects.get(pos);
-        lastUpdate.setText(element.getAsJsonObject().get("ent_date").getAsString());
-        volume.setText(element.getAsJsonObject().get("volume").getAsString());
-        lastChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("change").getAsString()) + "(" +
-                new Utility().getRoundoffData(element.getAsJsonObject().get("percentchange").getAsString().replace(",","")) + "%)");
-        lastPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("lastprice").getAsString().replace(",","")));
 
-        bidPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("bidprice").getAsString().replace(",", "")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("bidqty").getAsString() + ")");
-        offerPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("offerprice").getAsString().replace(",","")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("offerqty").getAsString() + ")");
+        if(jsonObjects.get(pos).getAsJsonObject().getAsJsonObject("comd_details")!=null) {
 
-        openInterest.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("open_int").getAsString().replace(",","")));
-        OIChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("oi_change").getAsString().replace(",","")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("oi_percchg").getAsString() + "%)");
-        highPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("high").getAsString().replace(",","")));
-        lowPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("low").getAsString().replace(",","")));
-        open.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("open").getAsString().replace(",","")));
-        previousClose.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("prev_close").getAsString().replace(",","")));
+            JsonElement element = jsonObjects.get(pos);
+            lastUpdate.setText(element.getAsJsonObject().get("ent_date").getAsString());
+            volume.setText(element.getAsJsonObject().get("volume").getAsString());
+            lastChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("change").getAsString()) + "(" +
+                    new Utility().getRoundoffData(element.getAsJsonObject().get("percentchange").getAsString().replace(",", "")) + "%)");
+            lastPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("lastprice").getAsString().replace(",", "")));
 
-        if(Double.parseDouble(element.getAsJsonObject().get("percentchange").getAsString()+"")>=0){
-            lastChange.setTextColor(getResources().getColor(R.color.greenText));
-        }else{
-            lastChange.setTextColor(getResources().getColor(R.color.red));
-        }
+            bidPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("bidprice").getAsString().replace(",", "")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("bidqty").getAsString() + ")");
+            offerPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("offerprice").getAsString().replace(",", "")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("offerqty").getAsString() + ")");
 
-        if(Double.parseDouble(element.getAsJsonObject().get("comd_details").getAsJsonObject()
-                .get("oi_percchg").getAsString()+"")>=0){
-            OIChange.setTextColor(getResources().getColor(R.color.greenText));
-        }else{
-            OIChange.setTextColor(getResources().getColor(R.color.red));
+            openInterest.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("open_int").getAsString().replace(",", "")));
+            OIChange.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("oi_change").getAsString().replace(",", "")) + "(" + element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("oi_percchg").getAsString() + "%)");
+            highPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("high").getAsString().replace(",", "")));
+            lowPrice.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("low").getAsString().replace(",", "")));
+            open.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("open").getAsString().replace(",", "")));
+            previousClose.setText(new Utility().getRoundoffData(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("prev_close").getAsString().replace(",", "")));
+
+            if (Double.parseDouble(element.getAsJsonObject().get("percentchange").getAsString() + "") >= 0) {
+                lastChange.setTextColor(getResources().getColor(R.color.greenText));
+            } else {
+                lastChange.setTextColor(getResources().getColor(R.color.red));
+            }
+
+            if (Double.parseDouble(element.getAsJsonObject().get("comd_details").getAsJsonObject()
+                    .get("oi_percchg").getAsString() + "") >= 0) {
+                OIChange.setTextColor(getResources().getColor(R.color.greenText));
+            } else {
+                OIChange.setTextColor(getResources().getColor(R.color.red));
+            }
+
+        } else {
+
+            pos = pos + 1;
+            commodityDateSpinner.setSelection(pos);
+            if(pos < jsonObjects.size()) {
+                setCommodityCard();
+            }else {
+                finish();
+                Toast.makeText(CommodityActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

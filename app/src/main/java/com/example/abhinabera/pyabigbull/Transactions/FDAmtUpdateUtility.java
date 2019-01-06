@@ -114,6 +114,9 @@ public class FDAmtUpdateUtility {
 
             }
 
+            //no change in si: return null
+            if(SI_CHANGE == 0 ) return null;
+
             avail_bal += SI_CHANGE;
             change += SI_CHANGE;
 
