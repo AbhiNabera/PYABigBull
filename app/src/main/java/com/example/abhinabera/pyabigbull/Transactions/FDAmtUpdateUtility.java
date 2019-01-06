@@ -134,11 +134,11 @@ public class FDAmtUpdateUtility {
         }catch (NullPointerException e) {
             e.printStackTrace();
 
-            JsonObject data = new JsonObject();
-            data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().substring(3));
-            data.add("Account", object.getAsJsonObject("data"));
+            //JsonObject data = new JsonObject();
+            //data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().substring(3));
+            //data.add("Account", object.getAsJsonObject("data"));
 
-            return data;
+            return null;
         }
     }
 
@@ -222,42 +222,45 @@ public class FDAmtUpdateUtility {
 
     public void executeTransaction(JsonObject object, FragmentActivity activity, TaskListener taskListener) {
 
-        this.activity = activity;
+        if(object!=null) {
 
-        try {
-            progressDialog = new Utility().showFragmentDialog("Please wait for fd updation to complete.", activity);
-            progressDialog.setCancelable(false);
+            this.activity = activity;
 
-            new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            try {
+                progressDialog = new Utility().showFragmentDialog("Please wait for fd updation to complete.", activity);
+                progressDialog.setCancelable(false);
 
-                    if (response.isSuccessful()) {
-                        Log.d("data", "" + response.body());
-                        //TODO: go to summary
-                        pushDataInSP(activity);
-                        progressDialog.dismiss();
-                        taskListener.onComplete();
-                    } else {
-                        Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
-                        try {
-                            Log.d("txn error", "" + response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                new RetrofitClient().getInterface().performTransaction(object).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                        if (response.isSuccessful()) {
+                            Log.d("data", "" + response.body());
+                            //TODO: go to summary
+                            pushDataInSP(activity);
+                            progressDialog.dismiss();
+                            taskListener.onComplete();
+                        } else {
+                            Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
+                            try {
+                                Log.d("txn error", "" + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+
                     }
 
-                }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(activity, "error occured while updating", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
