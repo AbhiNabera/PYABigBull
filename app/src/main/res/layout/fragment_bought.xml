@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <RelativeLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -124,11 +124,12 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
                     android:id="@+id/totalValueText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/hammersmithoneregular"
-                    android:layout_marginLeft="60dp"
                     android:padding="5dp"
                     android:text="Total Value"
                     android:textColor="#fff"
@@ -136,10 +137,11 @@
 
 
                 <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
                     android:id="@+id/totalValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="75dp"
                     android:fontFamily="@font/hammersmithoneregular"
                     android:padding="5dp"
                     android:text="0000000.00"
@@ -266,7 +268,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="1dp"
-                        android:alpha="1"
+                        android:alpha="1dp"
                         android:background="#fff"
                         android:layout_below="@+id/niftyCard"
                         android:clickable="true"
@@ -732,6 +734,6 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
 </LinearLayout>

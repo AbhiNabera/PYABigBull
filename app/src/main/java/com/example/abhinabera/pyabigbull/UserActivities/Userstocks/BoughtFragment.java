@@ -603,22 +603,22 @@ public class BoughtFragment extends Fragment {
                         fixedDepositProfitPer.setText("0.00%");
                     }
                     if (niftyProfit.getText().toString().startsWith("-")){
-                        niftyBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     if (goldProfit.getText().toString().startsWith("-")){
-                        goldBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     if (silverProfit.getText().toString().startsWith("-")){
-                        silverBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     if (crudeOilProfit.getText().toString().startsWith("-")){
-                        crudeOilBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     if (currencyProfit.getText().toString().startsWith("-")){
-                        currencyBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     if (fixedDepositProfit.getText().toString().startsWith("-")){
-                        fixedDepositBox.setBackgroundColor(getResources().getColor(R.color.red));
+                        fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                     }
                     
 
