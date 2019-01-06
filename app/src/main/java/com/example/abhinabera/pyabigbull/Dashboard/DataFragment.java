@@ -230,11 +230,13 @@ public class DataFragment extends Fragment {
                 getEURINR();
                 getGBPINR();
                 getTopCommodity();
-                getFdInvestment();
+                //getFdInvestment();
+                getUserAccount();
             }
         });
 
-        getFdInvestment();
+        //getFdInvestment();
+        getUserAccount();
     }
 
     public void setNiftyCard() {

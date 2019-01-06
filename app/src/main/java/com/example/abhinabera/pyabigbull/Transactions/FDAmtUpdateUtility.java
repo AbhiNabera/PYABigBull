@@ -65,6 +65,7 @@ public class FDAmtUpdateUtility {
         double start_balance = object.getAsJsonObject("data").get("start_balance").getAsDouble();
 
         double SI_CHANGE = 0;
+        //double TOTAL_AMOUNT = 0;
 
         try {
             JsonObject fd_ref = object.getAsJsonObject("data")
@@ -264,6 +265,9 @@ public class FDAmtUpdateUtility {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            pushDataInSP(activity);
+            taskListener.onComplete();
         }
     }
 
