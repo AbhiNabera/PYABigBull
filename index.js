@@ -200,6 +200,45 @@ exports.addPlayer = functions.https.onRequest((req, res) => {
  });
 
 
+function usernamevalid(snapshot) {
+
+	var exist = {"status" : "EXISTS"};
+	var notexist = { "status" : "NOT_EXIST"};
+
+	if(snapshot.exists()) {
+		return exist;
+	} else {
+		return notexist;
+	}
+}
+
+function addNewUser(data) {
+
+	var usererror = {"message" : "could not add user"};
+
+	admin.database().ref('/Players').child('/'+data.phoneNumber).update(data)
+		.then(snapshot=>{
+			return admin.database().ref('/UserNames').child('/'+data.userName).update(data);
+		}).catch(exception => {
+		    	console.log('Error!: ' + exception)
+		    	return usererror;
+		});
+}
+
+function updateUserAccount(snapshot) {
+
+	var useraccounterror = {"message" : "could not update user account"};
+
+	admin.database().ref('/Players').child('/'+data.phoneNumber).update(data)
+		.then(snapshot=>{
+			return admin.database().ref('/UserNames').child('/'+data.userName).update(data);
+		}).catch(exception => {
+		    	console.log('Error!: ' + exception)
+		    	return usererror;
+		});
+}
+
+
 //function to get username
 exports.userName = functions.https.onRequest((req, res) => {
 
@@ -357,116 +396,7 @@ exports.transaction = functions.https.onRequest((req, res) => {
 });
 
 
-exports.buytransaction = functions.https.onRequest((req, res) => {
-
-	if(req.method !== "POST"){
-		return res.status(400).send('Please send a POST request');
-	}
-
-	var phoneNumber = req.body.phoneNumber;
-	var txn_id = req.body.txn_id;
-	var type = req.body.product_type;
-	var Account = req.body.Account;
-	var bought_item = req.body.bought_item;
-	var transaction = req.body.transaction;
-	var txn_history = req.body.txn_history;
-	var txn_summary = req.body.txn_summary;
-
-    var db_ref = admin.database().ref('/Players').child('/'+phoneNumber).child('/Account');
-
-    return db_ref.update(Account).then((snapshot)=>{
-
-    	return db_ref.child('/stocks_list').child('bought_items').child('/'+type).update(bought_item).then((snapshot)=>{
-
-    		return db_ref.child('/stocks_list').child('bought_items').child('/'+type).child('/'+txn_id).update(transaction).then((snapshot)=>{
-    		
-    			return db_ref.child('/txn_history').child('/'+txn_id).set(txn_history).then((snapshot)=>{
-
-    				return db_ref.child('/txn_history').child('/'+txn_id).child('/txn_summary').set(txn_summary).then((snapshot)=>{
-
-    					return res.json({
-	   						"message" : "transaction successful",
-	       					"status" : 200 
-	    				}); 
-
-    				}); 
-    			});
-    		});
-    	});
-    });
-});
-
-
-exports.selltransaction = functions.https.onRequest((req, res) => {
-
-	if(req.method !== "POST"){
-		return res.status(400).send('Please send a POST request');
-	}
-
-	var phoneNumber = req.body.phoneNumber;
-	var txn_id = req.body.txn_id;
-	var type = req.body.product_type;
-	var Account = req.body.Account;
-	var sold_item = req.body.sold_item;
-	var bought_item = req.body.bought_item;
-	var transaction = req.body.transaction;
-	var txn_history = req.body.txn_history;
-	var txn_summary = req.body.txn_summary;
-
-	var bought_data = {
-		"qty": bought_item.left_qty,
-		"total_amount": bought_item.left_investment
-	};
-
-	console.log("data: "+ bought_data);
-
-    var db_ref = admin.database().ref('/Players').child('/'+phoneNumber).child('/Account');
-
-    return db_ref.update(Account).then((snapshot)=>{
-
-    	return db_ref.child('/stocks_list').child('sold_items').child('/'+type).update(sold_item).then((snapshot)=>{
-
-    		return db_ref.child('/stocks_list').child('sold_items').child('/'+type).child('/'+txn_id).update(transaction).then((snapshot)=>{
-    		
-    			return db_ref.child('/txn_history').child('/'+txn_id).set(txn_history).then((snapshot)=>{
-
-    				return db_ref.child('/txn_history').child('/'+txn_id).child('/txn_summary').set(txn_summary).then((snapshot)=>{
-
-    					if(parseInt(bought_item.left_qty) > 0) {
-
-    						return db_ref.child('/stocks_list').child('/bought_items').child('/'+type).child('/'+txn_id).child('/qty').update(bought_item.left_qty).then((snapshot) =>{
-
-    							return db_ref.child('/stocks_list').child('/bought_items').child('/'+type).child('/'+txn_id).child('/total_amount').update(bought_item.total_amount).then((snapshot)=>{
-
-    								return res.json({
-	   									"message" : "transaction successful",
-	       								"status" : 200 
-	    							}); 
-
-    							});
-    						});
-
-    					}else {
-
-    						return db_ref.child('/stocks_list').child('/bought_items').child('/'+type).child('/'+txn_id).remove().then((snapshot) =>{
-
-    							return res.json({
-	   								"message" : "transaction successful",
-	       							"status" : 200 
-	    						}); 
-
-    						});
-    					}
-
-    				}); 
-    			});
-    		});
-    	});
-    });
-});
-
-
-exports.playerinfo = functions.https.onRequest((req, res) => {
+exports.userinfo = functions.https.onRequest((req, res) => {
 
 	if(req.method !== "GET"){
 		return res.status(400).send('Please send a GET request');
@@ -537,7 +467,8 @@ exports.buyList = functions.https.onRequest((req, res) => {
 
 			"index" : stockstoArray(snapshot.child('/index')),
 			"commodity" : stockstoArray(snapshot.child('/commodity')),
-			"currency" : stockstoArray(snapshot.child('/currency'))
+			"currency" : stockstoArray(snapshot.child('/currency')),
+			"fixed_deposit" : stockstoArray(snapshot.child('/fixed_deposit'))
 		};
 
 		return res.json({
@@ -564,7 +495,8 @@ exports.sellList = functions.https.onRequest((req, res) => {
 
 			"index" : stockstoArray(snapshot.child('/index')),
 			"commodity" : stockstoArray(snapshot.child('/commodity')),
-			"currency" : stockstoArray(snapshot.child('/currency'))
+			"currency" : stockstoArray(snapshot.child('/currency')),
+			"fixed_deposit" : stockstoArray(snapshot.child('/fixed_deposit'))
 		};
 
 		return res.json({
@@ -583,7 +515,7 @@ exports.leaderboard = functions.https.onRequest((req, res) => {
 		return res.status(400).send('Please send a GET request');
 	}
 
-	return admin.database().ref('Players').orderByChild('percentchange').once('value', function(snapshot) {
+	return admin.database().ref('Players').once('value', function(snapshot) {
 		return res.json({
 	   		"data" : formatLeaderboard(snapshot),
 	       	"status" : 200 
@@ -594,7 +526,6 @@ exports.leaderboard = functions.https.onRequest((req, res) => {
 
 
 //supporting functions
-
 function formatLeaderboard(snapshot) {
 
 	var returnArr = [];
@@ -604,11 +535,19 @@ function formatLeaderboard(snapshot) {
 
     snapshot.forEach(function(childSnapshot) {
        
+      // console.log(childSnapshot.val().phoneNumber);
+
        		var data = {
-       			"phoneNumber" : childSnapshot.phoneNumber,
-       			"userName" : childSnapshot.userName,
-       			"percentchange" : childSnapshot.child('/Account').percentchange,
-       			"change" : childSnapshot.Account.child('/Account').change
+       			"phoneNumber" : getPhoneNumber(childSnapshot),
+       			"userName" : getUserName(childSnapshot),
+       			"avail_balance" : getAvailBal(childSnapshot.child('/Account')),
+       			"start_balance" : getStartBal(childSnapshot.child('/Account')),
+       			"percentchange" : getPerChange(childSnapshot.child('/Account')),
+       			"change" : getChange(childSnapshot.child('/Account')),
+       			"commodity" : formatstocksList(childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/commodity')),
+	   			"currency" : formatstocksList(childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/currency')),
+	   			"fixed_deposit" : formatstocksList(childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/fixed_deposit')),
+	   			"index" : formatstocksList(childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/index'))
        		};
 
         	returnArr.push(data);
@@ -617,6 +556,69 @@ function formatLeaderboard(snapshot) {
 
     return returnArr;
 
+}
+
+function getPhoneNumber(snapshot) {
+	if(!snapshot.exists()) return "dummy";
+	return snapshot.val().phoneNumber;
+}
+
+function getUserName(snapshot) {
+	if(!snapshot.exists()) return "dummy";
+	return snapshot.val().userName;
+}
+
+function getChange(snapshot) {
+	if(!snapshot.exists()) return "0.0";
+	return snapshot.val().change;
+}
+
+function getPerChange(snapshot) {
+	if(!snapshot.exists()) return "0.0";
+	return snapshot.val().percentchange;
+}
+
+function getAvailBal(snapshot) {
+	if(!snapshot.exists()) return "1000000";
+	return snapshot.val().avail_balance;
+}
+
+function getStartBal(snapshot) {
+	if(!snapshot.exists()) return "1000000";
+	return snapshot.val().start_balance;
+}
+
+function formatstocksList(snapshot) {
+    var returnArr = [];
+    console.log(snapshot);
+
+    if(!snapshot.exists()) return returnArr;
+
+    var data = {};
+
+    snapshot.forEach(function(childSnapshot) {
+       
+       	if(childSnapshot.key.indexOf("txn") !== -1) {
+       		if(childSnapshot.val().id.indexOf("FD") === 0) {
+       			data = {
+	       			"id" : childSnapshot.val().id,
+	       			"qty" : childSnapshot.val().qty,
+	       			"total_amount" : childSnapshot.val().total_amount,
+	       			"current_value" : childSnapshot.val().current_value
+	       		};
+       		}else {
+	       		data = {
+	       			"id" : childSnapshot.val().id,
+	       			"qty" : childSnapshot.val().qty,
+	       			"total_amount" : childSnapshot.val().total_amount
+	       		};
+       		}
+        	returnArr.push(data);
+       	}
+      
+    });
+
+    return returnArr;
 }
 
 function initialUserSetUp(snapshot) {
