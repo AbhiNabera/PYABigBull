@@ -51,6 +51,19 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp" />
 
+
+            <Button
+                android:id="@+id/sellRecyclerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sell"
+                android:textColor="@color/greenText"
+                android:layout_marginRight="20dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/hammersmithoneregular"
+                android:background="@drawable/button_border"
+                />
+
             <TextView
                 android:visibility="gone"
                 android:layout_weight="1"
@@ -60,7 +73,6 @@
                 android:layout_marginLeft="-10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="0dp"
-                android:layout_alignParentRight="true"
                 android:gravity="end"
                 android:fontFamily="@font/hammersmithoneregular"
                 android:padding="5dp"
