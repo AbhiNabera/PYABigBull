@@ -127,7 +127,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
         public TextView companyName, quantity, investment, buyOrSell, txn_date, txn_id, curentStockPrice, estimatedChange;
         public LinearLayout transactionsHistoryRow;
         public TextView stocks_divider_row;
-        Button sellRecyclerBtn;
+        TextView sellRecyclerBtn;
         LinearLayout stockLayout;
         ImageView expand;
         ExpandableLayout expandableLayout;
@@ -143,7 +143,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 investment = (TextView) itemLayoutView.findViewById(R.id.historyTotalInvestment);
                 buyOrSell = (TextView) itemLayoutView.findViewById(R.id.historyBuyOrSell);
                 transactionsHistoryRow = (LinearLayout) itemLayoutView.findViewById(R.id.history);
-                sellRecyclerBtn = (Button) itemLayoutView.findViewById(R.id.sellRecyclerBtn);
+                sellRecyclerBtn = (TextView) itemLayoutView.findViewById(R.id.sellRecyclerBtn);
                 txn_date = (TextView) itemLayoutView.findViewById(R.id.txn_date);
                 txn_id = (TextView) itemLayoutView.findViewById(R.id.txn_id);
                 curentStockPrice = (TextView) itemLayoutView.findViewById(R.id.currentStockPrice);

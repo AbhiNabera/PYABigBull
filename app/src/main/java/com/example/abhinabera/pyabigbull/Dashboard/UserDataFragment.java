@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
@@ -204,8 +205,13 @@ public class UserDataFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
 
                 if(response.isSuccessful()) {
-                    player = response.body();
-                    setUserCard();
+                    if(response.body().getAsJsonObject("data")!=null) {
+                        player = response.body();
+                        setUserCard();
+                    }else {
+
+                        Toast.makeText(getActivity(), "error occured while fetching account", Toast.LENGTH_SHORT).show();
+                    }
                 }else {
                     try {
                         Log.d("error", response.errorBody().string());

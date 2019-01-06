@@ -19,14 +19,14 @@ public interface ApiInterface {
     @GET("userStatus")
     Call<JsonObject> checkifActive(@Query("phoneNumber") String phoneNumber);
 
-    @FormUrlEncoded
-    @POST("addPlayer")
-    Call<JsonObject> addPlayer(@Field("phoneNumber") String phoneNumber,
-                               @Field("userName") String userName,
-                               @Field("prevUserName") String prevUserName);
+    @POST("updateuser")
+    Call<JsonObject> addPlayer(@Body JsonObject object);
 
     @GET("userName")
     Call<JsonObject> getUserName(@Query("phoneNumber") String phoneNumber);
+
+    @GET("userNameData")
+    Call<JsonObject> getUserNameData(@Query("phoneNumber") String phoneNumber);
 
     @GET("expiry")
     Call<JsonObject> getCommodityExpiry();

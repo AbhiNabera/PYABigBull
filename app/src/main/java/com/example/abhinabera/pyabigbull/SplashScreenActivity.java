@@ -202,30 +202,35 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
 
-                    if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
-                        new Utility().showDialog("ACCOUNT 404",
-                                "Your account does not exist." +
-                                        "You will be redirected to login again.", SplashScreenActivity.this);
-                        FirebaseAuth.getInstance().signOut();
+                    if(response.body().get("isActive") != null) {
+                        if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
+                            new Utility().showDialog("ACCOUNT 404",
+                                    "Your account does not exist." +
+                                            "You will be redirected to login again.", SplashScreenActivity.this);
+                            FirebaseAuth.getInstance().signOut();
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
-                                finish();
-                            }
-                        },1000);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
+                                    finish();
+                                }
+                            }, 1000);
 
-                    } else {
-                        if (response.body().get("isActive").getAsBoolean()) {
-                            startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                            finish();
                         } else {
-                            new Utility().showDialog("ACCOUNT DISABLED",
-                                    "Your account has been disabled and you can't login until it is enabled again. " +
-                                            "Please contact your admin.", SplashScreenActivity.this);
-                            //FirebaseAuth.getInstance().signOut();
+                            if (response.body().get("isActive").getAsBoolean()) {
+                                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                new Utility().showDialog("ACCOUNT DISABLED",
+                                        "Your account has been disabled and you can't login until it is enabled again. " +
+                                                "Please contact your admin.", SplashScreenActivity.this);
+                                //FirebaseAuth.getInstance().signOut();
+                            }
                         }
+
+                    }else {
+                        Toast.makeText(SplashScreenActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

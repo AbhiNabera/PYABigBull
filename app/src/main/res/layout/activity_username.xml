@@ -34,21 +34,92 @@
                 app:srcCompat="@drawable/bigbulllogo"
                 android:layout_marginTop="10dp" />
 
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:checkedButton="@id/member"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_group">
+
+                    <RadioButton
+                        android:buttonTint="@color/colorPrimary"
+                        android:textSize="13dp"
+                        android:layout_weight="1"
+                        android:id="@+id/member"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Member"
+                        android:fontFamily="@font/hammersmithone"/>
+
+                    <RadioButton
+                        android:textColor="@color/colorPrimary"
+                        android:buttonTint="@color/colorPrimary"
+                        android:textSize="13dp"
+                        android:layout_weight="1"
+                        android:id="@+id/spouse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spouse"
+                        android:fontFamily="@font/hammersmithone"/>
+
+                    <RadioButton
+                        android:textColor="@color/colorPrimary"
+                        android:buttonTint="@color/colorPrimary"
+                        android:textSize="13dp"
+                        android:layout_weight="1"
+                        android:id="@+id/child"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Child"
+                        android:fontFamily="@font/hammersmithone"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="18dp"
                 android:background="@drawable/border"
                 android:drawableLeft="@drawable/ic_action_user"
                 android:drawablePadding="10dp"
-                android:singleLine="true"
-                android:fontFamily="@font/hammersmithoneregular"
+                android:fontFamily="@font/hammersmithone"
                 android:hint="Enter full name"
                 android:textAllCaps="true"
                 android:inputType="textCapCharacters"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/colorTabtext" />
+
+            <EditText
+                android:inputType="textCapCharacters"
+                android:visibility="gone"
+                android:id="@+id/dependentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/ic_action_user"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/hammersmithone"
+                android:hint="Enter husband's name"
+                android:singleLine="true"
+                android:textAllCaps="true"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />
 
