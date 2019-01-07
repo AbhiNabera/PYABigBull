@@ -123,4 +123,6 @@ public class TimingsUtility {
        else
            return true;
     }
+
+    //First five days only for registration
 }

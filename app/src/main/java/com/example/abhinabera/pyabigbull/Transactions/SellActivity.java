@@ -157,7 +157,6 @@ public class SellActivity extends AppCompatActivity {
         });
 
         getUserAccount();
-        getAdminSettings();
         getCurrentQuote(type, id);
 
         numberStocks.addTextChangedListener(new TextWatcher() {
@@ -182,7 +181,9 @@ public class SellActivity extends AppCompatActivity {
                     quantity = Integer.parseInt(editable.toString().trim());
                     if(quantity > INVESTMENT_PACKET.get("qty").getAsInt()) {
                         quantity = INVESTMENT_PACKET.get("qty").getAsInt();
-                        numberStocks.setText(INVESTMENT_PACKET.get("qty").getAsInt());
+                        //Log.d("qty", quantity+"");
+                        numberStocks.setText("");
+                        Toast.makeText(SellActivity.this, "invalid quantity", Toast.LENGTH_SHORT).show();
                     } else {
                         updateAmounts();
                         updateViews();
@@ -226,15 +227,15 @@ public class SellActivity extends AppCompatActivity {
 
     public void initializeAmt() {
 
-        start_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().
+        start_balance = Double.parseDouble(userObject.
                         get("start_balance").getAsString().replace(",", ""));
         left_quantity = 0;
-        stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject().get("stocks_count").getAsString()
+        stock_count = Integer.parseInt(userObject.get("stocks_count").getAsString()
                 .replace(",",""));
-        sharesprice = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
+        sharesprice = Double.parseDouble(userObject.get("shares_price").getAsString()
                 .replace(",",""));
-        aval_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString().replace(",",""));
-        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString().replace(",", ""));
+        aval_balance = Double.parseDouble(userObject.get("avail_balance").getAsString().replace(",",""));
+        total_investment = Double.parseDouble(userObject.get("investment").getAsString().replace(",", ""));
         current_price = Double.parseDouble(currentStockPricetv.getText().toString().trim().replace(",", ""));
         buyprice = Double.parseDouble(INVESTMENT_PACKET.get("buy_price").getAsString());
         quantity = Integer.parseInt(INVESTMENT_PACKET.get("qty").getAsString());;
@@ -245,8 +246,8 @@ public class SellActivity extends AppCompatActivity {
         stockchangeamt = 0;
         percentstockchange = 0;
         acc_bal = Double.parseDouble(accountBalancetv.getText().toString().trim().replace(",", ""));
-        netstockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("change").getAsString().replace(",",""));
-        netpercenttockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("percentchange").getAsString().replace(",",""));
+        netstockchange = Double.parseDouble(userObject.get("change").getAsString().replace(",",""));
+        netpercenttockchange = Double.parseDouble(userObject.get("percentchange").getAsString().replace(",",""));
 
         if(companyNametv.getText().toString().trim().equalsIgnoreCase("SILVER")) {
             current_price = current_price * 0.1;
@@ -270,17 +271,17 @@ public class SellActivity extends AppCompatActivity {
 
         acc_bal = aval_balance + netreturn;
 
-        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString()
+        total_investment = Double.parseDouble(userObject.get("investment").getAsString()
                 .replace(",", "")) - buyprice*quantity;
 
-        sharesprice =  Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString()
+        sharesprice =  Double.parseDouble(userObject.get("shares_price").getAsString()
                 .replace(",", "")) - buyprice*quantity;
 
         netstockchange = acc_bal + sharesprice - start_balance;
 
         netpercenttockchange = (netstockchange/start_balance) * 100;
 
-        stock_count = userObject.get("data").getAsJsonObject()
+        stock_count = userObject
                 .get("stocks_count").getAsInt() - quantity;
 
         left_quantity = INVESTMENT_PACKET.get("qty").getAsInt() - quantity;
@@ -334,7 +335,7 @@ public class SellActivity extends AppCompatActivity {
 
         String type_key = "";
 
-        JsonObject account_ref = userObject.get("data").getAsJsonObject();
+        JsonObject account_ref = userObject;
 
         JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
 
@@ -501,9 +502,9 @@ public class SellActivity extends AppCompatActivity {
 
         if(userObject != null) {
 
-            if (userObject.get("data") != null) {
-                availableBalancetv.setText("" + new Utility().getRoundoffData(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString()));
-                totalInvestmenttv.setText("" + new Utility().getRoundoffData(userObject.get("data").getAsJsonObject().get("investment").getAsString()));
+            if (userObject.get("Account") != null) {
+                availableBalancetv.setText("" + new Utility().getRoundoffData(userObject.get("avail_balance").getAsString()));
+                totalInvestmenttv.setText("" + new Utility().getRoundoffData(userObject.get("investment").getAsString()));
             }
         }
 
@@ -527,7 +528,6 @@ public class SellActivity extends AppCompatActivity {
                             get("pricecurrent").getAsString().replace(",",""))+"");
                     //investAmt.setText(currentStockPrice.getText().toString().replace(",",""));
                     break;
-
             }
         }
 
@@ -539,19 +539,19 @@ public class SellActivity extends AppCompatActivity {
 
                 case "NIFTY" :
                     //investAmt.setEnabled(false);
-                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_nifty").getAsString().replace(",","")));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_commodity").getAsString().replace(",","")));
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionChargestv.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_currency").getAsString().replace(",","")));
                     break;
 
@@ -694,48 +694,26 @@ public class SellActivity extends AppCompatActivity {
         progressDialog = new Utility().showDialog("Please wait while we are getting your account info.", SellActivity.this);
         progressDialog.setCancelable(false);
 
-        new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
+        new RetrofitClient().getInterface().getUserTxnData(FirebaseAuth.getInstance().
                 getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    userObject = response.body();
+
+                    if(response.body().getAsJsonObject("data") != null) {
+                        //Log.d("response", response.body() + "");
+
+                        adminSettings = response.body().getAsJsonObject("data").getAsJsonObject("admin_settings");
+                        userObject = response.body().getAsJsonObject("data").getAsJsonObject("Account");
+
+                    }else {
+                        Toast.makeText(SellActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
+                    }
+
                 }else {
                     try {
                         Log.d("SellActivity error", response.errorBody().string()+"");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                count++;
-                dismissDialog();
-
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                t.printStackTrace();
-                count++;
-                dismissDialog();
-            }
-        });
-    }
-
-    public void getAdminSettings() {
-
-        new RetrofitClient().getInterface().getAdminSettings().enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    adminSettings = response.body();
-                }else {
-                    try {
-                        Log.d("Purchase error", response.errorBody().string()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -826,7 +804,7 @@ public class SellActivity extends AppCompatActivity {
     }
 
     public void dismissDialog() {
-        if(count == 3) {
+        if(count == 2) {
             count = 0;
             progressDialog.dismiss();
             setPurchaseData();

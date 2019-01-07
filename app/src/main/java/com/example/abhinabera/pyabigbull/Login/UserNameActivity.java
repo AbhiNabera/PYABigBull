@@ -192,6 +192,10 @@ public class UserNameActivity extends AppCompatActivity {
                             dependentName.setVisibility(View.VISIBLE);
                             dependentName.setText(response.body().getAsJsonObject("userData").get("dependentName").getAsString()+"");
                         }
+
+                        Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }
             }

@@ -140,7 +140,6 @@ public class PurchaseActivity extends AppCompatActivity {
 
 
         getUserAccount();
-        getAdminSettings();
         getCurrentQuote(type, id);
 
         numberStocks.addTextChangedListener(new TextWatcher() {
@@ -205,9 +204,9 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public void initializeAmt() {
 
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").getAsString().replace(",",""));
-        aval_balance = Double.parseDouble(userObject.get("data").getAsJsonObject().get("avail_balance").getAsString().replace(",",""));
-        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject().get("investment").getAsString().replace(",", ""));
+        shares_price = Double.parseDouble(userObject.get("shares_price").getAsString().replace(",",""));
+        aval_balance = Double.parseDouble(userObject.get("avail_balance").getAsString().replace(",",""));
+        total_investment = Double.parseDouble(userObject.get("investment").getAsString().replace(",", ""));
         current_price = Double.parseDouble(currentStockPrice.getText().toString().trim().replace(",", ""));
         quantity = 1;
         //invest_price = Double.parseDouble(investAmt.getText().toString().trim().replace(",", ""));
@@ -229,22 +228,22 @@ public class PurchaseActivity extends AppCompatActivity {
 
         //**NO CHANGE: avail_balance, curent price, total_investment
 
-        shares_price = Double.parseDouble(userObject.get("data").getAsJsonObject().get("shares_price").
+        shares_price = Double.parseDouble(userObject.get("shares_price").
                 getAsString().replace(",","")) + current_price*quantity;
 
         total_debit = current_price*quantity + txn_charges*(quantity==0?0:1);
         acc_bal = aval_balance - total_debit;
 
-        total_investment = Double.parseDouble(userObject.get("data").getAsJsonObject()
+        total_investment = Double.parseDouble(userObject
                 .get("investment").getAsString()) + total_debit;
 
-        stock_count = Integer.parseInt(userObject.get("data").getAsJsonObject()
+        stock_count = Integer.parseInt(userObject
                 .get("stocks_count").getAsString()) + quantity;
 
-        change = acc_bal + shares_price - Double.parseDouble(userObject.get("data").getAsJsonObject().
+        change = acc_bal + shares_price - Double.parseDouble(userObject.
                 get("start_balance").getAsString().replace(",", ""));
 
-        percentchange = (change/Double.parseDouble(userObject.get("data").getAsJsonObject().
+        percentchange = (change/Double.parseDouble(userObject.
                 get("start_balance").getAsString().replace(",", "")))*100;
 
         //Log.d("Amounts", aval_balance +" : " + total_investment + " : " + current_price + " : " +
@@ -265,12 +264,12 @@ public class PurchaseActivity extends AppCompatActivity {
             return false;
         }
 
-        if((CURRENT_INVESTMENT+total_debit) > 0.5*Double.parseDouble(userObject.get("data").getAsJsonObject().
+        if((CURRENT_INVESTMENT+total_debit) > 0.5*Double.parseDouble(userObject.
                 get("start_balance").getAsString().replace(",", ""))) {
 
             new Utility().showDialog("INVALID AMOUNT",
                     "Total investment must be less than 50% of initial alloted amount(" +
-                            userObject.get("data").getAsJsonObject().get("start_balance").getAsString()
+                            userObject.get("start_balance").getAsString()
                             + ").", PurchaseActivity.this);
 
             return false;
@@ -288,7 +287,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         String type_key = "";
 
-        JsonObject account_ref = userObject.get("data").getAsJsonObject();
+        JsonObject account_ref = userObject;
 
         JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
 
@@ -427,10 +426,10 @@ public class PurchaseActivity extends AppCompatActivity {
 
         if(userObject != null) {
 
-            if (userObject.get("data") != null) {
-                availableBalance.setText(utility.getRoundoffData("" + userObject.get("data")
+            if (userObject.get("Account") != null) {
+                availableBalance.setText(utility.getRoundoffData("" + userObject.get("Account")
                         .getAsJsonObject().get("avail_balance").getAsString()));
-                totalInvestment.setText(utility.getRoundoffData("" + userObject.get("data")
+                totalInvestment.setText(utility.getRoundoffData("" + userObject.get("Account")
                         .getAsJsonObject().get("investment").getAsString()));
             }
         }
@@ -446,7 +445,8 @@ public class PurchaseActivity extends AppCompatActivity {
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    currentStockPrice.setText(new Utility().getRoundoffData(stockObject.get("lastprice").getAsString())+"");
+                    currentStockPrice.setText(new Utility().getRoundoffData(stockObject.get("lastprice").getAsString()
+                            .replace(",",""))+"");
                     break;
 
                 case "CURRENCY" :
@@ -467,19 +467,19 @@ public class PurchaseActivity extends AppCompatActivity {
 
                 case "NIFTY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_nifty").getAsString().replace(",","")));
                     break;
 
                 case "COMMODITY" :
                     //investAmt.setText("100");
-                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_commodity").getAsString().replace(",","")));
                     break;
 
                 case "CURRENCY" :
                     //investAmt.setEnabled(false);
-                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.get("data").getAsJsonObject().
+                    transactionCharges.setText("" + new Utility().getRoundoffData(adminSettings.
                             get("trans_amt_currency").getAsString().replace(",","")));
                     break;
 
@@ -622,124 +622,103 @@ public class PurchaseActivity extends AppCompatActivity {
         progressDialog = new Utility().showDialog("Please wait while we are getting your account info.", PurchaseActivity.this);
         progressDialog.setCancelable(false);
 
-        new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
+        new RetrofitClient().getInterface().getUserTxnData(FirebaseAuth.getInstance().
                 getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    userObject = response.body();
 
-                    //TODO: set limit amounts
-                    try {
-                        JsonObject fd_ref = userObject.getAsJsonObject("data");
+                    if (response.body().getAsJsonObject("data") != null) {
 
-                        if(type.equalsIgnoreCase("nifty")) {
+                        //Log.d("response", response.body() + "");
 
-                            fd_ref = userObject.getAsJsonObject("data")
-                                    .getAsJsonObject("stocks_list")
-                                    .getAsJsonObject("bought_items")
-                                    .getAsJsonObject("index");
+                        adminSettings = response.body().getAsJsonObject("data").getAsJsonObject("admin_settings");
+                        userObject = response.body().getAsJsonObject("data").getAsJsonObject("Account");
 
-                        }else if(type.equalsIgnoreCase("commodity")){
+                        //TODO: set limit amounts
+                        try {
+                            JsonObject fd_ref = userObject.getAsJsonObject("data");
 
-                            fd_ref = userObject.getAsJsonObject("data")
-                                    .getAsJsonObject("stocks_list")
-                                    .getAsJsonObject("bought_items")
-                                    .getAsJsonObject("commodity");
+                            if (type.equalsIgnoreCase("nifty")) {
 
-                        }else if(type.equalsIgnoreCase("currency")) {
+                                fd_ref = userObject.getAsJsonObject("data")
+                                        .getAsJsonObject("stocks_list")
+                                        .getAsJsonObject("bought_items")
+                                        .getAsJsonObject("index");
 
-                            fd_ref = userObject.getAsJsonObject("data")
-                                    .getAsJsonObject("stocks_list")
-                                    .getAsJsonObject("bought_items")
-                                    .getAsJsonObject("currency");
-                        }
+                            } else if (type.equalsIgnoreCase("commodity")) {
 
-                        Set<Map.Entry<String, JsonElement>> entrySet = fd_ref.entrySet();
+                                fd_ref = userObject.getAsJsonObject("data")
+                                        .getAsJsonObject("stocks_list")
+                                        .getAsJsonObject("bought_items")
+                                        .getAsJsonObject("commodity");
 
-                        CURRENT_INVESTMENT = 0;
+                            } else if (type.equalsIgnoreCase("currency")) {
 
-                        for(Map.Entry<String, JsonElement> entry: entrySet) {
+                                fd_ref = userObject.getAsJsonObject("data")
+                                        .getAsJsonObject("stocks_list")
+                                        .getAsJsonObject("bought_items")
+                                        .getAsJsonObject("currency");
+                            }
 
-                            if(entry.getKey().contains("txn")) {
+                            Set<Map.Entry<String, JsonElement>> entrySet = fd_ref.entrySet();
 
-                                if(type.equalsIgnoreCase("commodity")) {
+                            CURRENT_INVESTMENT = 0;
 
-                                    switch (id) {
+                            for (Map.Entry<String, JsonElement> entry : entrySet) {
 
-                                        case "GOLD" :
-                                            if(entry.getKey().contains("GOLD")) {
-                                                CURRENT_INVESTMENT +=
-                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
-                                            }
-                                            break;
+                                if (entry.getKey().contains("txn")) {
 
-                                        case "SILVER" :
-                                            if(entry.getKey().contains("SILVER")) {
-                                                CURRENT_INVESTMENT +=
-                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
-                                            }
-                                            break;
+                                    if (type.equalsIgnoreCase("commodity")) {
 
-                                        case "CRUDEOIL" :
-                                            if(entry.getKey().contains("CRUDEOIL")) {
-                                                CURRENT_INVESTMENT +=
-                                                        entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
-                                            }
-                                            break;
+                                        switch (id) {
 
+                                            case "GOLD":
+                                                if (entry.getKey().contains("GOLD")) {
+                                                    CURRENT_INVESTMENT +=
+                                                            entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                                }
+                                                break;
+
+                                            case "SILVER":
+                                                if (entry.getKey().contains("SILVER")) {
+                                                    CURRENT_INVESTMENT +=
+                                                            entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                                }
+                                                break;
+
+                                            case "CRUDEOIL":
+                                                if (entry.getKey().contains("CRUDEOIL")) {
+                                                    CURRENT_INVESTMENT +=
+                                                            entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
+                                                }
+                                                break;
+
+                                        }
+                                    } else {
+                                        CURRENT_INVESTMENT +=
+                                                entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
                                     }
-                                } else {
-                                    CURRENT_INVESTMENT +=
-                                            entry.getValue().getAsJsonObject().get("total_amount").getAsDouble();
                                 }
                             }
+
+                            Log.d("TOTAL", "" + CURRENT_INVESTMENT);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            CURRENT_INVESTMENT = 0;
+                            CURRENT_INVESTMENT = 0;
                         }
 
-                        Log.d("TOTAL", ""+ CURRENT_INVESTMENT);
-
-                    }catch (NullPointerException e) {
-                        e.printStackTrace();
-                        CURRENT_INVESTMENT = 0;
-                        CURRENT_INVESTMENT = 0;
+                    } else {
+                        Toast.makeText(PurchaseActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
+
                     try {
-                        Log.d("Purchase error", response.errorBody().string()+"");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                count++;
-                dismissDialog();
-
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                t.printStackTrace();
-                count++;
-                dismissDialog();
-            }
-        });
-    }
-
-    public void getAdminSettings() {
-
-        new RetrofitClient().getInterface().getAdminSettings().enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    adminSettings = response.body();
-                }else {
-                    try {
-                        Log.d("Purchase error", response.errorBody().string()+"");
+                        Log.d("Purchase error", response.errorBody().string() + "");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -830,7 +809,7 @@ public class PurchaseActivity extends AppCompatActivity {
     }
 
     public void dismissDialog() {
-        if(count == 3) {
+        if(count == 2) {
             count = 0;
             progressDialog.dismiss();
             setPurchaseData();

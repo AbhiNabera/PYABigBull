@@ -1,5 +1,6 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,11 +8,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Dashboard.DataFragment;
 import com.example.abhinabera.pyabigbull.Dashboard.LeaderBoardFragment;
@@ -33,6 +36,8 @@ public class PortofolioFragment extends Fragment {
     ViewPager investmentViewPager;
     TabLayout investmentTabs;
 
+    Typeface custom_font;
+
     public static PortofolioFragment newInstance() {
         return new PortofolioFragment();
     }
@@ -53,6 +58,24 @@ public class PortofolioFragment extends Fragment {
         investmentTabs = (TabLayout) view.findViewById(R.id.investmentTabs);
         investmentTabs.setupWithViewPager(investmentViewPager);
 
+        custom_font = ResourcesCompat.getFont(getActivity(), R.font.hammersmithone);
+
+        changeTabsFont();
+    }
+
+    private void changeTabsFont() {
+        ViewGroup vg = (ViewGroup) investmentTabs.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(custom_font);
+                }
+            }
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

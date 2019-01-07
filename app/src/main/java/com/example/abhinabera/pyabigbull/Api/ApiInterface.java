@@ -34,17 +34,14 @@ public interface ApiInterface {
     @GET("userAccount")
     Call<JsonObject> getUserAccount(@Query("phoneNumber") String phoneNumber);
 
+    @GET("userTxnAccount")
+    Call<JsonObject> getUserTxnData(@Query("phoneNumber") String phoneNumber);
+
     @GET("adminSettings")
     Call<JsonObject> getAdminSettings();
 
     @POST("transaction")
     Call<JsonObject> performTransaction(@Body JsonObject object);
-
-    @POST("buytransaction")
-    Call<JsonObject> executeTransaction(@Body JsonObject object);
-
-    @POST("selltransaction")
-    Call<JsonObject> executesellTransaction(@Body JsonObject object);
 
     @GET("userinfo")
     Call<JsonObject> getPlayerinfo(@Query("phoneNumber") String phoneNumber);
@@ -54,6 +51,9 @@ public interface ApiInterface {
 
     @GET("buyList")
     Call<JsonObject> getbuyList(@Query("phoneNumber") String phoneNumber);
+
+    @GET("boughtfragmentinfo")
+    Call<JsonObject> getBoughtFragmentData(@Query("phoneNumber") String phoneNumber);
 
     @GET("sellList")
     Call<JsonObject> getsellList(@Query("phoneNumber") String phoneNumber);
