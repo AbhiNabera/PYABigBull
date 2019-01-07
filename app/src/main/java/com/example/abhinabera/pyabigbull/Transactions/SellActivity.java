@@ -502,7 +502,7 @@ public class SellActivity extends AppCompatActivity {
 
         if(userObject != null) {
 
-            if (userObject.get("Account") != null) {
+            {
                 availableBalancetv.setText("" + new Utility().getRoundoffData(userObject.get("avail_balance").getAsString()));
                 totalInvestmenttv.setText("" + new Utility().getRoundoffData(userObject.get("investment").getAsString()));
             }
@@ -753,6 +753,7 @@ public class SellActivity extends AppCompatActivity {
                     intent.putExtra("type", "sell");
                     intent.putExtra("txn_id", txn_id);
                     intent.putExtra("product_type", product_type);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
 
                     progressDialog.check();
 
@@ -778,8 +779,9 @@ public class SellActivity extends AppCompatActivity {
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "sell");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                     startActivity(intent);
-                    setResult(RESULT_OK);
+                    //setResult(RESULT_OK);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
@@ -795,8 +797,9 @@ public class SellActivity extends AppCompatActivity {
                 intent.putExtra("success", false);
                 intent.putExtra("type", "sell");
                 intent.putExtra("data", object.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                 startActivity(intent);
-                setResult(RESULT_OK);
+                //setResult(RESULT_OK);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }

@@ -1,5 +1,6 @@
 package com.example.abhinabera.pyabigbull.DataActivities.Nifty50;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,6 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 public class NiftyStocksFragment extends Fragment {
 
     List<JsonObject> stockList;
@@ -36,6 +39,18 @@ public class NiftyStocksFragment extends Fragment {
 
     public NiftyStocksFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode  == RESULT_OK) {
+            //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
+        }else {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -61,7 +76,15 @@ public class NiftyStocksFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.niftyStocksRecycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new NiftyStocksRecyclerAdapter(getActivity(), stockList);
+        mAdapter = new NiftyStocksRecyclerAdapter(getActivity(), stockList, new NiftyStocksRecyclerAdapter.Clicklistener() {
+            @Override
+            public void onClick(int pos, JsonObject stock) {
+                Intent i = new Intent(getActivity(), NiftyStocksIndividual.class);
+                i.putExtra("companyName", stock.get("shortname").getAsString().trim()+"");
+                i.putExtra("id", stock.get("id").getAsString().trim()+"");
+                startActivityForResult(i, 200);
+            }
+        });
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 

@@ -114,12 +114,9 @@ public class TransactionSummaryActivity extends AppCompatActivity {
             txnLayout.setVisibility(View.VISIBLE);
         }
 
-
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TransactionSummaryActivity.this, MainActivity.class);
-                startActivity(i);
                 finish();
                 overridePendingTransition(R.anim.enter1, R.anim.exit1);
             }
@@ -195,7 +192,6 @@ public class TransactionSummaryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }

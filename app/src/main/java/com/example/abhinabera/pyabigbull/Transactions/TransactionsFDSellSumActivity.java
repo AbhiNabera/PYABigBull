@@ -60,8 +60,8 @@ public class TransactionsFDSellSumActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TransactionsFDSellSumActivity.this, MainActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(TransactionsFDSellSumActivity.this, MainActivity.class);
+                //startActivity(i);
                 finish();
                 overridePendingTransition(R.anim.enter1, R.anim.exit1);
             }

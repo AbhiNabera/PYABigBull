@@ -213,7 +213,7 @@ public class OTPActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Intent intent = new Intent(OTPActivity.this, UserNameActivity.class);
                 intent.putExtra("phoneNumber", phoneNumber);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }

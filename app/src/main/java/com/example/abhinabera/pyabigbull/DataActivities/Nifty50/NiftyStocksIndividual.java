@@ -59,6 +59,18 @@ public class NiftyStocksIndividual extends AppCompatActivity {
     long MIN, MAX;
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode  == RESULT_OK) {
+            //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
+        }else {
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -137,7 +149,7 @@ public class NiftyStocksIndividual extends AppCompatActivity {
                 i.putExtra("type", "NIFTY");
                 i.putExtra("id", id);
                 i.putExtra("name", getIntent().getStringExtra("companyName"));
-                startActivity(i);
+                startActivityForResult(i, 200);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
@@ -166,8 +178,9 @@ public class NiftyStocksIndividual extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //finish();
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
         //overridePendingTransition(R.anim.enter1, R.anim.exit1);
     }
 

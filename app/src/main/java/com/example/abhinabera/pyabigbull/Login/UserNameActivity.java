@@ -196,6 +196,9 @@ public class UserNameActivity extends AppCompatActivity {
                         Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
+
+                    }else {
+                        //TODO: registration closed after 5 days
                     }
                 }
             }
@@ -219,7 +222,7 @@ public class UserNameActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
-                    Log.d("response", response.body()+"");
+                    //Log.d("response", response.body()+"");
 
                     switch (response.body().get("flag").getAsString().trim()) {
 

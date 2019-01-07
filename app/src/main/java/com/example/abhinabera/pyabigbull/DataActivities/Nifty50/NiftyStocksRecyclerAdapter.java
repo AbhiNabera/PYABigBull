@@ -19,11 +19,18 @@ import java.util.List;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
     public List<JsonObject> stockList;
-    public Context context;
+    public Activity context;
 
-    public NiftyStocksRecyclerAdapter(Context context, List<JsonObject> stockList) {
+    Clicklistener clicklistener;
+
+    public interface Clicklistener{
+        public void onClick(int pos, JsonObject stock);
+    }
+
+    public NiftyStocksRecyclerAdapter(Activity context, List<JsonObject> stockList,  Clicklistener clicklistener) {
         this.stockList = stockList;
         this.context = context;
+        this.clicklistener = clicklistener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -84,12 +91,7 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
             niftyStocksRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(itemLayoutView.getContext(), NiftyStocksIndividual.class);
-                    i.putExtra("companyName", companyName.getText().toString());
-                    i.putExtra("id", stockList.get(getAdapterPosition()).get("id").getAsString());
-                    itemLayoutView.getContext().startActivity(i);
-                    //mContext = (Activity) itemLayoutView.getContext();
-                    //mContext.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    clicklistener.onClick(getAdapterPosition(), stockList.get(getAdapterPosition()));
                 }
             });
         }

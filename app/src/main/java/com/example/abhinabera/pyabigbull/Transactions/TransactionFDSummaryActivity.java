@@ -53,8 +53,8 @@ public class TransactionFDSummaryActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TransactionFDSummaryActivity.this, MainActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(TransactionFDSummaryActivity.this, MainActivity.class);
+                //startActivity(i);
                 finish();
                 overridePendingTransition(R.anim.enter1, R.anim.exit1);
             }
@@ -75,7 +75,6 @@ public class TransactionFDSummaryActivity extends AppCompatActivity {
         if(!getIntent().getBooleanExtra("success",false)) {
 
             timeout.setVisibility(View.VISIBLE);
-
         }
 
         else {

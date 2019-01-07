@@ -71,6 +71,19 @@ public class CommodityActivity extends AppCompatActivity {
     long MIN, MAX;
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode  == RESULT_OK) {
+            //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
+        }else {
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -158,7 +171,7 @@ public class CommodityActivity extends AppCompatActivity {
                 i.putExtra("type", "COMMODITY");
                 i.putExtra("id", id);
                 i.putExtra("name", id);
-                startActivity(i);
+                startActivityForResult(i, 300);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });

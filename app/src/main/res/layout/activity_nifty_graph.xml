@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:textColor="@android:color/white"
-                    android:text="NIFTY50"
+                    android:text="CURRENCY"
                     android:fontFamily="@font/hammersmithone"
                     android:id="@+id/title"/>
 

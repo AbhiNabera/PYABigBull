@@ -117,7 +117,7 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
                 //viewHolder.stockLayout.setVisibility(View.GONE);
                 viewHolder.curentStockPrice.setText("Fixed deposit");
                 viewHolder.estimatedChange.setText("");
-
+                viewHolder.curentStockPrice.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
 
         }else {

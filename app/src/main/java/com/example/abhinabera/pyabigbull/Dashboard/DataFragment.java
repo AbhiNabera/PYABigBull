@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.NetworkCallback;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
@@ -567,17 +568,23 @@ public class DataFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(response.isSuccessful()) {
-                    //Log.d("response", response.body()+"");
-                    userObject = response.body();
+                    Log.d("response", response.body()+"");
+                    if(response.body().getAsJsonObject("data")!=null) {
 
-                    FDAmtUpdateUtility fdAmtUpdateUtility = new FDAmtUpdateUtility();
-                    fdAmtUpdateUtility.executeTransaction(fdAmtUpdateUtility.getUpdatedAmount(userObject),
-                            getActivity(), new FDAmtUpdateUtility.TaskListener() {
-                                @Override
-                                public void onComplete() {
-                                    setFDCard();
-                                }
-                            });
+                        userObject = response.body();
+                        FDAmtUpdateUtility fdAmtUpdateUtility = new FDAmtUpdateUtility();
+                        fdAmtUpdateUtility.executeTransaction(fdAmtUpdateUtility.getUpdatedAmount(userObject),
+                                getActivity(), new FDAmtUpdateUtility.TaskListener() {
+                                    @Override
+                                    public void onComplete() {
+                                        setFDCard();
+                                    }
+                                });
+                    }else {
+
+                        Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }else {
                     try {

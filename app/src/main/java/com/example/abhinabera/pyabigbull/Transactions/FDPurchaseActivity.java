@@ -165,7 +165,6 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         setResult(RESULT_OK);
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
@@ -462,6 +461,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                     intent.putExtra("type", "buy");
                     intent.putExtra("txn_id", txn_id);
                     intent.putExtra("product_type", "fixed_deposit");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
 
                     progressDialog.check();
 
@@ -487,6 +487,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                     intent.putExtra("success", false);
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "buy");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -503,6 +504,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 intent.putExtra("type", "buy");
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -190,7 +191,6 @@ public class PurchaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         setResult(RESULT_OK);
         finish();
         overridePendingTransition(R.anim.enter1, R.anim.exit1);
@@ -426,11 +426,9 @@ public class PurchaseActivity extends AppCompatActivity {
 
         if(userObject != null) {
 
-            if (userObject.get("Account") != null) {
-                availableBalance.setText(utility.getRoundoffData("" + userObject.get("Account")
-                        .getAsJsonObject().get("avail_balance").getAsString()));
-                totalInvestment.setText(utility.getRoundoffData("" + userObject.get("Account")
-                        .getAsJsonObject().get("investment").getAsString()));
+            if (userObject != null) {
+                availableBalance.setText(utility.getRoundoffData("" + userObject.get("avail_balance").getAsString()));
+                totalInvestment.setText(utility.getRoundoffData("" + userObject.get("investment").getAsString()));
             }
         }
 
@@ -638,25 +636,25 @@ public class PurchaseActivity extends AppCompatActivity {
 
                         //TODO: set limit amounts
                         try {
-                            JsonObject fd_ref = userObject.getAsJsonObject("data");
+                            JsonObject fd_ref = userObject;
 
                             if (type.equalsIgnoreCase("nifty")) {
 
-                                fd_ref = userObject.getAsJsonObject("data")
+                                fd_ref = userObject
                                         .getAsJsonObject("stocks_list")
                                         .getAsJsonObject("bought_items")
                                         .getAsJsonObject("index");
 
                             } else if (type.equalsIgnoreCase("commodity")) {
 
-                                fd_ref = userObject.getAsJsonObject("data")
+                                fd_ref = userObject
                                         .getAsJsonObject("stocks_list")
                                         .getAsJsonObject("bought_items")
                                         .getAsJsonObject("commodity");
 
                             } else if (type.equalsIgnoreCase("currency")) {
 
-                                fd_ref = userObject.getAsJsonObject("data")
+                                fd_ref = userObject
                                         .getAsJsonObject("stocks_list")
                                         .getAsJsonObject("bought_items")
                                         .getAsJsonObject("currency");
@@ -757,6 +755,7 @@ public class PurchaseActivity extends AppCompatActivity {
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "buy");
                     intent.putExtra("txn_id", txn_id);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                     intent.putExtra("product_type", product_type);
 
                     progressDialog.check();
@@ -784,7 +783,8 @@ public class PurchaseActivity extends AppCompatActivity {
                     intent.putExtra("data", object.toString());
                     intent.putExtra("type", "buy");
                     startActivity(intent);
-                    setResult(RESULT_OK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                    //setResult(RESULT_OK);
                     finish();
                     overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
@@ -800,7 +800,8 @@ public class PurchaseActivity extends AppCompatActivity {
                 intent.putExtra("success", false);
                 intent.putExtra("data", object.toString());
                 intent.putExtra("type", "buy");
-                setResult(RESULT_OK);
+                //setResult(RESULT_OK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.enter, R.anim.exit);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +67,19 @@ public class CurrencyActivity extends AppCompatActivity {
     ArrayList<Long> xAxis = new ArrayList<>();
     ArrayList<Double> yAxis = new ArrayList<>();
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode  == RESULT_OK) {
+            //unsuccessful transaction
+            Log.d("unsuccessfultransaction", "");
+        }else {
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +150,7 @@ public class CurrencyActivity extends AppCompatActivity {
                 i.putExtra("type", "CURRENCY");
                 i.putExtra("id", purchaseId);
                 i.putExtra("name", id);
-                startActivity(i);
+                startActivityForResult(i, 400);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
