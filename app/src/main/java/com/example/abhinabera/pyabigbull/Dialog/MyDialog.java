@@ -156,6 +156,7 @@ public class MyDialog extends DialogFragment {
                     optionSelectListener.onPositive();
                 }
             });
+
         }else {
 
             headerTv.setText(header);

@@ -247,6 +247,12 @@ public class UserNameActivity extends AppCompatActivity {
                                         "Please contact your admin.", UserNameActivity.this);
                         break;
 
+                        case "REGISTRATION_CLOSED" :
+                            new Utility().showDialog("REGISTRATION CLOSED",
+                                    "Registration has been closed by the admin. " +
+                                            "Please contact your admin.", UserNameActivity.this);
+                            break;
+
                         case "INTERNAL SERVER ERROR" :
                             Toast.makeText(UserNameActivity.this, "internal server error", Toast.LENGTH_SHORT).show();
                             break;
