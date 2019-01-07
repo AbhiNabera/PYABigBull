@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -52,6 +53,8 @@ public class TransactionFDSummaryActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(TransactionFDSummaryActivity.this, MainActivity.class);
+                startActivity(i);
                 finish();
                 overridePendingTransition(R.anim.enter1, R.anim.exit1);
             }

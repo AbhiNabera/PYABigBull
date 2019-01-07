@@ -45,7 +45,7 @@
                 android:drawableLeft="@drawable/ic_action_mobile"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:hint="Mobile Number"
+                android:hint="Verify OTP"
                 android:inputType="number"
                 android:padding="10dp"
                 android:textColor="@color/colorTabtext" />

@@ -619,24 +619,30 @@ public class BoughtFragment extends Fragment {
                         if (FD_INVESTMENT == 0) {
                             fixedDepositProfitPer.setText("0.00%");
                         }
-                        if (niftyProfit.getText().toString().startsWith("-")) {
-                            niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(niftyProfit.getText().toString())>=0) {
+                            niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
-                        if (goldProfit.getText().toString().startsWith("-")) {
-                            goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        else niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(goldProfit.getText().toString())>=0) {
+                            goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
-                        if (silverProfit.getText().toString().startsWith("-")) {
-                            silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        else goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(silverProfit.getText().toString())>=0) {
+                            silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
-                        if (crudeOilProfit.getText().toString().startsWith("-")) {
-                            crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        else silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(crudeOilProfit.getText().toString())>=0) {
+                            crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
-                        if (currencyProfit.getText().toString().startsWith("-")) {
-                            currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        else crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(currencyProfit.getText().toString())>=0) {
+                            currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
-                        if (fixedDepositProfit.getText().toString().startsWith("-")) {
-                            fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        else currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        if (Double.parseDouble(fixedDepositProfit.getText().toString())>=0) {
+                            fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
                         }
+                        else fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
 
                     } else {
                         Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();

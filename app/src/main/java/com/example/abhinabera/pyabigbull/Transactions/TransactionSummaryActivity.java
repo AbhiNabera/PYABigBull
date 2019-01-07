@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -116,6 +118,8 @@ public class TransactionSummaryActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(TransactionSummaryActivity.this, MainActivity.class);
+                startActivity(i);
                 finish();
                 overridePendingTransition(R.anim.enter1, R.anim.exit1);
             }

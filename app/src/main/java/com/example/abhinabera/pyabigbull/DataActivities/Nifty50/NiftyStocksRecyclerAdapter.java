@@ -52,14 +52,14 @@ public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocks
         viewHolder.boxPrice.setText(new Utility().getRoundoffData(stockList.get(position).get("change").getAsString()).trim()+"");
 
         String pchange = new Utility().getRoundoffData(stockList.get(position).get("percentchange").getAsString()).trim()+"";
-        viewHolder.boxPercent.setText(pchange);
+        viewHolder.boxPercent.setText(pchange + "%");
 
         if(Double.parseDouble(pchange)>=0) {
             viewHolder.stockBox.setBackgroundColor(context.getResources().getColor(R.color.greenText));
         }else {
             viewHolder.stockBox.setBackgroundColor(context.getResources().getColor(R.color.red));
         }
-        viewHolder.boxPercent.setText(stockList.get(position).get("percentchange").getAsString().trim()+"");
+        viewHolder.boxPercent.setText(stockList.get(position).get("percentchange").getAsString().trim()+"%");
     }
 
     // inner class to hold a reference to each item of RecyclerView 

@@ -105,7 +105,7 @@ public class UserDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), TermsAndConditions.class);
-                i.putExtra("name", "TERMS AND CONDITIONS");
+                i.putExtra("name", "PLAYING CONDITIONS");
                 startActivity(i);
                 //getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }

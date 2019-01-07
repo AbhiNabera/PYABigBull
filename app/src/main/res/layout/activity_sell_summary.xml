@@ -659,7 +659,7 @@
             android:fontFamily="@font/hammersmithoneregular"
             android:textColor="@color/greenText"
             android:textSize="20sp"
-            android:text="continue" />
+            android:text="back" />
 
     </RelativeLayout>
 

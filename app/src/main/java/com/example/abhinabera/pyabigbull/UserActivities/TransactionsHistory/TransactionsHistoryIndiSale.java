@@ -78,11 +78,19 @@ public class TransactionsHistoryIndiSale extends AppCompatActivity {
             gainOrLoss.setTextColor(getResources().getColor(R.color.red));
             gainORLossPer.setTextColor(getResources().getColor(R.color.red));
         }
+        else{
+            gainOrLoss.setTextColor(getResources().getColor(R.color.greenText));
+            gainORLossPer.setTextColor(getResources().getColor(R.color.greenText));
+        }
         gainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("return_change").getAsString()));
         gainORLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("return_percentchange").getAsString()));
         if(transIndHisSum.get("change").getAsString().startsWith("-")){
             netGainOrLoss.setTextColor(getResources().getColor(R.color.red));
             netGainOrLossPer.setTextColor(getResources().getColor(R.color.red));
+        }
+        else{
+            gainOrLoss.setTextColor(getResources().getColor(R.color.greenText));
+            gainORLossPer.setTextColor(getResources().getColor(R.color.greenText));
         }
         netGainOrLoss.setText(new Utility().getRoundoffData(transIndHisSum.get("change").getAsString()));
         netGainOrLossPer.setText(new Utility().getRoundoffData(transIndHisSum.get("percentchange").getAsString()));

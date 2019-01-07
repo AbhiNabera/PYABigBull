@@ -94,6 +94,7 @@ public class LeaderBoardFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.leaderBoardRecycler);
         userName = (TextView) view.findViewById(R.id.userNameText);
+        userName.setSelected(true);
         userRank = (TextView) view.findViewById(R.id.userRankText);
         boxPrice = (TextView) view.findViewById(R.id.leaderBoardBoxPrice);
         boxPercent = (TextView) view.findViewById(R.id.leaderBoardBoxPercent);

@@ -576,7 +576,7 @@ public class SellActivity extends AppCompatActivity {
 
     public void statTimer() {
 
-        countDownTimer = new CountDownTimer(90000, 1000) {
+        countDownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 timeouttv.setText("Remaining time..." + millisUntilFinished / 1000 + "s");

@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sell"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/red"
                 android:layout_marginRight="15dp"
                 android:textSize="14dp"
                 android:fontFamily="@font/hammersmithoneregular"
