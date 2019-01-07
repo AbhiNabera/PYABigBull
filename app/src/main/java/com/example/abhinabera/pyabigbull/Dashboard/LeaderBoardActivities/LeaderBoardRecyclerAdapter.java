@@ -44,6 +44,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
         viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
+        viewHolder.userName.setSelected(true);
         viewHolder.userRank.setText((position+1)+"");
         viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position)
                 .get("current_change").getAsString() +""));

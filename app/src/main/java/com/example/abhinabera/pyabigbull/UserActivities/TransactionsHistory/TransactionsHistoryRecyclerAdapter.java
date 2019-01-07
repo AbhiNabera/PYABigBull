@@ -94,13 +94,13 @@ public class TransactionsHistoryRecyclerAdapter extends RecyclerView.Adapter<Tra
                             i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
                             Log.d("transactionHistory", transactions.get(getAdapterPosition()).getAsJsonObject().get("txn_type").getAsString());
                             itemLayoutView.getContext().startActivity(i);
-                            context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                            //context.overridePendingTransition(R.anim.enter, R.anim.exit);
                         }
                         else{
                             Intent i = new Intent(itemLayoutView.getContext(), TransactionsHistoryIndiSale.class);
                             i.putExtra("transactionHistory", transactions.get(getAdapterPosition()).toString());
                             itemLayoutView.getContext().startActivity(i);
-                            context.overridePendingTransition(R.anim.enter, R.anim.exit);
+                            //context.overridePendingTransition(R.anim.enter, R.anim.exit);
                         }
                     }
 
