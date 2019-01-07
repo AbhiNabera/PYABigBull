@@ -114,7 +114,10 @@ public class StocksRecyclerAdapter extends RecyclerView.Adapter<StocksRecyclerAd
             }
 
             if(stocks.get(position).get("id").getAsString().equalsIgnoreCase("FD")) {
-                viewHolder.stockLayout.setVisibility(View.GONE);
+                //viewHolder.stockLayout.setVisibility(View.GONE);
+                viewHolder.curentStockPrice.setText("Fixed deposit");
+                viewHolder.estimatedChange.setText("");
+
             }
 
         }else {
