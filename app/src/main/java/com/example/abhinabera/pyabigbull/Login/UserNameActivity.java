@@ -110,10 +110,10 @@ public class UserNameActivity extends AppCompatActivity {
 
                         playerData.addProperty("type", type);
                         playerData.addProperty("phoneNumber", phoneNumber);
-                        playerData.addProperty("userName", userName.getText().toString().trim());
+                        playerData.addProperty("userName", userName.getText().toString().toUpperCase().trim());
 
                         data.addProperty("type", type);
-                        data.addProperty("userName", userName.getText().toString().trim());
+                        data.addProperty("userName", userName.getText().toString().toUpperCase().trim());
 
                         if(!type.equalsIgnoreCase("member")) {
                             data.addProperty("dependentName", dependentName.getText().toString().trim());
@@ -197,8 +197,6 @@ public class UserNameActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
 
-                    }else {
-                        //TODO: registration closed after 5 days
                     }
                 }
             }
