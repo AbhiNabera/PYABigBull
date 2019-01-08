@@ -810,7 +810,14 @@ public class SellActivity extends AppCompatActivity {
         if(count == 2) {
             count = 0;
             progressDialog.dismiss();
-            setPurchaseData();
+            if(userObject!=null && stockObject != null) {
+                setPurchaseData();
+            }else {
+                Toast.makeText(SellActivity.this, "Unexpected error occured. " +
+                        "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
+            }
         }
     }
 

@@ -189,7 +189,6 @@ public class FDSellActivity extends AppCompatActivity {
         acc_bal = aval_balance;
         netstockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("change").getAsString().replace(",",""));
         netpercenttockchange = Double.parseDouble(userObject.get("data").getAsJsonObject().get("percentchange").getAsString().replace(",",""));
-
     }
 
     public void updateAmounts() {

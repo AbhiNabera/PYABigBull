@@ -495,6 +495,7 @@ public class PurchaseActivity extends AppCompatActivity {
             Toast.makeText(PurchaseActivity.this, "Unexpected error occured. " +
                     "Please check your internet connection.", Toast.LENGTH_SHORT).show();
             setPurchaseData();
+            setResult(RESULT_OK);
             finish();
         }
 
@@ -813,7 +814,14 @@ public class PurchaseActivity extends AppCompatActivity {
         if(count == 2) {
             count = 0;
             progressDialog.dismiss();
-            setPurchaseData();
+            if(userObject!=null && stockObject!=null) {
+                setPurchaseData();
+            }else {
+                Toast.makeText(PurchaseActivity.this, "Unexpected error occured. " +
+                        "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
+            }
         }
     }
 

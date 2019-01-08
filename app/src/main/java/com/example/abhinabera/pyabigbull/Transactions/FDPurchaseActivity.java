@@ -240,6 +240,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
             accBalance.setText(new Utility().getRoundoffData(acc_balance+""));
 
         }else {
+            setResult(RESULT_OK);
             finish();
             Toast.makeText(FDPurchaseActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
         }
