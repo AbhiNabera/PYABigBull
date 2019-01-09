@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import com.example.abhinabera.pyabigbull.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity{
         getSupportActionBar().hide();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        Date currentTime = Calendar.getInstance().getTime();
+        Log.d("time", currentTime.toString());
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
 
