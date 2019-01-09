@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dialog.DialogInterface;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -294,6 +295,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
         data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser()
                 .getPhoneNumber().substring(3));
         data.add("Account", account_ref);
+        data.addProperty("item_type", "fixed_deposit");
 
         //Log.d("FDPurchase data", data+"");
 
@@ -353,63 +355,95 @@ public class FDPurchaseActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
-                getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+                getCurrentUser().getPhoneNumber().substring(3), "FIXED_DEPOSIT").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    userObject = response.body();
 
-                    try {
-                        JsonObject fd_ref = userObject.getAsJsonObject("data")
-                                //.getAsJsonObject("Account")
-                                .getAsJsonObject("stocks_list")
-                                .getAsJsonObject("bought_items")
-                                .getAsJsonObject("fixed_deposit");
+                    if (response.body().getAsJsonObject("data") != null) {
 
-                        Set<Map.Entry<String, JsonElement>> entrySet = fd_ref.entrySet();
+                        Log.d("response", response.body() + "");
+                        userObject = response.body();
 
-                        FD_TOTAL = 0;
+                        try {
+                            JsonObject fd_ref = userObject.getAsJsonObject("data")
+                                    //.getAsJsonObject("Account")
+                                    .getAsJsonObject("stocks_list")
+                                    .getAsJsonObject("bought_items")
+                                    .getAsJsonObject("fixed_deposit");
 
-                        for(Map.Entry<String, JsonElement> entry: entrySet) {
+                            Set<Map.Entry<String, JsonElement>> entrySet = fd_ref.entrySet();
 
-                            FD_TOTAL += entry.getValue().getAsJsonObject().get("investment").getAsDouble();
-                            TOTAL_AMOUNT+= entry.getValue().getAsJsonObject().get("current_value").getAsDouble();
+                            FD_TOTAL = 0;
+
+                            for (Map.Entry<String, JsonElement> entry : entrySet) {
+
+                                FD_TOTAL += entry.getValue().getAsJsonObject().get("investment").getAsDouble();
+                                TOTAL_AMOUNT += entry.getValue().getAsJsonObject().get("current_value").getAsDouble();
+                            }
+
+                            fd_total = FD_TOTAL;
+
+                            Log.d("FD_TOTAL", "" + FD_TOTAL);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            FD_TOTAL = 0;
+                            fd_total = 0;
+                            TOTAL_AMOUNT = 0;
                         }
 
-                        fd_total = FD_TOTAL;
+                        initializeAmount();
+                        updateAmount();
+                        setViews();
+                        statTimer();
 
-                        Log.d("FD_TOTAL", ""+FD_TOTAL);
+                        progressDialog.dismiss();
 
-                    }catch (NullPointerException e) {
-                        e.printStackTrace();
-                        FD_TOTAL = 0;
-                        fd_total = 0;
-                        TOTAL_AMOUNT = 0;
+                        //new FDAmtUpdateUtility().getUpdatedAmount(userObject);
+
+                    } else if (response.body().get("flag") != null) {
+
+                        progressDialog.dismiss();
+
+                        new Utility().showDialog(response.body().get("flag").getAsString(),
+                                response.body().get("message").getAsString(), FDPurchaseActivity.this, new DialogInterface() {
+                                    @Override
+                                    public void onSuccess() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                });
+
+                    } else {
+
+                        progressDialog.dismiss();
+
+                        setResult(RESULT_OK);
+                        finish();
+                        Toast.makeText(FDPurchaseActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                     }
 
-                    initializeAmount();
-                    updateAmount();
-                    setViews();
-                    statTimer();
-
-                    //new FDAmtUpdateUtility().getUpdatedAmount(userObject);
-
-                }else {
+                } else {
                     try {
                         Log.d("Fixed deposit error", response.errorBody().string()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
+                    progressDialog.dismiss();
+
                     setResult(RESULT_OK);
                     finish();
-                    Toast.makeText(FDPurchaseActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FDPurchaseActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                 }
-
-                progressDialog.dismiss();
-
             }
 
             @Override

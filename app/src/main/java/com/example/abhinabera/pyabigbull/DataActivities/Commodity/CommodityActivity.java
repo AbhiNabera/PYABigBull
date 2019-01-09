@@ -381,88 +381,94 @@ public class CommodityActivity extends AppCompatActivity {
         )).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.isSuccessful()) {
 
-                    if(response.body().get("graph").getAsJsonObject().get("values") != null) {
+                try {
 
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
+                    if (response.isSuccessful()) {
 
-                                int i = 0;
-                                JsonElement lastElement = null;
+                        if (response.body().get("graph").getAsJsonObject().get("values") != null) {
 
-                                graphView.removeAllSeries();
-                                series = new LineGraphSeries<>();
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                //TODO: temp fix
-                                long prevTime = 0;
-                                String prevDate = "";
+                                    int i = 0;
+                                    JsonElement lastElement = null;
 
-                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                    graphView.removeAllSeries();
+                                    series = new LineGraphSeries<>();
 
-                                    long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+                                    //TODO: temp fix
+                                    long prevTime = 0;
+                                    String prevDate = "";
 
-                                    if (time > prevTime) {
-                                        prevTime = time;
-                                        prevDate = element.getAsJsonObject().get("_time").getAsString();
-                                    } else {
-                                        break;
+                                    for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+
+                                        long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+
+                                        if (time > prevTime) {
+                                            prevTime = time;
+                                            prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                        } else {
+                                            break;
+                                        }
+
+                                        if (i == 0) {
+
+                                            MIN = getDateFromString(element.getAsJsonObject().
+                                                    get("_time").getAsString());
+
+                                        }
+
+                                        lastElement = element;
+                                        i++;
+
+                                        series.appendData(new DataPoint(
+                                                        time,
+                                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                                , true, i);
+
                                     }
 
-                                    if (i == 0) {
-
-                                        MIN = getDateFromString(element.getAsJsonObject().
+                                    if (lastElement != null)
+                                        MAX = getDateFromString(lastElement.getAsJsonObject().
                                                 get("_time").getAsString());
-
+                                    else {
+                                        MAX = 0;
+                                        MIN = 0;
                                     }
 
-                                    lastElement = element;
-                                    i++;
-
-                                    series.appendData(new DataPoint(
-                                                    time,
-                                                    getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
-                                            , true, i);
-
+                                    CommodityActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            setUpChart();
+                                            //series.resetData(dataPoints);
+                                            graphView.addSeries(series);
+                                            setScrollable();
+                                            //progressBar.setVisibility(View.GONE);
+                                        }
+                                    });
                                 }
+                            });
 
-                                if(lastElement!=null)
-                                    MAX = getDateFromString(lastElement.getAsJsonObject().
-                                            get("_time").getAsString());
-                                else {
-                                    MAX=0;
-                                    MIN=0;
-                                }
-
-                                CommodityActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setUpChart();
-                                        //series.resetData(dataPoints);
-                                        graphView.addSeries(series);
-                                        setScrollable();
-                                        //progressBar.setVisibility(View.GONE);
-                                    }
-                                });
-                            }
-                        });
+                        } else {
+                            setUpBlankChart();
+                            //progressBar.setVisibility(View.GONE);
+                        }
 
                     } else {
+
                         setUpBlankChart();
-                        //progressBar.setVisibility(View.GONE);
                     }
 
-                }else {
-
-                    setUpBlankChart();
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-
             }
         });
     }

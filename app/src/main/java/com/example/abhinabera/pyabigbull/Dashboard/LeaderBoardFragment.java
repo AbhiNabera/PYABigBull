@@ -138,103 +138,108 @@ public class LeaderBoardFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                if(response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
 
-                    Type listType = new TypeToken<List<JsonObject>>() {}.getType();
-                    List<JsonObject> leaderboardObjects = new Gson().fromJson(response.body()
-                            .getAsJsonArray("data"), listType);
+                        Type listType = new TypeToken<List<JsonObject>>() {
+                        }.getType();
+                        List<JsonObject> leaderboardObjects = new Gson().fromJson(response.body()
+                                .getAsJsonArray("data"), listType);
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            try {
-                                long timestart = System.currentTimeMillis();
+                                try {
+                                    long timestart = System.currentTimeMillis();
 
-                                for (JsonObject object : leaderboardObjects) {
+                                    for (JsonObject object : leaderboardObjects) {
 
-                                    //TODO: add portfolio value
-                                    object.addProperty("portfolio_value", getPortfolioValue(object));
-                                    object.addProperty("net_worth",
-                                            (object.get("portfolio_value").getAsDouble()
-                                                    + object.get("avail_balance").getAsDouble()));
-                                    object.addProperty("current_change",
-                                            ((object.get("portfolio_value").getAsDouble()
-                                                    + object.get("avail_balance").getAsDouble())
-                                                    - object.get("start_balance").getAsDouble()));
+                                        //TODO: add portfolio value
+                                        object.addProperty("portfolio_value", getPortfolioValue(object));
+                                        object.addProperty("net_worth",
+                                                (object.get("portfolio_value").getAsDouble()
+                                                        + object.get("avail_balance").getAsDouble()));
+                                        object.addProperty("current_change",
+                                                ((object.get("portfolio_value").getAsDouble()
+                                                        + object.get("avail_balance").getAsDouble())
+                                                        - object.get("start_balance").getAsDouble()));
 
-                                    object.addProperty("current_pchange",
-                                            (object.get("current_change").getAsDouble()
-                                                    / object.get("start_balance").getAsDouble()) * 100);
-                                }
-
-
-                                Collections.sort(leaderboardObjects, new Comparator<JsonObject>() {
-                                    @Override
-                                    public int compare(JsonObject c1, JsonObject c2) {
-                                        return Double.compare(c2.get("current_pchange").getAsDouble(),
-                                                c1.get("current_pchange").getAsDouble());
+                                        object.addProperty("current_pchange",
+                                                (object.get("current_change").getAsDouble()
+                                                        / object.get("start_balance").getAsDouble()) * 100);
                                     }
-                                });
 
-                                MY_RANK = 0;
 
-                                for (JsonObject object : leaderboardObjects) {
+                                    Collections.sort(leaderboardObjects, new Comparator<JsonObject>() {
+                                        @Override
+                                        public int compare(JsonObject c1, JsonObject c2) {
+                                            return Double.compare(c2.get("current_pchange").getAsDouble(),
+                                                    c1.get("current_pchange").getAsDouble());
+                                        }
+                                    });
 
-                                    MY_RANK++;
+                                    MY_RANK = 0;
 
-                                    if (object.get("phoneNumber").getAsString().trim().equalsIgnoreCase(FirebaseAuth
-                                            .getInstance().getCurrentUser().getPhoneNumber().substring(3))) {
-                                        user_object = object;
-                                        break;
+                                    for (JsonObject object : leaderboardObjects) {
+
+                                        MY_RANK++;
+
+                                        if (object.get("phoneNumber").getAsString().trim().equalsIgnoreCase(FirebaseAuth
+                                                .getInstance().getCurrentUser().getPhoneNumber().substring(3))) {
+                                            user_object = object;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                long endtime = System.currentTimeMillis();
+                                    long endtime = System.currentTimeMillis();
 
-                                Log.d("time elasped", "" + (endtime - timestart));
+                                    Log.d("time elasped", "" + (endtime - timestart));
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                        refreshLayout.setRefreshing(false);
+                                            refreshLayout.setRefreshing(false);
 
-                                        boardlist.clear();
-                                        if (leaderboardObjects.size() > 10) {
-                                            int i = 0;
-                                            for (JsonObject object : leaderboardObjects) {
-                                                i++;
-                                                boardlist.add(object);
-                                                if (i == 10) break;
-                                                ;
+                                            boardlist.clear();
+                                            if (leaderboardObjects.size() > 10) {
+                                                int i = 0;
+                                                for (JsonObject object : leaderboardObjects) {
+                                                    i++;
+                                                    boardlist.add(object);
+                                                    if (i == 10) break;
+                                                }
+                                            } else {
+                                                boardlist.addAll(leaderboardObjects);
                                             }
-                                        } else {
-                                            boardlist.addAll(leaderboardObjects);
-                                        }
-                                        mAdapter.notifyDataSetChanged();
+                                            mAdapter.notifyDataSetChanged();
 
-                                        userName.setText(user_object.get("userName").getAsString());
-                                        userRank.setText(MY_RANK + "");
-                                        boxPrice.setText(new Utility().getRoundoffData(user_object.
-                                                get("current_change").getAsDouble() + "") + "");
-                                        boxPercent.setText(new Utility().getRoundoffData(user_object
-                                                .get("current_pchange").getAsDouble() + "") + "%");
+                                            userName.setText(user_object.get("userName").getAsString());
+                                            userRank.setText(MY_RANK + "");
+                                            boxPrice.setText(new Utility().getRoundoffData(user_object.
+                                                    get("current_change").getAsDouble() + "") + "");
+                                            boxPercent.setText(new Utility().getRoundoffData(user_object
+                                                    .get("current_pchange").getAsDouble() + "") + "%");
 
-                                        if (user_object.get("current_change").getAsDouble() >= 0) {
-                                            linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                                        } else {
-                                            linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                                            if (user_object.get("current_change").getAsDouble() >= 0) {
+                                                linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                                            } else {
+                                                linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                                            }
                                         }
-                                    }
-                                });
-                            }catch (NullPointerException e){
-                                e.printStackTrace();
-                            }catch (Exception e) {
-                                e.printStackTrace();
+                                    });
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    refreshLayout.setRefreshing(false);
                 }
             }
 

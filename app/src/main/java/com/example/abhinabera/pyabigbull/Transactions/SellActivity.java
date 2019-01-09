@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.abhinabera.pyabigbull.Api.ApiInterface;
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dialog.DialogInterface;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -489,6 +490,7 @@ public class SellActivity extends AppCompatActivity {
         }
 
         txn_data.add("Account", account_ref);
+        txn_data.addProperty("item_type", type_key);
 
         return txn_data;
     }
@@ -696,7 +698,7 @@ public class SellActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().getUserTxnData(FirebaseAuth.getInstance().
-                getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+                getCurrentUser().getPhoneNumber().substring(3), type).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -705,23 +707,48 @@ public class SellActivity extends AppCompatActivity {
                     if(response.body().getAsJsonObject("data") != null) {
                         //Log.d("response", response.body() + "");
 
+                        count++;
+                        dismissDialog();
+
                         adminSettings = response.body().getAsJsonObject("data").getAsJsonObject("admin_settings");
                         userObject = response.body().getAsJsonObject("data").getAsJsonObject("Account");
 
-                    }else {
+                    }else if(response.body().get("flag")!=null) {
+
+                        progressDialog.dismiss();
+
+                        new Utility().showDialog(response.body().get("flag").getAsString(),
+                                response.body().get("message").getAsString(), SellActivity.this, new DialogInterface() {
+                                    @Override
+                                    public void onSuccess() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                });
+
+                    } else {
                         Toast.makeText(SellActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
+                        count++;
+                        dismissDialog();
                     }
 
                 }else {
+
+                    count++;
+                    dismissDialog();
+
                     try {
-                        Log.d("SellActivity error", response.errorBody().string()+"");
+                        Log.d("SellActivity error", response.errorBody().string() + "");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-
-                count++;
-                dismissDialog();
 
             }
 

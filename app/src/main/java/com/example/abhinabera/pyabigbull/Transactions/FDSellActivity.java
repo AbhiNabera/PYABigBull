@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.Dialog.DialogInterface;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -334,7 +335,7 @@ public class FDSellActivity extends AppCompatActivity {
         }
 
         data.add("Account", account_ref);
-
+        data.addProperty("item_type", "fixed_deposit");
         //Log.d("FDPurchase data", data+"");
 
         return data;
@@ -372,28 +373,60 @@ public class FDSellActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         new RetrofitClient().getInterface().getUserAccount(FirebaseAuth.getInstance().
-                getCurrentUser().getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+                getCurrentUser().getPhoneNumber().substring(3), "FIXED_DEPOSIT").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if(response.isSuccessful()) {
-                    Log.d("response", response.body()+"");
-                    userObject = response.body();
-                    initializeAmt();
-                    updateAmounts();
-                    updateViews();
-                    statTimer();
+
+                    progressDialog.dismiss();
+
+                    if (response.body().getAsJsonObject("data") != null) {
+                        Log.d("response", response.body() + "");
+                        userObject = response.body();
+                        initializeAmt();
+                        updateAmounts();
+                        updateViews();
+                        statTimer();
+                    } else if (response.body().get("flag") != null) {
+
+                        progressDialog.dismiss();
+
+                        new Utility().showDialog(response.body().get("flag").getAsString(),
+                                response.body().get("message").getAsString(), FDSellActivity.this, new DialogInterface() {
+                                    @Override
+                                    public void onSuccess() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                });
+
+                    }else {
+                        progressDialog.dismiss();
+                        Toast.makeText(FDSellActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+
                 }else {
+
+                    progressDialog.dismiss();
+
                     try {
                         Log.d("SellActivity error", response.errorBody().string()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(FDSellActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FDSellActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 }
-                progressDialog.dismiss();
             }
 
             @Override

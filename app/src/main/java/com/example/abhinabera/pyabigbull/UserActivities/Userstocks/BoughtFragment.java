@@ -327,329 +327,335 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                if(response.isSuccessful()) {
+                try {
 
-                    if (response.body().getAsJsonObject("data") != null) {
+                    if (response.isSuccessful()) {
 
-                        fdList.clear();
-                        niftyList.clear();
-                        goldList.clear();
-                        silverList.clear();
-                        crudeoilList.clear();
-                        currencyList.clear();
-                        arrayList.clear();
+                        if (response.body().getAsJsonObject("data") != null) {
 
-                        ACCOUNT_BALANCE = response.body().getAsJsonObject("data").get("avail_balance").getAsDouble();
+                            fdList.clear();
+                            niftyList.clear();
+                            goldList.clear();
+                            silverList.clear();
+                            crudeoilList.clear();
+                            currencyList.clear();
+                            arrayList.clear();
 
-                        JsonObject bought_items = response.body().getAsJsonObject("data").get("bought_items").getAsJsonObject();
-                        JsonObject admin_settings = response.body().getAsJsonObject("data").get("admin_settings").getAsJsonObject();
+                            ACCOUNT_BALANCE = response.body().getAsJsonObject("data").get("avail_balance").getAsDouble();
 
-                        index_txn_charges = Double.parseDouble(admin_settings.
-                                get("trans_amt_nifty").getAsString().replace(",", ""));
+                            JsonObject bought_items = response.body().getAsJsonObject("data").get("bought_items").getAsJsonObject();
+                            JsonObject admin_settings = response.body().getAsJsonObject("data").get("admin_settings").getAsJsonObject();
 
-                        commodity_txn_charges = Double.parseDouble(admin_settings.
-                                get("trans_amt_commodity").getAsString().replace(",", ""));
+                            index_txn_charges = Double.parseDouble(admin_settings.
+                                    get("trans_amt_nifty").getAsString().replace(",", ""));
 
-                        currency_txn_charges = Double.parseDouble(admin_settings.
-                                get("trans_amt_currency").getAsString().replace(",", ""));
+                            commodity_txn_charges = Double.parseDouble(admin_settings.
+                                    get("trans_amt_commodity").getAsString().replace(",", ""));
+
+                            currency_txn_charges = Double.parseDouble(admin_settings.
+                                    get("trans_amt_currency").getAsString().replace(",", ""));
 
 
-                        if (bought_items.get("index").getAsJsonArray().size() != 0) {
+                            if (bought_items.get("index").getAsJsonArray().size() != 0) {
 
-                            JsonObject object = new JsonObject();
-                            object.addProperty("TYPE", "index");
-                            arrayList.add(object);
+                                JsonObject object = new JsonObject();
+                                object.addProperty("TYPE", "index");
+                                arrayList.add(object);
 
-                            for (JsonElement element : bought_items.get("index").getAsJsonArray()) {
+                                for (JsonElement element : bought_items.get("index").getAsJsonArray()) {
 
-                                double current_price = Double.parseDouble(map.get(element.getAsJsonObject().get("id").getAsString())
-                                        .get("lastvalue").getAsString().trim().replace(",", ""));
+                                    double current_price = Double.parseDouble(map.get(element.getAsJsonObject().get("id").getAsString())
+                                            .get("lastvalue").getAsString().trim().replace(",", ""));
 
-                                double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
-                                        get("qty").getAsString()) /*- index_txn_charges*/;
+                                    double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
+                                            get("qty").getAsString()) /*- index_txn_charges*/;
 
-                                double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString()) - index_txn_charges;
+                                    double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString()) - index_txn_charges;
 
-                                double pchange = ((current_price * Integer.parseInt(element.getAsJsonObject().
-                                        get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString()) - index_txn_charges) / Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString())) * 100;
+                                    double pchange = ((current_price * Integer.parseInt(element.getAsJsonObject().
+                                            get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString()) - index_txn_charges) / Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString())) * 100;
 
-                                element.getAsJsonObject().
-                                        addProperty("current_price", current_price);
+                                    element.getAsJsonObject().
+                                            addProperty("current_price", current_price);
 
-                                element.getAsJsonObject().
-                                        addProperty("pchange", pchange);
+                                    element.getAsJsonObject().
+                                            addProperty("pchange", pchange);
 
-                                element.getAsJsonObject().
-                                        addProperty("current_value", current_value);
+                                    element.getAsJsonObject().
+                                            addProperty("current_value", current_value);
 
-                                element.getAsJsonObject().
-                                        addProperty("changeamount", changeamount);
+                                    element.getAsJsonObject().
+                                            addProperty("changeamount", changeamount);
 
-                                element.getAsJsonObject().
-                                        addProperty("type", "NIFTY");
+                                    element.getAsJsonObject().
+                                            addProperty("type", "NIFTY");
 
-                                arrayList.add(element.getAsJsonObject());
+                                    arrayList.add(element.getAsJsonObject());
 
-                                PORTFOLIO_VALUE += current_value;
+                                    PORTFOLIO_VALUE += current_value;
 
-                                NIFTY_CURRENTVALUE += current_value;
-                                NIFTY_INVESTMENT += element.getAsJsonObject().
-                                        get("total_amount").getAsDouble();
-
-                                niftyList.add(element.getAsJsonObject());
-                            }
-                        }
-
-                        if (bought_items.get("commodity").getAsJsonArray().size() != 0) {
-
-                            JsonObject object = new JsonObject();
-                            object.addProperty("TYPE", "commodity");
-                            arrayList.add(object);
-
-                            for (JsonElement element : bought_items.get("commodity").getAsJsonArray()) {
-
-                                double current_price = Double.parseDouble(commodity.get(element.getAsJsonObject().get("id").getAsString())
-                                        .get("lastprice").getAsString().trim().replace(",", ""));
-
-                                if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
-
-                                    current_price = current_price * 0.1;
-                                }
-
-                                double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
-                                        get("qty").getAsString()) /*- index_txn_charges*/;
-
-                                double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString()) - commodity_txn_charges;
-
-                                double pchange = ((changeamount) / Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString())) * 100;
-
-                                element.getAsJsonObject().
-                                        addProperty("current_price", current_price);
-
-                                element.getAsJsonObject().
-                                        addProperty("current_value", current_value);
-
-                                element.getAsJsonObject().
-                                        addProperty("changeamount", changeamount);
-
-                                element.getAsJsonObject().
-                                        addProperty("pchange", pchange);
-
-                                element.getAsJsonObject().
-                                        addProperty("type", "COMMODITY");
-
-                                arrayList.add(element.getAsJsonObject());
-
-                                PORTFOLIO_VALUE += current_value;
-
-                                if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("GOLD")) {
-
-                                    GOLD_CURRENTVALUE += current_value;
-                                    GOLD_INVESTMENT += element.getAsJsonObject().
+                                    NIFTY_CURRENTVALUE += current_value;
+                                    NIFTY_INVESTMENT += element.getAsJsonObject().
                                             get("total_amount").getAsDouble();
 
-                                    goldList.add(element.getAsJsonObject());
-
-                                } else if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
-
-                                    SILVER_CURRENTVALUE += current_value;
-                                    SILVER_INVESTMENT += element.getAsJsonObject().
-                                            get("total_amount").getAsDouble();
-                                    silverList.add(element.getAsJsonObject());
-
-                                } else if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("CRUDEOIL")) {
-
-                                    CRUDEOIL_CURRENTVALUE += current_value;
-                                    CRUDEOIL_INVESTMENT += element.getAsJsonObject().
-                                            get("total_amount").getAsDouble();
-                                    crudeoilList.add(element.getAsJsonObject());
+                                    niftyList.add(element.getAsJsonObject());
                                 }
                             }
-                        }
 
-                        if (bought_items.get("currency").getAsJsonArray().size() != 0) {
+                            if (bought_items.get("commodity").getAsJsonArray().size() != 0) {
 
-                            JsonObject object = new JsonObject();
-                            object.addProperty("TYPE", "currency");
-                            arrayList.add(object);
+                                JsonObject object = new JsonObject();
+                                object.addProperty("TYPE", "commodity");
+                                arrayList.add(object);
 
-                            for (JsonElement element : bought_items.get("currency").getAsJsonArray()) {
+                                for (JsonElement element : bought_items.get("commodity").getAsJsonArray()) {
 
-                                double current_price = Double.parseDouble(currency.get(element.getAsJsonObject().get("id").getAsString())
-                                        .get("data").getAsJsonObject().get("pricecurrent").getAsString().trim().replace(",", ""));
+                                    double current_price = Double.parseDouble(commodity.get(element.getAsJsonObject().get("id").getAsString())
+                                            .get("lastprice").getAsString().trim().replace(",", ""));
 
-                                double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
-                                        get("qty").getAsString()) /*- index_txn_charges*/;
+                                    if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
 
-                                double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString()) - currency_txn_charges;
+                                        current_price = current_price * 0.1;
+                                    }
 
-                                double pchange = ((current_price * Integer.parseInt(element.getAsJsonObject().
-                                        get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString()) - currency_txn_charges) / Double.parseDouble(element.getAsJsonObject().
-                                        get("total_amount").getAsString())) * 100;
+                                    double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
+                                            get("qty").getAsString()) /*- index_txn_charges*/;
 
-                                element.getAsJsonObject().
-                                        addProperty("current_price", current_price);
+                                    double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString()) - commodity_txn_charges;
 
-                                element.getAsJsonObject().
-                                        addProperty("pchange", pchange);
+                                    double pchange = ((changeamount) / Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString())) * 100;
 
-                                element.getAsJsonObject().
-                                        addProperty("current_value", current_value);
+                                    element.getAsJsonObject().
+                                            addProperty("current_price", current_price);
 
-                                element.getAsJsonObject().
-                                        addProperty("changeamount", changeamount);
+                                    element.getAsJsonObject().
+                                            addProperty("current_value", current_value);
 
-                                element.getAsJsonObject().
-                                        addProperty("type", "CURRENCY");
+                                    element.getAsJsonObject().
+                                            addProperty("changeamount", changeamount);
 
-                                arrayList.add(element.getAsJsonObject());
+                                    element.getAsJsonObject().
+                                            addProperty("pchange", pchange);
 
-                                PORTFOLIO_VALUE += current_value;
+                                    element.getAsJsonObject().
+                                            addProperty("type", "COMMODITY");
 
-                                CURRENCY_CURRENTVALUE += current_value;
-                                CURRENCY_INVESTMENT += element.getAsJsonObject().
-                                        get("total_amount").getAsDouble();
+                                    arrayList.add(element.getAsJsonObject());
 
-                                currencyList.add(element.getAsJsonObject());
+                                    PORTFOLIO_VALUE += current_value;
+
+                                    if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("GOLD")) {
+
+                                        GOLD_CURRENTVALUE += current_value;
+                                        GOLD_INVESTMENT += element.getAsJsonObject().
+                                                get("total_amount").getAsDouble();
+
+                                        goldList.add(element.getAsJsonObject());
+
+                                    } else if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("SILVER")) {
+
+                                        SILVER_CURRENTVALUE += current_value;
+                                        SILVER_INVESTMENT += element.getAsJsonObject().
+                                                get("total_amount").getAsDouble();
+                                        silverList.add(element.getAsJsonObject());
+
+                                    } else if (element.getAsJsonObject().get("name").getAsString().equalsIgnoreCase("CRUDEOIL")) {
+
+                                        CRUDEOIL_CURRENTVALUE += current_value;
+                                        CRUDEOIL_INVESTMENT += element.getAsJsonObject().
+                                                get("total_amount").getAsDouble();
+                                        crudeoilList.add(element.getAsJsonObject());
+                                    }
+                                }
                             }
-                        }
 
-                        if (bought_items.get("fixed_deposit").getAsJsonArray().size() != 0) {
+                            if (bought_items.get("currency").getAsJsonArray().size() != 0) {
 
-                            JsonObject object = new JsonObject();
-                            object.addProperty("TYPE", "fixed_deposit");
-                            arrayList.add(object);
+                                JsonObject object = new JsonObject();
+                                object.addProperty("TYPE", "currency");
+                                arrayList.add(object);
 
-                            for (JsonElement element : bought_items.get("fixed_deposit").getAsJsonArray()) {
+                                for (JsonElement element : bought_items.get("currency").getAsJsonArray()) {
 
-                                double current_value = element.getAsJsonObject().
-                                        get("current_value").getAsDouble();
+                                    double current_price = Double.parseDouble(currency.get(element.getAsJsonObject().get("id").getAsString())
+                                            .get("data").getAsJsonObject().get("pricecurrent").getAsString().trim().replace(",", ""));
 
-                                double investment = element.getAsJsonObject().
-                                        get("investment").getAsDouble();
+                                    double current_value = current_price * Integer.parseInt(element.getAsJsonObject().
+                                            get("qty").getAsString()) /*- index_txn_charges*/;
 
-                                double changeamount = current_value - investment;
+                                    double changeamount = current_value - Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString()) - currency_txn_charges;
 
-                                double pchange = (changeamount / investment) * 100;
+                                    double pchange = ((current_price * Integer.parseInt(element.getAsJsonObject().
+                                            get("qty").getAsString()) - Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString()) - currency_txn_charges) / Double.parseDouble(element.getAsJsonObject().
+                                            get("total_amount").getAsString())) * 100;
 
-                                element.getAsJsonObject().
-                                        addProperty("current_price", current_value);
+                                    element.getAsJsonObject().
+                                            addProperty("current_price", current_price);
 
-                                element.getAsJsonObject().
-                                        addProperty("pchange", pchange);
+                                    element.getAsJsonObject().
+                                            addProperty("pchange", pchange);
 
-                                element.getAsJsonObject().
-                                        addProperty("current_value", current_value);
+                                    element.getAsJsonObject().
+                                            addProperty("current_value", current_value);
 
-                                element.getAsJsonObject().
-                                        addProperty("changeamount", changeamount);
+                                    element.getAsJsonObject().
+                                            addProperty("changeamount", changeamount);
 
-                                element.getAsJsonObject().
-                                        addProperty("type", "fixed_deposit");
+                                    element.getAsJsonObject().
+                                            addProperty("type", "CURRENCY");
 
-                                element.getAsJsonObject().addProperty("txn_amt", 0.0);
-                                element.getAsJsonObject().addProperty("total_amount", element.getAsJsonObject().
-                                        get("investment").getAsDouble());
-                                element.getAsJsonObject().addProperty("buy_price", Utility.BASE_AMT + "");
-                                element.getAsJsonObject().addProperty("name", "FD");
-                                element.getAsJsonObject().addProperty("id", "FD");
+                                    arrayList.add(element.getAsJsonObject());
 
-                                arrayList.add(element.getAsJsonObject());
+                                    PORTFOLIO_VALUE += current_value;
 
-                                PORTFOLIO_VALUE += current_value;
+                                    CURRENCY_CURRENTVALUE += current_value;
+                                    CURRENCY_INVESTMENT += element.getAsJsonObject().
+                                            get("total_amount").getAsDouble();
 
-                                FD_CURRENTVALUE += current_value;
-                                FD_INVESTMENT += element.getAsJsonObject().
-                                        get("investment").getAsDouble();
-
-                                fdList.add(element.getAsJsonObject());
+                                    currencyList.add(element.getAsJsonObject());
+                                }
                             }
-                        }
 
-                        //PORTFOLIO_VALUE += ACCOUNT_BALANCE;
-                        TOTAL_VALUE = PORTFOLIO_VALUE + ACCOUNT_BALANCE;
+                            if (bought_items.get("fixed_deposit").getAsJsonArray().size() != 0) {
 
-                        portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE + ""));
-                        accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE + ""));
-                        totalValue.setText(new Utility().getRoundoffData(TOTAL_VALUE + ""));
+                                JsonObject object = new JsonObject();
+                                object.addProperty("TYPE", "fixed_deposit");
+                                arrayList.add(object);
 
-                        niftyCV.setText(new Utility().getRoundoffData("" + NIFTY_CURRENTVALUE));
-                        goldCV.setText(new Utility().getRoundoffData("" + GOLD_CURRENTVALUE));
-                        silverCV.setText(new Utility().getRoundoffData("" + SILVER_CURRENTVALUE));
-                        crudeOilCV.setText(new Utility().getRoundoffData("" + CRUDEOIL_CURRENTVALUE));
-                        currencyCV.setText(new Utility().getRoundoffData("" + CURRENCY_CURRENTVALUE));
-                        fixedDepositCV.setText(new Utility().getRoundoffData("" + FD_CURRENTVALUE));
+                                for (JsonElement element : bought_items.get("fixed_deposit").getAsJsonArray()) {
 
-                        niftyProfit.setText(new Utility().getRoundoffData("" + (NIFTY_CURRENTVALUE - NIFTY_INVESTMENT)));
-                        goldProfit.setText(new Utility().getRoundoffData("" + (GOLD_CURRENTVALUE - GOLD_INVESTMENT)));
-                        silverProfit.setText(new Utility().getRoundoffData("" + (SILVER_CURRENTVALUE - SILVER_INVESTMENT)));
-                        crudeOilProfit.setText(new Utility().getRoundoffData("" + (CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT)));
-                        currencyProfit.setText(new Utility().getRoundoffData("" + (CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT)));
-                        fixedDepositProfit.setText(new Utility().getRoundoffData("" + (FD_CURRENTVALUE - FD_INVESTMENT)));
+                                    double current_value = element.getAsJsonObject().
+                                            get("current_value").getAsDouble();
 
-                        niftyProfitPer.setText(new Utility().getRoundoffData("" + ((NIFTY_CURRENTVALUE - NIFTY_INVESTMENT) / NIFTY_INVESTMENT * 100)) + "%");
-                        goldProfitPer.setText(new Utility().getRoundoffData("" + ((GOLD_CURRENTVALUE - GOLD_INVESTMENT) / GOLD_INVESTMENT * 100)) + "%");
-                        silverProfitPer.setText(new Utility().getRoundoffData("" + ((SILVER_CURRENTVALUE - SILVER_INVESTMENT) / SILVER_INVESTMENT * 100)) + "%");
-                        crudeOilProfitPer.setText(new Utility().getRoundoffData("" + ((CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT) / CRUDEOIL_INVESTMENT * 100)) + "%");
-                        currencyProfitPer.setText(new Utility().getRoundoffData("" + ((CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT) / CURRENCY_INVESTMENT * 100)) + "%");
-                        fixedDepositProfitPer.setText(new Utility().getRoundoffData("" + ((FD_CURRENTVALUE - FD_INVESTMENT) / FD_INVESTMENT * 100)) + "%");
+                                    double investment = element.getAsJsonObject().
+                                            get("investment").getAsDouble();
 
-                        if (NIFTY_INVESTMENT == 0) {
-                            niftyProfitPer.setText("0.00%");
+                                    double changeamount = current_value - investment;
+
+                                    double pchange = (changeamount / investment) * 100;
+
+                                    element.getAsJsonObject().
+                                            addProperty("current_price", current_value);
+
+                                    element.getAsJsonObject().
+                                            addProperty("pchange", pchange);
+
+                                    element.getAsJsonObject().
+                                            addProperty("current_value", current_value);
+
+                                    element.getAsJsonObject().
+                                            addProperty("changeamount", changeamount);
+
+                                    element.getAsJsonObject().
+                                            addProperty("type", "fixed_deposit");
+
+                                    element.getAsJsonObject().addProperty("txn_amt", 0.0);
+                                    element.getAsJsonObject().addProperty("total_amount", element.getAsJsonObject().
+                                            get("investment").getAsDouble());
+                                    element.getAsJsonObject().addProperty("buy_price", Utility.BASE_AMT + "");
+                                    element.getAsJsonObject().addProperty("name", "FD");
+                                    element.getAsJsonObject().addProperty("id", "FD");
+
+                                    arrayList.add(element.getAsJsonObject());
+
+                                    PORTFOLIO_VALUE += current_value;
+
+                                    FD_CURRENTVALUE += current_value;
+                                    FD_INVESTMENT += element.getAsJsonObject().
+                                            get("investment").getAsDouble();
+
+                                    fdList.add(element.getAsJsonObject());
+                                }
+                            }
+
+                            //PORTFOLIO_VALUE += ACCOUNT_BALANCE;
+                            TOTAL_VALUE = PORTFOLIO_VALUE + ACCOUNT_BALANCE;
+
+                            portfolioValue.setText(new Utility().getRoundoffData(PORTFOLIO_VALUE + ""));
+                            accountBal.setText(new Utility().getRoundoffData(ACCOUNT_BALANCE + ""));
+                            totalValue.setText(new Utility().getRoundoffData(TOTAL_VALUE + ""));
+
+                            niftyCV.setText(new Utility().getRoundoffData("" + NIFTY_CURRENTVALUE));
+                            goldCV.setText(new Utility().getRoundoffData("" + GOLD_CURRENTVALUE));
+                            silverCV.setText(new Utility().getRoundoffData("" + SILVER_CURRENTVALUE));
+                            crudeOilCV.setText(new Utility().getRoundoffData("" + CRUDEOIL_CURRENTVALUE));
+                            currencyCV.setText(new Utility().getRoundoffData("" + CURRENCY_CURRENTVALUE));
+                            fixedDepositCV.setText(new Utility().getRoundoffData("" + FD_CURRENTVALUE));
+
+                            niftyProfit.setText(new Utility().getRoundoffData("" + (NIFTY_CURRENTVALUE - NIFTY_INVESTMENT)));
+                            goldProfit.setText(new Utility().getRoundoffData("" + (GOLD_CURRENTVALUE - GOLD_INVESTMENT)));
+                            silverProfit.setText(new Utility().getRoundoffData("" + (SILVER_CURRENTVALUE - SILVER_INVESTMENT)));
+                            crudeOilProfit.setText(new Utility().getRoundoffData("" + (CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT)));
+                            currencyProfit.setText(new Utility().getRoundoffData("" + (CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT)));
+                            fixedDepositProfit.setText(new Utility().getRoundoffData("" + (FD_CURRENTVALUE - FD_INVESTMENT)));
+
+                            niftyProfitPer.setText(new Utility().getRoundoffData("" + ((NIFTY_CURRENTVALUE - NIFTY_INVESTMENT) / NIFTY_INVESTMENT * 100)) + "%");
+                            goldProfitPer.setText(new Utility().getRoundoffData("" + ((GOLD_CURRENTVALUE - GOLD_INVESTMENT) / GOLD_INVESTMENT * 100)) + "%");
+                            silverProfitPer.setText(new Utility().getRoundoffData("" + ((SILVER_CURRENTVALUE - SILVER_INVESTMENT) / SILVER_INVESTMENT * 100)) + "%");
+                            crudeOilProfitPer.setText(new Utility().getRoundoffData("" + ((CRUDEOIL_CURRENTVALUE - CRUDEOIL_INVESTMENT) / CRUDEOIL_INVESTMENT * 100)) + "%");
+                            currencyProfitPer.setText(new Utility().getRoundoffData("" + ((CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT) / CURRENCY_INVESTMENT * 100)) + "%");
+                            fixedDepositProfitPer.setText(new Utility().getRoundoffData("" + ((FD_CURRENTVALUE - FD_INVESTMENT) / FD_INVESTMENT * 100)) + "%");
+
+                            if (NIFTY_INVESTMENT == 0) {
+                                niftyProfitPer.setText("0.00%");
+                            }
+                            if (GOLD_INVESTMENT == 0) {
+                                goldProfitPer.setText("0.00%");
+                            }
+                            if (SILVER_INVESTMENT == 0) {
+                                silverProfitPer.setText("0.00%");
+                            }
+                            if (CRUDEOIL_INVESTMENT == 0) {
+                                crudeOilProfitPer.setText("0.00%");
+                            }
+                            if (CURRENCY_INVESTMENT == 0) {
+                                currencyProfitPer.setText("0.00%");
+                            }
+                            if (FD_INVESTMENT == 0) {
+                                fixedDepositProfitPer.setText("0.00%");
+                            }
+                            if (Double.parseDouble(niftyProfit.getText().toString()) >= 0) {
+                                niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                            if (Double.parseDouble(goldProfit.getText().toString()) >= 0) {
+                                goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                            if (Double.parseDouble(silverProfit.getText().toString()) >= 0) {
+                                silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                            if (Double.parseDouble(crudeOilProfit.getText().toString()) >= 0) {
+                                crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                            if (Double.parseDouble(currencyProfit.getText().toString()) >= 0) {
+                                currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                            if (Double.parseDouble(fixedDepositProfit.getText().toString()) >= 0) {
+                                fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                            } else
+                                fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+
+                        } else {
+                            Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();
                         }
-                        if (GOLD_INVESTMENT == 0) {
-                            goldProfitPer.setText("0.00%");
-                        }
-                        if (SILVER_INVESTMENT == 0) {
-                            silverProfitPer.setText("0.00%");
-                        }
-                        if (CRUDEOIL_INVESTMENT == 0) {
-                            crudeOilProfitPer.setText("0.00%");
-                        }
-                        if (CURRENCY_INVESTMENT == 0) {
-                            currencyProfitPer.setText("0.00%");
-                        }
-                        if (FD_INVESTMENT == 0) {
-                            fixedDepositProfitPer.setText("0.00%");
-                        }
-                        if (Double.parseDouble(niftyProfit.getText().toString())>=0) {
-                            niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else niftyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
-                        if (Double.parseDouble(goldProfit.getText().toString())>=0) {
-                            goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else goldBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
-                        if (Double.parseDouble(silverProfit.getText().toString())>=0) {
-                            silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else silverBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
-                        if (Double.parseDouble(crudeOilProfit.getText().toString())>=0) {
-                            crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
-                        if (Double.parseDouble(currencyProfit.getText().toString())>=0) {
-                            currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else currencyBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
-                        if (Double.parseDouble(fixedDepositProfit.getText().toString())>=0) {
-                            fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                        }
-                        else fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
 
                     } else {
-                        Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
                     }
 
-                }else {
-                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 refreshLayout.setRefreshing(false);

@@ -119,59 +119,63 @@ public class SoldFragment extends Fragment {
 
                 refreshLayout.setRefreshing(false);
 
-                if(response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
 
-                    arrayList.clear();
+                        arrayList.clear();
 
-                    if(response.body().get("data").getAsJsonObject().get("index").getAsJsonArray().size() !=0) {
+                        if (response.body().get("data").getAsJsonObject().get("index").getAsJsonArray().size() != 0) {
 
-                        JsonObject object = new JsonObject();
-                        object.addProperty("TYPE", "index");
-                        arrayList.add(object);
+                            JsonObject object = new JsonObject();
+                            object.addProperty("TYPE", "index");
+                            arrayList.add(object);
 
-                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("index").getAsJsonArray()) {
-                            arrayList.add(element.getAsJsonObject());
+                            for (JsonElement element : response.body().get("data").getAsJsonObject().get("index").getAsJsonArray()) {
+                                arrayList.add(element.getAsJsonObject());
+                            }
                         }
-                    }
 
-                    if(response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray().size() !=0) {
+                        if (response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray().size() != 0) {
 
-                        JsonObject object = new JsonObject();
-                        object.addProperty("TYPE", "commodity");
-                        arrayList.add(object);
+                            JsonObject object = new JsonObject();
+                            object.addProperty("TYPE", "commodity");
+                            arrayList.add(object);
 
-                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray()) {
-                            arrayList.add(element.getAsJsonObject());
+                            for (JsonElement element : response.body().get("data").getAsJsonObject().get("commodity").getAsJsonArray()) {
+                                arrayList.add(element.getAsJsonObject());
+                            }
                         }
-                    }
 
-                    if(response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray().size() !=0) {
+                        if (response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray().size() != 0) {
 
-                        JsonObject object = new JsonObject();
-                        object.addProperty("TYPE", "currency");
-                        arrayList.add(object);
+                            JsonObject object = new JsonObject();
+                            object.addProperty("TYPE", "currency");
+                            arrayList.add(object);
 
-                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray()) {
-                            arrayList.add(element.getAsJsonObject());
+                            for (JsonElement element : response.body().get("data").getAsJsonObject().get("currency").getAsJsonArray()) {
+                                arrayList.add(element.getAsJsonObject());
+                            }
                         }
-                    }
 
-                    if(response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray().size() !=0) {
+                        if (response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray().size() != 0) {
 
-                        JsonObject object = new JsonObject();
-                        object.addProperty("TYPE", "fixed_deposit");
-                        arrayList.add(object);
+                            JsonObject object = new JsonObject();
+                            object.addProperty("TYPE", "fixed_deposit");
+                            arrayList.add(object);
 
-                        for (JsonElement element : response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray()) {
-                            arrayList.add(element.getAsJsonObject());
+                            for (JsonElement element : response.body().get("data").getAsJsonObject().get("fixed_deposit").getAsJsonArray()) {
+                                arrayList.add(element.getAsJsonObject());
+                            }
                         }
+
+
+                        stocksRecyclerAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
                     }
-
-
-                    stocksRecyclerAdapter.notifyDataSetChanged();
-
-                }else {
-                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

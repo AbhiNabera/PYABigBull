@@ -211,66 +211,72 @@ public class NiftyOverviewFragment extends Fragment {
         new RetrofitClient().getNifty50Interface().getData(new Utility().getNift50GraphURL("1d")).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.isSuccessful()) {
+                try {
 
-                    if(response.body().get("graph").getAsJsonObject().get("values") != null) {
+                    if (response.isSuccessful()) {
 
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
+                        if (response.body().get("graph").getAsJsonObject().get("values") != null) {
 
-                                int i = 0;
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                dataPoints = null;
+                                    int i = 0;
 
-                                dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
-                                        get("values").getAsJsonArray().size()];
+                                    dataPoints = null;
 
-                                JsonElement lastElement = null;
+                                    dataPoints = new DataPoint[response.body().get("graph").getAsJsonObject().
+                                            get("values").getAsJsonArray().size()];
 
-                                for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
-                                    dataPoints[i] = (new DataPoint(
-                                            getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
-                                            getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
+                                    JsonElement lastElement = null;
 
-                                    if (i == 0) {
+                                    for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                        dataPoints[i] = (new DataPoint(
+                                                getDateFromString(element.getAsJsonObject().get("_time").getAsString()),
+                                                getDoubleVal(element.getAsJsonObject().get("_value").getAsString())));
 
-                                        MIN = getDateFromString(element.getAsJsonObject().
+                                        if (i == 0) {
+
+                                            MIN = getDateFromString(element.getAsJsonObject().
+                                                    get("_time").getAsString());
+
+                                        }
+
+                                        lastElement = element;
+                                        i++;
+
+                                    }
+
+                                    if (lastElement != null)
+                                        MAX = getDateFromString(lastElement.getAsJsonObject().
                                                 get("_time").getAsString());
-
+                                    else {
+                                        MAX = 0;
+                                        MIN = 0;
                                     }
 
-                                    lastElement = element;
-                                    i++;
-
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            setUpChart();
+                                            series.resetData(dataPoints);
+                                            graphView.addSeries(series);
+                                            //setScrollable();
+                                        }
+                                    });
                                 }
+                            });
 
-                                if(lastElement!=null)
-                                    MAX = getDateFromString(lastElement.getAsJsonObject().
-                                            get("_time").getAsString());
-                                else {
-                                    MAX=0;
-                                    MIN=0;
-                                }
+                        } else {
+                            setUpBlankChart();
+                        }
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setUpChart();
-                                        series.resetData(dataPoints);
-                                        graphView.addSeries(series);
-                                        //setScrollable();
-                                    }
-                                });
-                            }
-                        });
+                    } else {
 
-                    }else {
-                        setUpBlankChart();
                     }
 
-                }else {
-
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 

@@ -543,6 +543,7 @@ public class DataFragment extends Fragment {
         });
     }
 
+    /*
     public void getFdInvestment() {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
@@ -601,6 +602,7 @@ public class DataFragment extends Fragment {
             }
         });
     }
+    */
 
     public void hideSwipeRefresh() {
         if(count == MAXCOUNT) {

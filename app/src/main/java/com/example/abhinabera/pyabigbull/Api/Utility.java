@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.abhinabera.pyabigbull.Dialog.DialogInterface;
 import com.example.abhinabera.pyabigbull.Dialog.MyDialog;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 
@@ -109,6 +110,40 @@ public class Utility {
             }
         });
 
+        Bundle bundle = new Bundle();
+        bundle.putString("dialog_header", header);
+        bundle.putString("dialog_msg", msg);
+        myDialog.setArguments(bundle);
+        try {
+            myDialog.show(activity.getSupportFragmentManager(), "1234");
+        }catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showDialog(final String header, String msg, AppCompatActivity activity, DialogInterface dialogInterface){
+        final MyDialog myDialog = new MyDialog();
+
+        myDialog.setOptionSelectListener(new MyDialog.OptionSelectListener() {
+            @Override
+            public void onPositive() {
+                dialogInterface.onSuccess();
+                myDialog.dismiss();
+            }
+
+            @Override
+            public void onNegative() {
+                dialogInterface.onCancel();
+                myDialog.dismiss();
+            }
+
+            @Override
+            public void onOption(String args) {
+
+            }
+        });
+
+        myDialog.setCancelable(false);
         Bundle bundle = new Bundle();
         bundle.putString("dialog_header", header);
         bundle.putString("dialog_msg", msg);

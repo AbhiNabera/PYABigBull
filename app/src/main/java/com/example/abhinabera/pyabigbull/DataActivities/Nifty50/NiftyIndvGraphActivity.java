@@ -206,84 +206,90 @@ public class NiftyIndvGraphActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                if(!call.isCanceled()) {
+                try {
 
-                    if (response.isSuccessful()) {
+                    if (!call.isCanceled()) {
 
-                        if (response.body().get("graph").getAsJsonObject().get("values") != null) {
+                        if (response.isSuccessful()) {
 
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
+                            if (response.body().get("graph").getAsJsonObject().get("values") != null) {
 
-                                    int i = 0;
-                                    JsonElement lastElement = null;
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    graphView.removeAllSeries();
-                                    series = new LineGraphSeries<>();
+                                        int i = 0;
+                                        JsonElement lastElement = null;
 
-                                    //TODO: temp fix
-                                    long prevTime = 0;
-                                    String prevDate = "";
+                                        graphView.removeAllSeries();
+                                        series = new LineGraphSeries<>();
 
-                                    for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
+                                        //TODO: temp fix
+                                        long prevTime = 0;
+                                        String prevDate = "";
 
-                                        long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+                                        for (JsonElement element : response.body().get("graph").getAsJsonObject().get("values").getAsJsonArray()) {
 
-                                        if (time > prevTime) {
-                                            prevTime = time;
-                                            prevDate = element.getAsJsonObject().get("_time").getAsString();
-                                        } else {
-                                            break;
+                                            long time = getDateFromString(element.getAsJsonObject().get("_time").getAsString());
+
+                                            if (time > prevTime) {
+                                                prevTime = time;
+                                                prevDate = element.getAsJsonObject().get("_time").getAsString();
+                                            } else {
+                                                break;
+                                            }
+
+                                            if (i == 0) {
+
+                                                MIN = getDateFromString(element.getAsJsonObject().
+                                                        get("_time").getAsString());
+
+                                            }
+
+                                            lastElement = element;
+                                            i++;
+
+                                            series.appendData(new DataPoint(
+                                                            time,
+                                                            getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
+                                                    , true, i);
+
                                         }
 
-                                        if (i == 0) {
-
-                                            MIN = getDateFromString(element.getAsJsonObject().
+                                        if (lastElement != null)
+                                            MAX = getDateFromString(lastElement.getAsJsonObject().
                                                     get("_time").getAsString());
-
+                                        else {
+                                            MAX = 0;
+                                            MIN = 0;
                                         }
 
-                                        lastElement = element;
-                                        i++;
-
-                                        series.appendData(new DataPoint(
-                                                        time,
-                                                        getDoubleVal(element.getAsJsonObject().get("_value").getAsString()))
-                                                , true, i);
-
+                                        NiftyIndvGraphActivity.this.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                setUpChart();
+                                                //series.resetData(dataPoints);
+                                                graphView.addSeries(series);
+                                                setScrollable();
+                                                progressBar.setVisibility(View.GONE);
+                                            }
+                                        });
                                     }
+                                });
 
-                                    if (lastElement != null)
-                                        MAX = getDateFromString(lastElement.getAsJsonObject().
-                                                get("_time").getAsString());
-                                    else {
-                                        MAX = 0;
-                                        MIN = 0;
-                                    }
-
-                                    NiftyIndvGraphActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setUpChart();
-                                            //series.resetData(dataPoints);
-                                            graphView.addSeries(series);
-                                            setScrollable();
-                                            progressBar.setVisibility(View.GONE);
-                                        }
-                                    });
-                                }
-                            });
+                            } else {
+                                setUpBlankChart();
+                                progressBar.setVisibility(View.GONE);
+                            }
 
                         } else {
-                            setUpBlankChart();
                             progressBar.setVisibility(View.GONE);
+                            Toast.makeText(NiftyIndvGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                         }
-
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(NiftyIndvGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                     }
+
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

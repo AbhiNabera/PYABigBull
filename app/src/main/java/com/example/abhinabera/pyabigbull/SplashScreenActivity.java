@@ -43,7 +43,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.INTERNET,
-            Manifest.permission.READ_SMS
+            Manifest.permission.READ_SMS,
+            Manifest.permission.WRITE_SETTINGS
     };
 
     @Override
@@ -114,6 +115,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                setAutoTime();
+
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
 
                     if(getUserName()!=null) {
@@ -245,6 +249,21 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Toast.makeText(SplashScreenActivity.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void setAutoTime() {
+        
+        String timeSettings = android.provider.Settings.System.getString(
+                this.getContentResolver(),
+                android.provider.Settings.System.AUTO_TIME);
+        if (timeSettings.contentEquals("0")) {
+            android.provider.Settings.System.putString(
+                    this.getContentResolver(),
+                    android.provider.Settings.System.AUTO_TIME, "1");
+        }
+
+        Log.d("Date", System.currentTimeMillis()+"");
+
     }
 
     @Override

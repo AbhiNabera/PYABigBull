@@ -177,7 +177,7 @@ public class MyDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Adialog = builder.setView(dialogView).create();
-        Adialog.setCanceledOnTouchOutside(true);
+        Adialog.setCanceledOnTouchOutside(false);
         Adialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Adialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return Adialog;

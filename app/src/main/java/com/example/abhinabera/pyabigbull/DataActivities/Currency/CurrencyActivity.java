@@ -277,77 +277,83 @@ public class CurrencyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                if(!call.isCanceled()) {
-                    if (response.isSuccessful()) {
+                try {
 
-                        Log.d("successful", "call cancelled");
+                    if (!call.isCanceled()) {
+                        if (response.isSuccessful()) {
 
-                        if(response.body().getAsJsonObject("Time Series FX (5min)")!=null) {
+                            Log.d("successful", "call cancelled");
 
-                            Log.d("not null", "call cancelled");
+                            if (response.body().getAsJsonObject("Time Series FX (5min)") != null) {
 
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
+                                Log.d("not null", "call cancelled");
 
-                                    xAxis.clear();
-                                    yAxis.clear();
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    graphView.removeAllSeries();
-                                    //series = new LineGraphSeries<>();
+                                        xAxis.clear();
+                                        yAxis.clear();
 
-                                    JsonObject object = response.body().getAsJsonObject("Time Series FX (5min)");
-                                    Set<Map.Entry<String, JsonElement>> entrySet = object.entrySet();
+                                        graphView.removeAllSeries();
+                                        //series = new LineGraphSeries<>();
 
-                                    for(Map.Entry<String, JsonElement> entry: entrySet) {
+                                        JsonObject object = response.body().getAsJsonObject("Time Series FX (5min)");
+                                        Set<Map.Entry<String, JsonElement>> entrySet = object.entrySet();
 
-                                        //Log.d("key", entry.getKey()+"");
-                                        //Log.d("value", entry.getValue().getAsJsonObject().get("4. close").getAsDouble()+"");
+                                        for (Map.Entry<String, JsonElement> entry : entrySet) {
 
-                                        xAxis.add( 0, getDateFromString(entry.getKey()));
-                                        yAxis.add( 0, entry.getValue().getAsJsonObject().get("4. close").getAsDouble());
+                                            //Log.d("key", entry.getKey()+"");
+                                            //Log.d("value", entry.getValue().getAsJsonObject().get("4. close").getAsDouble()+"");
+
+                                            xAxis.add(0, getDateFromString(entry.getKey()));
+                                            yAxis.add(0, entry.getValue().getAsJsonObject().get("4. close").getAsDouble());
+                                        }
+
+                                        Log.d("size", "" + xAxis.size() + ":" + yAxis.size());
+
+                                        int i = 0;
+
+                                        DataPoint[] dataPoints = new DataPoint[xAxis.size()];
+
+                                        for (i = 0; i < xAxis.size(); i++) {
+                                            dataPoints[i] = new DataPoint(xAxis.get(i),
+                                                    yAxis.get(i));
+                                            //series.appendData(new DataPoint(xAxis.get(i),
+                                            //        yAxis.get(i)), true, i);
+                                        }
+
+                                        MIN = xAxis.get(0);
+                                        MAX = xAxis.get(i - 1);
+
+                                        series = new LineGraphSeries<>(dataPoints);
+                                        setUpChart();
+                                        graphView.addSeries(series);
+
                                     }
+                                });
 
-                                    Log.d("size", ""+xAxis.size()+":"+yAxis.size());
+                            }
 
-                                    int i=0;
-
-                                    DataPoint[] dataPoints = new DataPoint[xAxis.size()];
-
-                                    for(i=0; i< xAxis.size(); i++) {
-                                        dataPoints[i] = new DataPoint(xAxis.get(i),
-                                                yAxis.get(i));
-                                        //series.appendData(new DataPoint(xAxis.get(i),
-                                        //        yAxis.get(i)), true, i);
-                                    }
-
-                                    MIN = xAxis.get(0);
-                                    MAX = xAxis.get(i-1);
-
-                                    series = new LineGraphSeries<>(dataPoints);
-                                    setUpChart();
-                                    graphView.addSeries(series);
-
-                                }
-                            });
-
+                        } else {
+                            //setUpBlankChart();
+                            try {
+                                Log.d("error", response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+                    } else {
 
-                    }else {
-                        //setUpBlankChart();
                         try {
-                            Log.d("error", response.errorBody().string());
-                        } catch (IOException e) {
+                            Log.d("error", "call cancelled");
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                }else {
 
-                    try {
-                        Log.d("error", "call cancelled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

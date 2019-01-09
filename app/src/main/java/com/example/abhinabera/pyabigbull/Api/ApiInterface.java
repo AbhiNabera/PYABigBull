@@ -29,10 +29,10 @@ public interface ApiInterface {
     Call<JsonObject> getCommodityExpiry();
 
     @GET("userAccount")
-    Call<JsonObject> getUserAccount(@Query("phoneNumber") String phoneNumber);
+    Call<JsonObject> getUserAccount(@Query("phoneNumber") String phoneNumber, @Query("item_type") String item_type);
 
     @GET("userTxnAccount")
-    Call<JsonObject> getUserTxnData(@Query("phoneNumber") String phoneNumber);
+    Call<JsonObject> getUserTxnData(@Query("phoneNumber") String phoneNumber, @Query("item_type") String item_type);
 
     @GET("adminSettings")
     Call<JsonObject> getAdminSettings();
