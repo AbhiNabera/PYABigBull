@@ -13,10 +13,14 @@ import android.view.MenuItem;
 
 import com.example.abhinabera.pyabigbull.R;
 
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -37,9 +41,6 @@ public class MainActivity extends AppCompatActivity{
         getSupportActionBar().hide();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        Date currentTime = Calendar.getInstance().getTime();
-        Log.d("time", currentTime.toString());
-
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -137,4 +138,5 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
+
 }

@@ -497,6 +497,7 @@ public class SellActivity extends AppCompatActivity {
 
         buyStockPicetv.setText(new Utility().getRoundoffData(INVESTMENT_PACKET.get("buy_price").getAsString())+"");
         numberStocks.setText(""+INVESTMENT_PACKET.get("qty").getAsString());
+        numberStocks.setSelection(numberStocks.getText().length());
         investmenttv.setText(""+new Utility().getRoundoffData(INVESTMENT_PACKET.get("total_amount").getAsString()));
         companyNametv.setText(""+name);
 

@@ -420,6 +420,7 @@ public class PurchaseActivity extends AppCompatActivity {
     public void setPurchaseData() {
 
         numberStocks.setText(""+1);
+        numberStocks.setSelection(numberStocks.getText().length());
         companyName.setText(""+name);
 
         Utility utility = new Utility();
