@@ -22,9 +22,6 @@ public interface ApiInterface {
     @POST("updateuser")
     Call<JsonObject> addPlayer(@Body JsonObject object);
 
-    @GET("userName")
-    Call<JsonObject> getUserName(@Query("phoneNumber") String phoneNumber);
-
     @GET("userNameData")
     Call<JsonObject> getUserNameData(@Query("phoneNumber") String phoneNumber);
 
@@ -48,9 +45,6 @@ public interface ApiInterface {
 
     @GET("txnHistory")
     Call<JsonObject> getTxnHistory(@Query("phoneNumber") String phoneNumber);
-
-    @GET("buyList")
-    Call<JsonObject> getbuyList(@Query("phoneNumber") String phoneNumber);
 
     @GET("boughtfragmentinfo")
     Call<JsonObject> getBoughtFragmentData(@Query("phoneNumber") String phoneNumber);

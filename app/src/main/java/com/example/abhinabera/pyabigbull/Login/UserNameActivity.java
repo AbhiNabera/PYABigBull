@@ -170,8 +170,6 @@ public class UserNameActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                progressDialog.dismiss();
-
                 Log.d("response", response.body()+"");
 
                 if(response.isSuccessful()) {
@@ -199,6 +197,8 @@ public class UserNameActivity extends AppCompatActivity {
 
                     }
                 }
+
+                progressDialog.dismiss();
             }
 
             @Override
