@@ -427,6 +427,15 @@ exports.userAccount = functions.https.onRequest((req, res) => {
 		return res.status(400).send('Please send a GET request');
 	}
 
+	if(!isDayValidForTransaction(req.query.item_type)) {
+
+		return res.json({
+					"flag" : "MARKET CLOSED",
+			   		"message" : 'Market is closed. You transaction cannot be processed right now. Please try again later.',
+			       	"status" : 200 
+			    });  
+	}
+
 	var phoneNumber = req.query.phoneNumber;
 
 	return admin.database().ref('/Players').child('/'+ phoneNumber).child('/Account').once('value')
@@ -436,6 +445,7 @@ exports.userAccount = functions.https.onRequest((req, res) => {
 
 					return res.json({
 			       			"data" : snapshot.val(),
+			       			"timestamp" : new Date().getTime(),
 			       			"status" : 200 
 			       		}); 
 
@@ -453,6 +463,7 @@ exports.userAccount = functions.https.onRequest((req, res) => {
 											return res.json({
 									       			"message" : "no data",
 									       			"data": initial_data,
+									       			"timestamp" : new Date().getTime(),
 									       			"status" : 200 
 									       	});  
 										});
@@ -487,12 +498,20 @@ exports.adminSettings = functions.https.onRequest((req, res) => {
 
 });
 
-
 //called in data fragment, sell and purchase activity
 exports.userTxnAccount = functions.https.onRequest((req, res) => {
 
 	if(req.method !== "GET"){
 		return res.status(400).send('Please send a GET request');
+	}
+
+	if(!isDayValidForTransaction(req.query.item_type)) {
+
+		return res.json({
+					"flag" : "MARKET CLOSED",
+			   		"message" : 'Market is closed. You transaction cannot be processed right now. Please try again later.',
+			       	"status" : 200 
+			    });  
 	}
 
 	var phoneNumber = req.query.phoneNumber;
@@ -528,6 +547,7 @@ exports.userTxnAccount = functions.https.onRequest((req, res) => {
 
 				return res.json({
 			   		"data" : data,
+			   		"timestamp" : new Date().getTime(),
 			       	"status" : 200 
 			    });  
 
@@ -549,6 +569,9 @@ exports.transaction = functions.https.onRequest((req, res) => {
 
 	var phoneNumber = req.body.phoneNumber;
 	var Account = req.body.Account;
+	var type = req.body.item_type;
+
+	console.log('txn not aborted');
 
     var db_ref = admin.database().ref('/Players').child('/'+phoneNumber).child('/Account');
 
@@ -732,48 +755,6 @@ exports.leaderboard = functions.https.onRequest((req, res) => {
 	});
 
 });
-
-exports.checkStock = 
-	functions.https.onRequest((req, res)=>{
-
-		if(req.method !== "GET"){
-			return res.status(400).send('Please send a GET request');
-		}
-
-		var phoneNumber = req.body.phoneNumber;
-		var type = req.body.type;
-		var id = req.body.id;
-
-		return admin.database().ref('Players').child('/'+phoneNumber).child('/Account').child('/stocks_list')
-				.child('/bought_items').child('/'+type).orderByChild("id").equalTo(id).once('value')
-					.then(snapshot=>{
-
-						if(snapshot.exists()) {
-
-							return res.status(200).json({
-							        isInStockList: true,
-							        message: "stock present in user stock list",
-			    					status: 200
-							   });
-
-						}else {
-
-							return res.status(200).json({
-							        isInStockList: true,
-							        message: "stock not present in user stock list",
-			    					status: 200
-							   });
-						}
-
-					}).catch(exception=>{
-		    			return res.status(200).json({
-							        flag: "INTERNAL SERVER ERROR",
-							        message: "Error occured while checking stocks",
-			    					status: 200
-							   });
-		    		});
-
-	});
 
 
 //get daily winner
@@ -1123,8 +1104,6 @@ function getCurrentDayStartTimesStamp(){
 	return new Date().getTime();
 }
 
-
-
 //supporting functions
 function getValue(snapshot){
 
@@ -1147,6 +1126,189 @@ function getLongValue(snapshot){
 	}
 }
 
+//lower limit for transaction
+function getNiftyLowerLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 09:15:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//upper limit for transaction
+function getNiftyUpperLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 15:30:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//lower limit for transaction
+function getCommodityLowerLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//upper limit for transaction
+function getCommodityUpperLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 17:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//lower limit for transaction
+function getCurrencyLowerLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//upper limit for transaction
+function getCurrencyUpperLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 17:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//lower limit for transaction
+function getFdLowerLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
+
+//upper limit for transaction
+function getFdUpperLimit(timestamp){
+
+	var date = new Date(timestamp);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d +" 17:00:00+05:30";
+
+	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
+
+	return new Date(stringdate).getTime();
+}
 
 //supporting functions
 function formatLeaderboard(snapshot) {
@@ -1292,3 +1454,85 @@ function stockstoArray(snapshot) {
     return returnArr;
 }
 
+function isDayValidForTransaction(type) {
+
+	var current_date = new Date();
+	var current_timestamp = current_date.getTime();
+
+	var registrationopen = ["2019/01/17", "2019/01/18", "2019/01/19", "2019/01/20"];
+	var holidays = ["2019/01/26", "2019/01/27", "2019/02/02", "2019/02/03", "2019/02/09", "2019/02/10", "2019/02/16", "2019/02/17"];
+
+	if(registrationopen.indexOf(getISTtimeString(current_date)) > -1) {
+
+		return false;
+	}
+
+	if(holidays.indexOf(getISTtimeString(current_date)) > -1) {
+
+		return false;
+	}
+
+	switch(type.toUpperCase()) {
+
+		case 'NIFTY' :
+
+			if(parseInt(current_timestamp) < parseInt(getNiftyLowerLimit(current_timestamp)) 
+				|| parseInt(current_timestamp) > parseInt(getNiftyUpperLimit(current_timestamp)) ){
+
+				return false;
+			} 
+		break;
+
+		case 'COMMODITY' : 
+
+			if(parseInt(current_timestamp) < parseInt(getCurrencyLowerLimit(current_timestamp)) 
+				|| parseInt(current_timestamp) > parseInt(getCommodityUpperLimit(current_timestamp)) ){
+
+				return false;
+			} 
+		break;
+
+		case 'CURRENCY' : 
+
+			if(parseInt(current_timestamp) < parseInt(getCurrencyLowerLimit(current_timestamp)) 
+				|| parseInt(current_timestamp) > parseInt(getCurrencyUpperLimit(current_timestamp)) ){
+
+				return false;
+			} 
+		break;
+
+		case 'FIXED_DEPOSIT' : 
+
+			if(parseInt(current_timestamp) < parseInt(getFdLowerLimit(current_timestamp)) 
+				|| parseInt(current_timestamp) > parseInt(getFdUpperLimit(current_timestamp)) ){
+
+				return false;
+			} 
+
+		break;
+	}
+
+	return true;
+}
+
+function getISTtimeString(current_date){
+
+	var date = new Date(current_date.getTime() + 5*60*60*1000 + 30*60*1000);
+	//console.log(date);
+	
+	var d;
+	var m;
+	var y = date.getFullYear();
+
+	if(parseInt(date.getDate()) < 10) d = "0"+date.getDate();
+	else d = date.getDate(); 
+
+	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
+	else m = date.getMonth()+1; 
+
+	var stringdate = y + "/" + m + "/" + d;
+
+	//console.log("string date to timestamp: " + stringdate + ": date :" + date);
+
+	return stringdate;
+}
