@@ -402,6 +402,10 @@ public class FDPurchaseActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    setResult(RESULT_OK);
+                    finish();
+                    Toast.makeText(FDPurchaseActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
                 }
 
                 progressDialog.dismiss();
@@ -412,6 +416,9 @@ public class FDPurchaseActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 progressDialog.dismiss();
+                setResult(RESULT_OK);
+                finish();
+                Toast.makeText(FDPurchaseActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
             }
         });
     }

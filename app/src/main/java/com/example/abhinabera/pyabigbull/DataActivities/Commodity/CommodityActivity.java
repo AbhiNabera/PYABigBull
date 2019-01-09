@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
+import com.example.abhinabera.pyabigbull.Login.RegistrationActivity;
 import com.example.abhinabera.pyabigbull.Transactions.PurchaseActivity;
 import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
@@ -157,8 +158,13 @@ public class CommodityActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getExpiryData(expiryList.get(commodityDateSpinner.getSelectedItemPosition()));
-                getGraphData(id, expiryList.get(pos));
+                if(!expiryList.isEmpty()) {
+                    getExpiryData(expiryList.get(commodityDateSpinner.getSelectedItemPosition()));
+                    getGraphData(id, expiryList.get(pos));
+                }else{
+                    swipeRefreshLayout.setRefreshing(true);
+                    getData();
+                }
             }
         });
 
@@ -288,6 +294,8 @@ public class CommodityActivity extends AppCompatActivity {
 
     public void getData() {
 
+        swipeRefreshLayout.setRefreshing(true);
+
         new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityURL(id)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -318,6 +326,7 @@ public class CommodityActivity extends AppCompatActivity {
 
     public void getExpiryData(String expiry) {
 
+        swipeRefreshLayout.setRefreshing(true);
         //Log.d("URL", new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())+"");
 
         new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())).enqueue(new Callback<JsonObject>() {
