@@ -232,12 +232,12 @@ public class DataFragment extends Fragment {
                 getGBPINR();
                 getTopCommodity();
                 //getFdInvestment();
-                getUserAccount();
+                //getUserAccount();//Automated operation cron job
             }
         });
 
         //getFdInvestment();
-        getUserAccount();
+        //getUserAccount(); ////Automated operation cron job
     }
 
     public void setNiftyCard() {
