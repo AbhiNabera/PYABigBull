@@ -162,7 +162,7 @@ public class FDSellActivity extends AppCompatActivity {
 
     public String getTransId() {
         //%B for buy %S for sell
-        timestamp = System.currentTimeMillis();
+        //timestamp = System.currentTimeMillis();(network set)
         return "txn" + "FD" + timestamp%100000000 + "" + "S";
     }
 
@@ -383,11 +383,16 @@ public class FDSellActivity extends AppCompatActivity {
 
                     if (response.body().getAsJsonObject("data") != null) {
                         Log.d("response", response.body() + "");
+
                         userObject = response.body();
+
+                        timestamp = userObject.get("timestamp").getAsLong();
+
                         initializeAmt();
                         updateAmounts();
                         updateViews();
                         statTimer();
+
                     } else if (response.body().get("flag") != null) {
 
                         progressDialog.dismiss();

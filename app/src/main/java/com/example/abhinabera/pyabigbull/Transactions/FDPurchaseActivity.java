@@ -199,7 +199,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
     public String getTransId() {
         //%B for buy %S for sell
-        timestamp = System.currentTimeMillis();
+        //timestamp = System.currentTimeMillis();
         return "txn" + "FD" + timestamp%100000000 + "B";
     }
 
@@ -365,6 +365,8 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
                         Log.d("response", response.body() + "");
                         userObject = response.body();
+
+                        timestamp = userObject.get("timestamp").getAsLong();
 
                         try {
                             JsonObject fd_ref = userObject.getAsJsonObject("data")

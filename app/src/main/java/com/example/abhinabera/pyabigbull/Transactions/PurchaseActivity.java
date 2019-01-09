@@ -199,7 +199,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public String getTransId() {
         //%B for buy %S for sell
-        timestamp = System.currentTimeMillis();
+        //timestamp = System.currentTimeMillis();
         return "txn" + type.substring(0,2) + timestamp%100000000 + "" + id + "B";
     }
 
@@ -635,6 +635,8 @@ public class PurchaseActivity extends AppCompatActivity {
                     if (response.body().getAsJsonObject("data") != null) {
 
                         //Log.d("response", response.body() + "");
+
+                        timestamp = response.body().get("timestamp").getAsLong();
 
                         adminSettings = response.body().getAsJsonObject("data").getAsJsonObject("admin_settings");
                         userObject = response.body().getAsJsonObject("data").getAsJsonObject("Account");
