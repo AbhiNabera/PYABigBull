@@ -44,7 +44,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.INTERNET,
             Manifest.permission.READ_SMS,
-            Manifest.permission.WRITE_SETTINGS
+            Manifest.permission.WRITE_SETTINGS,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
     };
 
     @Override

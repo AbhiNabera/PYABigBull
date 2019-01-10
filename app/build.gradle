@@ -50,4 +50,6 @@ dependencies {
     implementation 'com.github.cdflynn:checkview:v1.1'
 
     implementation 'com.jjoe64:graphview:4.2.2'
+
+    implementation 'com.github.yalantis:ucrop:2.2.2-native'
 }

@@ -90,6 +90,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
 
         multiplier = (EditText) findViewById(R.id.multiplier);
+        multiplier.setSelection(multiplier.getText().length());
         confirm = (Button) findViewById(R.id.confirmButton);
 
         timeout = (TextView) findViewById(R.id.timeout);

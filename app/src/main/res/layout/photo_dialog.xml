@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/details_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:background="@drawable/photo_border"
+    android:elevation="4dp"
+    tools:context="com.example.abhinabera.pyabigbull.Login.UserNameActivity"
+    android:padding="20dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Source"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/hammersmithoneregular"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/select_source"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/select_source"
+        android:layout_marginTop="10dp"
+        />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:src="@drawable/ic_camera"
+        android:id="@+id/camera_option"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/camera_text"
+        android:fontFamily="@font/hammersmithoneregular"
+        android:layout_below="@+id/camera_option"
+        android:text="Camera"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="70dp"
+        android:id="@+id/gallery_option"
+        android:clickable="true"
+        android:layout_marginLeft="80dp"
+        android:layout_toRightOf="@+id/camera_option"
+        android:src="@drawable/ic_gallery"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Gallery"
+        android:fontFamily="@font/hammersmithoneregular"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/gallery_option"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/camera_text"
+        android:layout_marginLeft="65dp"/>
+
+
+</RelativeLayout>
