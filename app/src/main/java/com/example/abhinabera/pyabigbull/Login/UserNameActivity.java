@@ -191,6 +191,8 @@ public class UserNameActivity extends AppCompatActivity {
                             dependentName.setText(response.body().getAsJsonObject("userData").get("dependentName").getAsString()+"");
                         }
 
+                        pushDataInSP(phoneNumber, userName.getText().toString().trim());
+
                         Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
