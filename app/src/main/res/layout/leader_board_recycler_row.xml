@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_centerHorizontal="true"
     android:background="#fff"
     android:layout_marginTop="5dp"
@@ -18,13 +19,31 @@
             android:id="@+id/leaderBoard"
             android:padding="5dp">
 
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/profilePhotoCard"
+                android:layout_centerVertical="true"
+                card_view:cardCornerRadius="25dp"
+                card_view:cardPreventCornerOverlap="false">
+
+                <ImageView
+                    android:id="@+id/profilePhoto"
+                    android:layout_width="50dp"
+                    app:srcCompat="@drawable/ic_action_user"
+                    android:layout_height="50dp"/>
+
+            </android.support.v7.widget.CardView>
+
+
             <TextView
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:id="@+id/leaderBoardUserName"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hammersmithoneregular"
-                android:maxWidth="150dp"
+                android:maxWidth="120dp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:requiresFadingEdge="horizontal"
@@ -32,6 +51,7 @@
                 android:fadingEdge="horizontal"
                 android:layout_centerVertical="true"
                 android:padding="5dp"
+                android:layout_toRightOf="@+id/profilePhotoCard"
                 android:textAllCaps="true"
                 android:text="Username"
                 android:textColor="#000"
@@ -53,12 +73,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hammersmithoneregular"
+                android:layout_toRightOf="@+id/leaderBoardUserName"
                 android:layout_toLeftOf="@id/leaderBoardItemBox"
                 android:padding="5dp"
-                android:text="10th"
+                android:text="999"
                 android:textColor="#d9b72e"
                 android:textStyle="bold"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_centerVertical="true"
                 android:textSize="18sp" />
 

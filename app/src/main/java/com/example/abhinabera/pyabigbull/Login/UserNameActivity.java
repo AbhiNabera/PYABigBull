@@ -32,13 +32,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.abhinabera.pyabigbull.Api.RetrofitClient;
 import com.example.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import com.example.abhinabera.pyabigbull.Dashboard.MainActivity;
-import com.example.abhinabera.pyabigbull.R;
 import com.example.abhinabera.pyabigbull.Api.Utility;
+import com.example.abhinabera.pyabigbull.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 import com.yalantis.ucrop.UCrop;
@@ -68,6 +69,7 @@ public class UserNameActivity extends AppCompatActivity {
     private String phoneNumber;
 
     ProgressDialog progressDialog;
+    RelativeLayout cameraButton;
 
     private String prevUsername = "";
 
@@ -118,6 +120,7 @@ public class UserNameActivity extends AppCompatActivity {
         member = (RadioButton) findViewById(R.id.member);
         spouse = (RadioButton) findViewById(R.id.spouse);
         child = (RadioButton) findViewById(R.id.child);
+        cameraButton = (RelativeLayout) findViewById(R.id.cameraButton);
 
         phoneNumber = getIntent().getStringExtra("phoneNumber");
 
@@ -189,6 +192,13 @@ public class UserNameActivity extends AppCompatActivity {
         },100);
 
         profilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
+        cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialog();
@@ -423,9 +433,9 @@ public class UserNameActivity extends AppCompatActivity {
 
                         pushDataInSP(phoneNumber, userName.getText().toString().trim());
 
-                        //Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
-                        //startActivity(intent);
-                        //finish();
+                        Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
 
                     }
                 }
@@ -457,9 +467,9 @@ public class UserNameActivity extends AppCompatActivity {
                     switch (response.body().get("flag").getAsString().trim()) {
 
                         case "USER_ADDED" :
-                            //Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
-                            //intent.putExtra("phoneNumber", phoneNumber);
-                            //intent.putExtra("userName", userName.getText().toString().trim());
+                            Intent intent = new Intent(UserNameActivity.this, MainActivity.class);
+                            intent.putExtra("phoneNumber", phoneNumber);
+                            intent.putExtra("userName", userName.getText().toString().trim());
 
                             pushDataInSP(phoneNumber, userName.getText().toString().trim());
 

@@ -62,7 +62,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView userName, userRank, userBoxPrice, userBoxPercent;
-        public ImageView imageId;
+        public ImageView profilePhoto;
         LinearLayout leaderBoardItemBox;
 
         public ViewHolder(View itemLayoutView) {
@@ -71,7 +71,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
             userRank = (TextView) itemLayoutView.findViewById(R.id.leaderBoardRank);
             userBoxPrice = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
             userBoxPercent = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPercent);
-            imageId = (ImageView) itemLayoutView.findViewById(R.id.medal);
+            profilePhoto = (ImageView) itemLayoutView.findViewById(R.id.profilePhoto);
             leaderBoardItemBox = (LinearLayout) itemLayoutView.findViewById(R.id.leaderBoardItemBox);
         }
     }

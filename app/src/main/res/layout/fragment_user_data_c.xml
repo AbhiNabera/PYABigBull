@@ -22,11 +22,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:tint="@color/colorPrimaryDark"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/user_account"/>
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/registrationpPofilePhotoCard"
+                    android:background="@drawable/camera_border">
+
+                    <ImageView
+                        android:id="@id/profilePhoto"
+                        android:layout_width="100dp"
+                        app:srcCompat="@drawable/user"
+                        android:layout_height="100dp"/>
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cameraButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/camera_border"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_alignRight="@+id/registrationpPofilePhotoCard"
+                    android:layout_marginTop="75dp"
+                    android:clickable="true"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@id/profilePhoto"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/camera" />
+
+                </RelativeLayout>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_marginTop="10dp"

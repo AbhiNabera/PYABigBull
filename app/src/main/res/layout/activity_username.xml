@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/loginregistrationbackground"
     tools:context=".Login.RegistrationActivity">
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/registrationCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +26,54 @@
             android:padding="10dp"
             android:layout_marginBottom="30dp">
 
-            <ImageView
-                android:id="@+id/profilePhoto"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/bigbulllogo"
-                android:layout_marginTop="10dp" />
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/registrationpPofilePhotoCard"
+                    android:background="@drawable/camera_border">
+
+                    <ImageView
+                        android:id="@id/profilePhoto"
+                        android:layout_width="100dp"
+                        app:srcCompat="@drawable/user"
+                        android:layout_height="100dp"/>
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cameraButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/camera_border"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_alignRight="@+id/registrationpPofilePhotoCard"
+                    android:layout_marginTop="75dp"
+                    android:clickable="true"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@id/profilePhoto"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/camera" />
+
+                </RelativeLayout>
+
+
+
+
+                </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_marginTop="20dp"
@@ -52,7 +92,7 @@
 
                     <RadioButton
                         android:buttonTint="@color/colorPrimary"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:layout_weight="1"
                         android:id="@+id/member"
                         android:textColor="@color/colorPrimary"
@@ -64,7 +104,7 @@
                     <RadioButton
                         android:textColor="@color/colorPrimary"
                         android:buttonTint="@color/colorPrimary"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:layout_weight="1"
                         android:id="@+id/spouse"
                         android:layout_width="wrap_content"
@@ -75,7 +115,7 @@
                     <RadioButton
                         android:textColor="@color/colorPrimary"
                         android:buttonTint="@color/colorPrimary"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:layout_weight="1"
                         android:id="@+id/child"
                         android:layout_width="wrap_content"
