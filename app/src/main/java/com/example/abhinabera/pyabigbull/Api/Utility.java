@@ -1,6 +1,7 @@
 package com.example.abhinabera.pyabigbull.Api;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Utility {
 
@@ -71,6 +74,11 @@ public class Utility {
 
     public String getINTRADAYCurrencyGraph(String symbol, String period) {
         return "query?function=FX_INTRADAY&interval=5min&from_symbol="+ symbol +"&to_symbol=INR&apikey=WD6PJIRIDK5GRK02";
+    }
+
+    public String getUserName(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Utility.MyPREF, MODE_PRIVATE);
+        return sharedPreferences.getString("userName","");
     }
 
     public ProgressDialog showDialog(String msg, AppCompatActivity activity) {

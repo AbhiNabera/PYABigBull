@@ -194,7 +194,7 @@ public class FDSellActivity extends AppCompatActivity {
 
     public void updateAmounts() {
 
-        netreturn = current_value;
+        netreturn = current_value;//TODO:logic error
 
         Log.d("netreturn", netreturn+"");
 
@@ -261,7 +261,7 @@ public class FDSellActivity extends AppCompatActivity {
             return false;
         }
 
-        if(quantity > stock_count) {
+        if(quantity > INVESTMENT_PACKET.get("qty").getAsInt()) {
             Toast.makeText(FDSellActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -274,9 +274,18 @@ public class FDSellActivity extends AppCompatActivity {
 
         JsonObjectFormatter objectFormatter = new JsonObjectFormatter(account_ref);
 
+        JsonObject leaderBoardData = new JsonObject();
+        JsonObject leaderBoardTxnData = null; //all qty will be sold so delete all
+
         JsonObject data = new JsonObject();
         JsonObject transaction = new JsonObject();
         JsonObject txn_history = new JsonObject();
+
+        leaderBoardData.addProperty("avail_balance", acc_bal+"");
+        leaderBoardData.addProperty("userName", new Utility().getUserName(FDSellActivity.this));
+        leaderBoardData.addProperty("txn_id", ""+INVESTMENT_PACKET.get("txn_id").getAsString());
+        leaderBoardData.addProperty("start_balance", start_balance);
+        leaderBoardData.add("txnData", leaderBoardTxnData);
 
         account_ref.addProperty("shares_price", sharesprice+"");
         account_ref.addProperty("avail_balance", acc_bal+"");
@@ -336,7 +345,8 @@ public class FDSellActivity extends AppCompatActivity {
 
         data.add("Account", account_ref);
         data.addProperty("item_type", "fixed_deposit");
-        //Log.d("FDPurchase data", data+"");
+
+        data.add("leaderBoardData", leaderBoardData);
 
         return data;
 

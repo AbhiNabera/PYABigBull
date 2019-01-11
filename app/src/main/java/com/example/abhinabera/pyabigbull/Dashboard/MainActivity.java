@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity{
 
     DataFragment dataFragment;
     UserDataFragment userDataFragment;
-    LeaderBoardFragment leaderBoardFragment;
+    StandingsFragment leaderBoardFragment;
     PortofolioFragment portofolioFragment;
     MenuItem prevMenuItem;
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity{
         dataFragment = new DataFragment();
         portofolioFragment = new PortofolioFragment();
         userDataFragment=new UserDataFragment();
-        leaderBoardFragment = new LeaderBoardFragment();
+        leaderBoardFragment = new StandingsFragment();
         adapter.addFragment(dataFragment);
         adapter.addFragment(portofolioFragment);
         adapter.addFragment(userDataFragment);

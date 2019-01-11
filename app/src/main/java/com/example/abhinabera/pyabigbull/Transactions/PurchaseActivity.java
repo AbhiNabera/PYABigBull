@@ -294,8 +294,17 @@ public class PurchaseActivity extends AppCompatActivity {
 
         JsonObject data = new JsonObject();
 
+        JsonObject leaderBoardData = new JsonObject();
+        JsonObject leaderBoardTxnData = new JsonObject();
+
         JsonObject txn_history = new JsonObject();
         JsonObject transaction = new JsonObject();
+
+        leaderBoardData.addProperty("avail_balance", acc_bal+"");
+        leaderBoardData.addProperty("txn_id", ""+txn_id);
+        leaderBoardData.addProperty("userName", new Utility().getUserName(PurchaseActivity.this));
+        leaderBoardData.addProperty("start_balance", Double.parseDouble(userObject.get("start_balance").getAsString()
+                .replace(",","")) + "");
 
         account_ref.addProperty("shares_price", shares_price+"");
         account_ref.addProperty("avail_balance", /*accountBalance.getText().toString().trim()*/acc_bal+"");
@@ -405,6 +414,13 @@ public class PurchaseActivity extends AppCompatActivity {
 
         txn_history.add("txn_summary", transaction);
 
+        leaderBoardTxnData.addProperty("id", ""+id);
+        leaderBoardTxnData.addProperty("qty", ""+quantity);
+        leaderBoardTxnData.addProperty("total_amount", ""+total_debit);
+        leaderBoardTxnData.addProperty("type", ""+type_key);
+
+        leaderBoardData.add("txnData", leaderBoardTxnData);
+
         data.addProperty("phoneNumber", FirebaseAuth.getInstance().
                 getCurrentUser().getPhoneNumber().substring(3).trim());
         
@@ -416,6 +432,8 @@ public class PurchaseActivity extends AppCompatActivity {
         jsonformatter.child("txn_history").pushObject(txn_id, txn_history);
 
         data.addProperty("item_type", type_key);
+
+        data.add("leaderBoardData", leaderBoardData);
 
         return data;
     }

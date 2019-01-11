@@ -37,7 +37,7 @@ public interface ApiInterface {
     @GET("adminSettings")
     Call<JsonObject> getAdminSettings();
 
-    @POST("transaction")
+    @POST("txn")
     Call<JsonObject> performTransaction(@Body JsonObject object);
 
     @GET("userinfo")
@@ -54,6 +54,9 @@ public interface ApiInterface {
 
     @GET("leaderboard")
     Call<JsonObject> getLeaderboard();
+
+    @GET("standings")
+    Call<JsonObject> getStandings();
 
     /*
     appfeeds

@@ -256,9 +256,19 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
         JsonObjectFormatter objectFormatter = new JsonObjectFormatter(account_ref);
 
+        JsonObject leaderBoardData = new JsonObject();
+        JsonObject leaderBoardTxnData = new JsonObject();
+
         JsonObject data = new JsonObject();
         JsonObject transaction = new JsonObject();
         JsonObject txn_history = new JsonObject();
+
+        leaderBoardData.addProperty("avail_balance", acc_balance+"");
+        leaderBoardData.addProperty("userName", new Utility().getUserName(FDPurchaseActivity.this));
+        leaderBoardData.addProperty("txn_id", ""+txn_id);
+        leaderBoardData.addProperty("start_balance", Double.parseDouble(userObject.get("data")
+                .getAsJsonObject().get("start_balance").getAsString()
+                .replace(",","")) + "");
 
         account_ref.addProperty("shares_price", shares_price+"");
         account_ref.addProperty("avail_balance", acc_balance+"");
@@ -271,6 +281,12 @@ public class FDPurchaseActivity extends AppCompatActivity {
         transaction.addProperty("investment", fdamount+"");
         transaction.addProperty("total_amount", fdamount+"");
         transaction.addProperty("current_value", fdamount+"");
+
+        leaderBoardTxnData.addProperty("id", "FD");
+        leaderBoardTxnData.addProperty("qty", ""+fdqty);
+        leaderBoardTxnData.addProperty("total_amount", ""+fd_total);
+        leaderBoardTxnData.addProperty("current_value", ""+fdamount);
+        leaderBoardData.addProperty("type", "fixed_deposit");
 
         transaction.addProperty("timestamp", timestamp+"");
         transaction.addProperty("lastupdate", lastupdate+"");
@@ -293,12 +309,14 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
         objectFormatter.child("txn_history").pushObject(txn_id, txn_history);
 
+        leaderBoardData.add("txnData", leaderBoardTxnData);
+
         data.addProperty("phoneNumber", FirebaseAuth.getInstance().getCurrentUser()
                 .getPhoneNumber().substring(3));
         data.add("Account", account_ref);
         data.addProperty("item_type", "fixed_deposit");
 
-        //Log.d("FDPurchase data", data+"");
+        data.add("leaderBoardData", leaderBoardData);
 
         return data;
 

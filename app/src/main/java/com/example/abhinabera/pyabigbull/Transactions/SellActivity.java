@@ -1,7 +1,9 @@
 package com.example.abhinabera.pyabigbull.Transactions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -340,9 +342,17 @@ public class SellActivity extends AppCompatActivity {
 
         JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
 
+        JsonObject leaderBoardData = new JsonObject();
+        JsonObject leaderBoardTxnData = null;
+
         JsonObject txn_data = new JsonObject();
         JsonObject transaction = new JsonObject();
         JsonObject txn_history = new JsonObject();
+
+        leaderBoardData.addProperty("avail_balance", acc_bal+"");
+        leaderBoardData.addProperty("userName", new Utility().getUserName(SellActivity.this));
+        leaderBoardData.addProperty("txn_id", ""+INVESTMENT_PACKET.get("txn_id").getAsString());
+        leaderBoardData.addProperty("start_balance", start_balance);
 
         account_ref.addProperty("shares_price", sharesprice+"");
         account_ref.addProperty("avail_balance", acc_bal+"");
@@ -481,13 +491,27 @@ public class SellActivity extends AppCompatActivity {
         	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
                     .remove(INVESTMENT_PACKET.get("txn_id").getAsString());
 
+        	leaderBoardTxnData = null;
+        	leaderBoardData.add("txnData", leaderBoardTxnData);
+
         }else {
 
         	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
                     .child(INVESTMENT_PACKET.get("txn_id").getAsString()).pushValue("qty", ""+left_quantity);
         	jsonformatter.child("stocks_list").child("bought_items").child(type_key)
                     .child(INVESTMENT_PACKET.get("txn_id").getAsString()).pushValue("total_amount", ""+left_stockinvestment);
+
+        	leaderBoardTxnData = new JsonObject();
+
+            leaderBoardTxnData.addProperty("id", ""+id);
+            leaderBoardTxnData.addProperty("qty", ""+left_quantity);
+            leaderBoardTxnData.addProperty("total_amount", ""+left_stockinvestment);
+            leaderBoardTxnData.addProperty("type", ""+type_key);
+            leaderBoardData.add("txnData", leaderBoardTxnData);
+
         }
+
+        txn_data.add("leaderBoardData", leaderBoardData);
 
         txn_data.add("Account", account_ref);
         txn_data.addProperty("item_type", type_key);
