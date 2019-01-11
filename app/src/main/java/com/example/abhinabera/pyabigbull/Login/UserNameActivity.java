@@ -191,19 +191,6 @@ public class UserNameActivity extends AppCompatActivity {
             }
         },100);
 
-        profilePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
-
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
     }
 
     public void showDialog(){
@@ -473,8 +460,8 @@ public class UserNameActivity extends AppCompatActivity {
 
                             pushDataInSP(phoneNumber, userName.getText().toString().trim());
 
-                            //startActivity(intent);
-                            //finish();
+                            startActivity(intent);
+                            finish();
                             break;
 
                         case "USERNAME_EXIST" :

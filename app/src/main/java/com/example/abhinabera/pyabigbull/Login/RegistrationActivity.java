@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (check()) {
                         Intent i = new Intent(RegistrationActivity.this, OTPActivity.class);
                         i.putExtra("phoneNumber", mobileNumber.getText().toString().trim());
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         pushDataInSP(mobileNumber.getText().toString().trim());
                         startActivity(i);
                         //finish();

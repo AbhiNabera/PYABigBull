@@ -235,17 +235,20 @@ public class StandingsFragment extends Fragment {
 
                                                 mAdapter.notifyDataSetChanged();
 
-                                                userName.setText(user_object.get("userName").getAsString());
-                                                userRank.setText(MY_RANK + "");
-                                                boxPrice.setText(new Utility().getRoundoffData(user_object.
-                                                        get("current_change").getAsDouble() + "") + "");
-                                                boxPercent.setText(new Utility().getRoundoffData(user_object
-                                                        .get("current_pchange").getAsDouble() + "") + "%");
+                                                if(user_object.get("userName")!=null) {
 
-                                                if (user_object.get("current_change").getAsDouble() >= 0) {
-                                                    linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
-                                                } else {
-                                                    linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                                                    userName.setText(user_object.get("userName").getAsString());
+                                                    userRank.setText(MY_RANK + "");
+                                                    boxPrice.setText(new Utility().getRoundoffData(user_object.
+                                                            get("current_change").getAsDouble() + "") + "");
+                                                    boxPercent.setText(new Utility().getRoundoffData(user_object
+                                                            .get("current_pchange").getAsDouble() + "") + "%");
+
+                                                    if (user_object.get("current_change").getAsDouble() >= 0) {
+                                                        linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.greenText));
+                                                    } else {
+                                                        linearLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                                                    }
                                                 }
                                             }
                                         });
