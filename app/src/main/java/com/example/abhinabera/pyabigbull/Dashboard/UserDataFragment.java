@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
@@ -40,6 +41,7 @@ import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.Tran
 import com.example.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -327,7 +329,7 @@ public class UserDataFragment extends Fragment {
     private File createImageFile() throws IOException {
         // Create an image file name
         //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = userName+"";
+        String imageFileName = userName.getText().toString().trim()+"";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -359,7 +361,9 @@ public class UserDataFragment extends Fragment {
                 if (mCurrentPhotoPath != null) {
                     CAM_FILE_PATH = mCurrentPhotoPath;
                     crop_from_uri(new File(mCurrentPhotoPath));
-                    profilePhoto.setImageURI(currentPhotoUri);
+                    //profilePhoto.setImageURI(currentPhotoUri);
+                    setPic();
+                    galleryAddPic();
                 }
             }
 
@@ -370,8 +374,9 @@ public class UserDataFragment extends Fragment {
                     CAM_FILE_PATH = gallery_file.getPath();
                 }
                 Bitmap temp = BitmapFactory.decodeFile(resultUri.getPath());
-                profilePhoto.setImageBitmap(temp);
-                //finish();
+                //profilePhoto.setImageBitmap(temp);
+                //setPic(temp);
+                Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(temp));
             } else if (resultCode == UCrop.RESULT_ERROR) {
                 Log.d("result:", " failed");
                 final Throwable cropError = UCrop.getError(data);
@@ -423,6 +428,7 @@ public class UserDataFragment extends Fragment {
                             filePath = cursor.getString(columnIndex);
                         }
                         cursor.close();
+                        Log.d("filepath", ""+filePath);
                         gallery_file = new File(filePath);
                         crop_from_uri(gallery_file);
                     }
@@ -440,6 +446,75 @@ public class UserDataFragment extends Fragment {
                 .withAspectRatio(5, 5)
                 .withMaxResultSize(maxWidth, maxHeight)
                 .start(getActivity());
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = profilePhoto.getWidth();
+        int targetH = profilePhoto.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor*2;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        //profilePhoto.setImageBitmap(bitmap);
+
+        Picasso.with(getActivity()).
+                load(new File(mCurrentPhotoPath))
+                .skipMemoryCache()
+                .fit()
+                .into(profilePhoto);
+
+
+        Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(bitmap));
+    }
+
+    /*
+    private void setPic(Bitmap btmap) {
+        // Get the dimensions of the View
+        int targetW = profilePhoto.getWidth();
+        int targetH = profilePhoto.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        //BitmapFactory.decode
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor*10;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        profilePhoto.setImageBitmap(bitmap);
+
+        Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(bitmap));
+    }
+    */
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
     }
 
     @Override

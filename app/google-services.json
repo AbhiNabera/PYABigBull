@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "786045986221-2ejftgpvd5e2mto9j42c3nebftbc75rf.apps.googleusercontent.com",
+          "client_id": "786045986221-i6m9ooijlq2kvbcqpjgakqg860s8akkq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.abhinabera.pyabigbull",
+            "certificate_hash": "ae79e684fd27ad562f167111ba88ae82553a436e"
+          }
+        },
+        {
+          "client_id": "786045986221-o3kipee6q5hivp7qvcutppebm8e13u0g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.abhinabera.pyabigbull",
@@ -23,11 +31,11 @@
           }
         },
         {
-          "client_id": "786045986221-i6m9ooijlq2kvbcqpjgakqg860s8akkq.apps.googleusercontent.com",
+          "client_id": "786045986221-g5i67a6hpl8boane8sfgl88r24nfrsaq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.abhinabera.pyabigbull",
-            "certificate_hash": "ae79e684fd27ad562f167111ba88ae82553a436e"
+            "certificate_hash": "2f3d4836565e51bad5befbd54de726309ff74052"
           }
         },
         {

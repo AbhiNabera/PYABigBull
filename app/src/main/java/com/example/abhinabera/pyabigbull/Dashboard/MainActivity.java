@@ -34,11 +34,15 @@ public class MainActivity extends AppCompatActivity{
     PortofolioFragment portofolioFragment;
     MenuItem prevMenuItem;
 
+    static AppCompatActivity appCompatActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
+        appCompatActivity = MainActivity.this;
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
