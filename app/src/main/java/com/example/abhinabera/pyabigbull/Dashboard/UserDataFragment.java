@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +41,15 @@ import com.example.abhinabera.pyabigbull.UserActivities.Disclaimer;
 import com.example.abhinabera.pyabigbull.UserActivities.TermsAndConditions;
 import com.example.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory;
 import com.example.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -70,6 +80,7 @@ public class UserDataFragment extends Fragment {
     RelativeLayout profileCard;
     RelativeLayout cameraButton;
     CircleImageView profilePhoto;
+    ProgressBar progressBar;
 
     JsonObject player;
 
@@ -97,6 +108,7 @@ public class UserDataFragment extends Fragment {
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+        progressBar = (ProgressBar) view.findViewById(R.id.ProgressBar);
         profileCard = (RelativeLayout) view.findViewById(R.id.profileCard);
         cameraButton = (RelativeLayout) view.findViewById(R.id.cameraButton);
         profilePhoto = (CircleImageView) view.findViewById(R.id.profilePhoto);
@@ -118,6 +130,8 @@ public class UserDataFragment extends Fragment {
         investmentText = (TextView) view.findViewById(R.id.investmentText);
         changeText = (TextView) view.findViewById(R.id.changeText);
         percentchangeText = (TextView) view.findViewById(R.id.percentchangeText);
+
+        progressBar.setProgress(0);
 
         myStocks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +216,7 @@ public class UserDataFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("image/jpeg");
-                startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+                startActivityForResult(intent, GALLERY_INTENT_CALLED);
             }
         });
 
@@ -240,6 +254,17 @@ public class UserDataFragment extends Fragment {
     }
 
     public void setUserCard() {
+
+        if(player.get("data").getAsJsonObject().get("imageUrl") != null) {
+
+            if(!player.get("data").getAsJsonObject().get("imageUrl").getAsString().equalsIgnoreCase("null")) {
+                Picasso.with(getActivity()).
+                        load(player.get("data").getAsJsonObject().get("imageUrl").getAsString().trim())
+                        .skipMemoryCache()
+                        .fit()
+                        .into(profilePhoto);
+            }
+        }
 
         phoneNumber.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()+"");
         userName.setText(player.get("data").getAsJsonObject().get("userName").getAsString());
@@ -360,10 +385,16 @@ public class UserDataFragment extends Fragment {
 
                 if (mCurrentPhotoPath != null) {
                     CAM_FILE_PATH = mCurrentPhotoPath;
-                    crop_from_uri(new File(mCurrentPhotoPath));
                     //profilePhoto.setImageURI(currentPhotoUri);
                     setPic();
-                    galleryAddPic();
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            //galleryAddPic();
+                            //uploadFile();
+                            crop_from_uri(new File(mCurrentPhotoPath));
+                        }
+                    });
                 }
             }
 
@@ -385,6 +416,13 @@ public class UserDataFragment extends Fragment {
                 Log.d("gallery", "");
                 Uri originalUri = data.getData();
 
+                if(originalUri!=null) {
+                    crop_from_uri(originalUri);
+                    profilePhoto.setImageURI(originalUri);
+                    uploadFile(originalUri);
+                }
+
+                /*
                 int columnIndex = 0;
                 String[] projection = {MediaStore.Images.Media.DATA};
 
@@ -399,7 +437,8 @@ public class UserDataFragment extends Fragment {
                     cursor.close();
                     final File gallery_file = new File(picturePath);
                     crop_from_uri(gallery_file);
-                }
+                }*/
+
             } else if (requestCode == GALLERY_KITKAT_INTENT_CALLED) {
                 // Will return "image:x*"
                 Log.d("kitkat", "");
@@ -443,6 +482,13 @@ public class UserDataFragment extends Fragment {
 
     public void crop_from_uri( File pictureFile){
         UCrop.of(Uri.fromFile(pictureFile), Uri.fromFile(pictureFile))
+                .withAspectRatio(5, 5)
+                .withMaxResultSize(maxWidth, maxHeight)
+                .start(getActivity());
+    }
+
+    public void crop_from_uri( Uri pictureUri){
+        UCrop.of(pictureUri, pictureUri)
                 .withAspectRatio(5, 5)
                 .withMaxResultSize(maxWidth, maxHeight)
                 .start(getActivity());
@@ -517,6 +563,97 @@ public class UserDataFragment extends Fragment {
         getActivity().sendBroadcast(mediaScanIntent);
     }
 
+    public void uploadFile(Uri imageUri) {
+
+        progressBar.setIndeterminate(false);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(10);
+
+        StorageReference mStorageRef;
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        //Uri file = Uri.fromFile(new File(mCurrentPhotoPath));
+        StorageReference profileRef = mStorageRef.child("profile/"+FirebaseAuth.getInstance()
+                .getCurrentUser().getPhoneNumber().substring(3)+"/"+userName.getText().toString().trim()+".jpg");
+
+        profileRef.putFile(imageUri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.d("downloadurl", ""+uri);
+                                updateUrl(uri+"", progressBar);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressBar.setIndeterminate(false);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        //progressBar.setVisibility(View.GONE);
+                        //progressBar.setIndeterminate(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                        progressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        progressBar.setVisibility(View.VISIBLE);
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressBar.setProgress((int) progress);
+                        Log.d("progress", ""+progress);
+                    }
+                });
+    }
+
+    public void updateUrl(String imageUrl, ProgressBar progressBar) {
+
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+
+        new RetrofitClient().getInterface().updateUrl(FirebaseAuth.getInstance().getCurrentUser()
+                .getPhoneNumber().substring(3), imageUrl).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    progressBar.setIndeterminate(false);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Successful update", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
+                    progressBar.setIndeterminate(false);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
+                progressBar.setIndeterminate(false);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
     @Override
     public void onDestroy(){
         super.onDestroy();

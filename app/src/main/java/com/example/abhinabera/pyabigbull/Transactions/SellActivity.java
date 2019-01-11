@@ -349,6 +349,9 @@ public class SellActivity extends AppCompatActivity {
         JsonObject transaction = new JsonObject();
         JsonObject txn_history = new JsonObject();
 
+        String imageUrl = (userObject.get("imageUrl")==null)?null:userObject.get("imageUrl").getAsString();
+
+        leaderBoardData.addProperty("imageUrl", imageUrl);
         leaderBoardData.addProperty("avail_balance", acc_bal+"");
         leaderBoardData.addProperty("userName", new Utility().getUserName(SellActivity.this));
         leaderBoardData.addProperty("txn_id", ""+INVESTMENT_PACKET.get("txn_id").getAsString());

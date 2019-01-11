@@ -58,6 +58,10 @@ public interface ApiInterface {
     @GET("standings")
     Call<JsonObject> getStandings();
 
+    @FormUrlEncoded
+    @POST("imageUrl")
+    Call<JsonObject> updateUrl(@Field("phoneNumber") String phoneNumber, @Field("imageUrl") String imageUrl);
+
     /*
     appfeeds
      */
