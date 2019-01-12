@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.example.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyGraphActivity">
+    tools:context="com.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyGraphActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
