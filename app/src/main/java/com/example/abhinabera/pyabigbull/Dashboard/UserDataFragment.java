@@ -94,6 +94,8 @@ public class UserDataFragment extends Fragment {
     CircleImageView profilePhoto;
     ProgressBar progressBar;
 
+    Call<JsonObject> uploadTask;
+
     JsonObject player;
 
     File gallery_file;
@@ -102,7 +104,7 @@ public class UserDataFragment extends Fragment {
     private String CAM_FILE_PATH=null;
 
     private static final int GALLERY_INTENT_CALLED = 4;
-    private static final int GALLERY_KITKAT_INTENT_CALLED = 5, CHOICE_CAMERA = 7;
+    private static final int GALLERY_KITKAT_INTENT_CALLED = 5, CHOICE_CAMERA = 7, PIC_CROP = 9, CROP_REQUEST_CODE = 11;
 
     int maxWidth = 100;
     int maxHeight = 100;
@@ -142,8 +144,6 @@ public class UserDataFragment extends Fragment {
         investmentText = (TextView) view.findViewById(R.id.investmentText);
         changeText = (TextView) view.findViewById(R.id.changeText);
         percentchangeText = (TextView) view.findViewById(R.id.percentchangeText);
-
-        progressBar.setProgress(0);
 
         myStocks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +217,11 @@ public class UserDataFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if(uploadTask!=null) {
+                    if(uploadTask.isExecuted()) {
+                        uploadTask.cancel();
+                    }
+                }
                 getUserInfo();
             }
         });
@@ -225,39 +230,47 @@ public class UserDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/jpeg");
-                startActivityForResult(intent, GALLERY_INTENT_CALLED);
+                if(progressBar.getVisibility() != View.VISIBLE) {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/jpeg");
+                    startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+                }else {
+                    Toast.makeText(getActivity(), "Wait for upload to finish", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkCameraHardware(getActivity())) {
+                if(progressBar.getVisibility() != View.VISIBLE) {
+                    if (checkCameraHardware(getActivity())) {
 
-                    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    if(intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-                            ex.printStackTrace();
+                        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+                                ex.printStackTrace();
+                            }
+                            if (photoFile != null) {
+                                currentPhotoUri = FileProvider.getUriForFile(getActivity(),
+                                        "com.example.android.fileprovider", photoFile);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri);
+                                startActivityForResult(intent, CHOICE_CAMERA);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "Failed to open camera", Toast.LENGTH_SHORT).show();
                         }
-                        if(photoFile != null) {
-                            currentPhotoUri = FileProvider.getUriForFile(getActivity(),
-                                    "com.example.android.fileprovider", photoFile);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri);
-                            startActivityForResult(intent, CHOICE_CAMERA);
-                        }
-                    }else {
+
+                    } else {
                         Toast.makeText(getActivity(), "Failed to open camera", Toast.LENGTH_SHORT).show();
                     }
-
                 }else {
-                    Toast.makeText(getActivity(), "Failed to open camera", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Wait for upload to finish", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -269,10 +282,10 @@ public class UserDataFragment extends Fragment {
 
         if(player.get("data").getAsJsonObject().get("imageUrl") != null) {
 
-            if(!player.get("data").getAsJsonObject().get("imageUrl").getAsString().equalsIgnoreCase("null")) {
+            if(!player.get("data").getAsJsonObject().get("imageUrl").toString().equalsIgnoreCase("null")) {
                 Picasso.with(getActivity()).
                         load(player.get("data").getAsJsonObject().get("imageUrl").getAsString().trim())
-                        .skipMemoryCache()
+                        //.skipMemoryCache()
                         .fit()
                         .into(profilePhoto);
             }
@@ -397,44 +410,48 @@ public class UserDataFragment extends Fragment {
 
                 if (mCurrentPhotoPath != null) {
                     CAM_FILE_PATH = mCurrentPhotoPath;
-                    //profilePhoto.setImageURI(currentPhotoUri);
-                    setPic();
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            //galleryAddPic();
-                            //uploadFile();
                             crop_from_uri(new File(mCurrentPhotoPath));
                         }
                     });
                 }
             }
 
-            if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            if(requestCode == PIC_CROP){
+
+                Bundle extras = data.getExtras();
+                if(extras!=null) {
+                    Bitmap thePic = extras.getParcelable("data");
+                    profilePhoto.setImageBitmap(thePic);
+                }
+            }
+
+            if (resultCode == RESULT_OK && requestCode == CROP_REQUEST_CODE) {
                 Log.d("result:", " success");
                 final Uri resultUri = UCrop.getOutput(data);
                 if (gallery_file != null) {
                     CAM_FILE_PATH = gallery_file.getPath();
                 }
                 Bitmap temp = BitmapFactory.decodeFile(resultUri.getPath());
-                //profilePhoto.setImageBitmap(temp);
-                //setPic(temp);
+                profilePhoto.setImageBitmap(temp);
+                //TODO: upload image here
+                if(BitmapCompat.getAllocationByteCount(temp) < 100000) {
+                    uploadFile();
+                }else {
+                    Toast.makeText(getActivity(), "Size limit 100kb", Toast.LENGTH_SHORT).show();
+                }
                 Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(temp));
             } else if (resultCode == UCrop.RESULT_ERROR) {
                 Log.d("result:", " failed");
                 final Throwable cropError = UCrop.getError(data);
+
             } else if (requestCode == GALLERY_INTENT_CALLED) {
 
                 Log.d("gallery", "");
                 Uri originalUri = data.getData();
 
-                if(originalUri!=null) {
-                    crop_from_uri(originalUri);
-                    profilePhoto.setImageURI(originalUri);
-                    uploadFile(originalUri);
-                }
-
-                /*
                 int columnIndex = 0;
                 String[] projection = {MediaStore.Images.Media.DATA};
 
@@ -449,7 +466,7 @@ public class UserDataFragment extends Fragment {
                     cursor.close();
                     final File gallery_file = new File(picturePath);
                     crop_from_uri(gallery_file);
-                }*/
+                }
 
             } else if (requestCode == GALLERY_KITKAT_INTENT_CALLED) {
                 // Will return "image:x*"
@@ -493,19 +510,19 @@ public class UserDataFragment extends Fragment {
     }
 
     public void crop_from_uri( File pictureFile){
-        UCrop.of(Uri.fromFile(pictureFile), Uri.fromFile(pictureFile))
-                .withAspectRatio(5, 5)
-                .withMaxResultSize(maxWidth, maxHeight)
-                .start(getActivity());
+        try {
+            UserDataFragment userDataFragment = (UserDataFragment) getFragmentManager().getFragments()
+                    .get(((MainActivity) getActivity()).viewPager.getCurrentItem());
+            UCrop.of(Uri.fromFile(pictureFile), Uri.fromFile(pictureFile))
+                    .withAspectRatio(5, 5)
+                    .withMaxResultSize(maxWidth, maxHeight)
+                    .start(getActivity(), userDataFragment, CROP_REQUEST_CODE);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void crop_from_uri( Uri pictureUri){
-        UCrop.of(pictureUri, pictureUri)
-                .withAspectRatio(5, 5)
-                .withMaxResultSize(maxWidth, maxHeight)
-                .start(getActivity());
-    }
-
+    /*
     private void setPic() {
         // Get the dimensions of the View
         int targetW = profilePhoto.getWidth();
@@ -567,28 +584,19 @@ public class UserDataFragment extends Fragment {
     }
     */
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        getActivity().sendBroadcast(mediaScanIntent);
-    }
 
-    public void uploadFile(Uri imageUri) {
+    public void uploadFile() {
 
-        progressBar.setIndeterminate(false);
         progressBar.setVisibility(View.VISIBLE);
-        progressBar.setProgress(10);
 
         StorageReference mStorageRef;
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        //Uri file = Uri.fromFile(new File(mCurrentPhotoPath));
+        Uri file = Uri.fromFile(new File(CAM_FILE_PATH));
         StorageReference profileRef = mStorageRef.child("profile/"+FirebaseAuth.getInstance()
                 .getCurrentUser().getPhoneNumber().substring(3)+"/"+userName.getText().toString().trim()+".jpg");
 
-        profileRef.putFile(imageUri)
+        profileRef.putFile(file)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -603,7 +611,6 @@ public class UserDataFragment extends Fragment {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                progressBar.setIndeterminate(false);
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
@@ -613,8 +620,6 @@ public class UserDataFragment extends Fragment {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
-                        //progressBar.setVisibility(View.GONE);
-                        //progressBar.setIndeterminate(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -624,35 +629,25 @@ public class UserDataFragment extends Fragment {
                         // ...
                         progressBar.setVisibility(View.GONE);
                     }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        progressBar.setVisibility(View.VISIBLE);
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        progressBar.setProgress((int) progress);
-                        Log.d("progress", ""+progress);
-                    }
                 });
+
     }
 
     public void updateUrl(String imageUrl, ProgressBar progressBar) {
 
         progressBar.setVisibility(View.VISIBLE);
-        progressBar.setIndeterminate(true);
 
-        new RetrofitClient().getInterface().updateUrl(FirebaseAuth.getInstance().getCurrentUser()
-                .getPhoneNumber().substring(3), imageUrl).enqueue(new Callback<JsonObject>() {
+        uploadTask = new RetrofitClient().getInterface().updateUrl(FirebaseAuth.getInstance().getCurrentUser()
+                .getPhoneNumber().substring(3), imageUrl);
+
+        uploadTask.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
-                    progressBar.setIndeterminate(false);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Successful update", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
-                    progressBar.setIndeterminate(false);
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -661,7 +656,6 @@ public class UserDataFragment extends Fragment {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
-                progressBar.setIndeterminate(false);
                 progressBar.setVisibility(View.GONE);
             }
         });

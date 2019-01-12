@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
     BottomNavigationView bottomNavigationView;
     BottomNavigationItemView navData, navUser, navPortfolio, navleaderBoard;
 
-    private ViewPager viewPager;
+    public ViewPager viewPager;
 
     DataFragment dataFragment;
     UserDataFragment userDataFragment;

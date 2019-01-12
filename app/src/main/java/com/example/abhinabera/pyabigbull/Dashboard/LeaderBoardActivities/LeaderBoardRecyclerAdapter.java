@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoardRecyclerAdapter.ViewHolder> {
 
@@ -43,6 +46,17 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
+        if(boardlist.get(position).get("imageUrl") != null) {
+
+            if(!boardlist.get(position).get("imageUrl").toString().equalsIgnoreCase("null")) {
+                Picasso.with(activity).
+                        load(boardlist.get(position).get("imageUrl").getAsString().trim())
+                        .skipMemoryCache()
+                        .fit()
+                        .into(viewHolder.profilePhoto);
+            }
+        }
+
         viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
         viewHolder.userName.setSelected(true);
         viewHolder.userRank.setText((position+1)+"");
@@ -62,7 +76,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView userName, userRank, userBoxPrice, userBoxPercent;
-        public ImageView profilePhoto;
+        public CircleImageView profilePhoto;
         LinearLayout leaderBoardItemBox;
 
         public ViewHolder(View itemLayoutView) {
@@ -71,7 +85,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
             userRank = (TextView) itemLayoutView.findViewById(R.id.leaderBoardRank);
             userBoxPrice = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPrice);
             userBoxPercent = (TextView) itemLayoutView.findViewById(R.id.leaderBoardItemBoxPercent);
-            profilePhoto = (ImageView) itemLayoutView.findViewById(R.id.profilePhoto);
+            profilePhoto = (CircleImageView) itemLayoutView.findViewById(R.id.profilePhoto);
             leaderBoardItemBox = (LinearLayout) itemLayoutView.findViewById(R.id.leaderBoardItemBox);
         }
     }
