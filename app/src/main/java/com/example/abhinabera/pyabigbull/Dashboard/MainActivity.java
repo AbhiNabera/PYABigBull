@@ -163,17 +163,10 @@ public class MainActivity extends AppCompatActivity{
                 .closeActionImageResourceId(R.drawable.ic_buble_close)
                 .descriptionTextSize(15);
 
-        BubbleShowCaseBuilder fifth = new BubbleShowCaseBuilder(this);
-        fifth.description("Please forgive us in case of any errors. We will try to solve the problem as soon as possible.")
-                .backgroundColor(Color.GREEN)
-                .textColor(Color.BLACK)
-                .imageResourceId(R.drawable.please)
-                .closeActionImageResourceId(R.drawable.ic_buble_close)
-                .descriptionTextSize(15);
 
         if (!haveWeShownPreferences) {
             BubbleShowCaseSequence sequence = new BubbleShowCaseSequence();
-            sequence.addShowCase(first).addShowCase(second).addShowCase(third).addShowCase(fourth).addShowCase(fifth).show();
+            sequence.addShowCase(first).addShowCase(second).addShowCase(third).addShowCase(fourth).show();
             SharedPreferences.Editor ed = prefs.edit();
             ed.putBoolean("HaveShownPrefs", true);
             ed.commit();

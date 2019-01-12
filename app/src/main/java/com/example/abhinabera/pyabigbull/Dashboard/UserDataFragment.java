@@ -102,7 +102,7 @@ public class UserDataFragment extends Fragment {
     File gallery_file;
     String mCurrentPhotoPath = null;
     Uri currentPhotoUri = null;
-    private String CAM_FILE_PATH=null;
+    private String CAM_FILE_PATH = null;
 
     private static final int GALLERY_INTENT_CALLED = 4;
     private static final int GALLERY_KITKAT_INTENT_CALLED = 5, CHOICE_CAMERA = 7, PIC_CROP = 9, CROP_REQUEST_CODE = 11;
@@ -218,8 +218,8 @@ public class UserDataFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(uploadTask!=null) {
-                    if(uploadTask.isExecuted()) {
+                if (uploadTask != null) {
+                    if (uploadTask.isExecuted()) {
                         uploadTask.cancel();
                     }
                 }
@@ -231,12 +231,12 @@ public class UserDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(progressBar.getVisibility() != View.VISIBLE) {
+                if (progressBar.getVisibility() != View.VISIBLE) {
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("image/jpeg");
                     startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Wait for upload to finish", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -245,7 +245,7 @@ public class UserDataFragment extends Fragment {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(progressBar.getVisibility() != View.VISIBLE) {
+                if (progressBar.getVisibility() != View.VISIBLE) {
                     if (checkCameraHardware(getActivity())) {
 
                         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -270,7 +270,7 @@ public class UserDataFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), "Failed to open camera", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Wait for upload to finish", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -281,9 +281,9 @@ public class UserDataFragment extends Fragment {
 
     public void setUserCard() {
 
-        if(player.get("data").getAsJsonObject().get("imageUrl") != null) {
+        if (player.get("data").getAsJsonObject().get("imageUrl") != null) {
 
-            if(!player.get("data").getAsJsonObject().get("imageUrl").toString().equalsIgnoreCase("null")) {
+            if (!player.get("data").getAsJsonObject().get("imageUrl").toString().equalsIgnoreCase("null")) {
                 Picasso.with(getActivity()).
                         load(player.get("data").getAsJsonObject().get("imageUrl").getAsString())
                         //.skipMemoryCache()
@@ -294,7 +294,7 @@ public class UserDataFragment extends Fragment {
             }
         }
 
-        phoneNumber.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()+"");
+        phoneNumber.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() + "");
         userName.setText(player.get("data").getAsJsonObject().get("userName").getAsString());
 
         balance.setText(new Utility().getRoundoffData(player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
@@ -307,22 +307,22 @@ public class UserDataFragment extends Fragment {
         String percentchange = new Utility().getRoundoffData(player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
                 .get("percentchange").getAsString());
 
-        changeText.setText(change+"");
-        percentchangeText.setText(percentchange+"%");
+        changeText.setText(change + "");
+        percentchangeText.setText(percentchange + "%");
 
-        if(Double.parseDouble(percentchange)>=0) {
+        if (Double.parseDouble(percentchange) >= 0) {
             changeText.setTextColor(getResources().getColor(R.color.greenText));
             percentchangeText.setTextColor(getResources().getColor(R.color.greenText));
-        }else {
+        } else {
             changeText.setTextColor(getResources().getColor(R.color.red));
             percentchangeText.setTextColor(getResources().getColor(R.color.red));
         }
 
-        myStocks.setText("My Portfolio ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
-        .get("stocks_count").getAsString()+")");
+        myStocks.setText("My Portfolio (" + player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
+                .get("stocks_count").getAsString() + ")");
 
-        transactionsHistory.setText("Transaction History ("+player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
-        .get("txn_history").getAsJsonArray().size()+")");
+        transactionsHistory.setText("Transaction History (" + player.get("data").getAsJsonObject().get("Account").getAsJsonObject()
+                .get("txn_history").getAsJsonArray().size() + ")");
 
         //expandableLayout.toggle();
     }
@@ -338,15 +338,15 @@ public class UserDataFragment extends Fragment {
 
                 refreshLayout.setRefreshing(false);
 
-                if(response.isSuccessful()) {
-                    if(response.body().getAsJsonObject("data")!=null) {
+                if (response.isSuccessful()) {
+                    if (response.body().getAsJsonObject("data") != null) {
                         player = response.body();
                         setUserCard();
-                    }else {
+                    } else {
 
                         Toast.makeText(getActivity(), "error occured while fetching account", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     try {
                         Log.d("error", response.errorBody().string());
                     } catch (IOException e) {
@@ -382,7 +382,7 @@ public class UserDataFragment extends Fragment {
     private File createImageFile() throws IOException {
         // Create an image file name
         //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = userName.getText().toString().trim()+"";
+        String imageFileName = userName.getText().toString().trim() + "";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -403,7 +403,7 @@ public class UserDataFragment extends Fragment {
 
         try {
 
-            Log.d("onActivity result", ""+requestCode);
+            Log.d("onActivity result", "" + requestCode);
 
             if (resultCode == Activity.RESULT_CANCELED) {
                 return;
@@ -422,10 +422,10 @@ public class UserDataFragment extends Fragment {
                 }
             }
 
-            if(requestCode == PIC_CROP){
+            if (requestCode == PIC_CROP) {
 
                 Bundle extras = data.getExtras();
-                if(extras!=null) {
+                if (extras != null) {
                     Bitmap thePic = extras.getParcelable("data");
                     profilePhoto.setImageBitmap(thePic);
                 }
@@ -440,12 +440,12 @@ public class UserDataFragment extends Fragment {
                 Bitmap temp = BitmapFactory.decodeFile(resultUri.getPath());
                 profilePhoto.setImageBitmap(temp);
                 //TODO: upload image here
-                if(BitmapCompat.getAllocationByteCount(temp) < 100000) {
+                if (BitmapCompat.getAllocationByteCount(temp) < 100000) {
                     uploadFile();
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Size limit 100kb", Toast.LENGTH_SHORT).show();
                 }
-                Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(temp));
+                Log.d("bitmap size", "" + BitmapCompat.getAllocationByteCount(temp));
             } else if (resultCode == UCrop.RESULT_ERROR) {
                 Log.d("result:", " failed");
                 final Throwable cropError = UCrop.getError(data);
@@ -501,20 +501,20 @@ public class UserDataFragment extends Fragment {
                             filePath = cursor.getString(columnIndex);
                         }
                         cursor.close();
-                        Log.d("filepath", ""+filePath);
+                        Log.d("filepath", "" + filePath);
                         gallery_file = new File(filePath);
                         crop_from_uri(gallery_file);
                     }
                 }
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Error occured while geting reults", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void crop_from_uri( File pictureFile){
+    public void crop_from_uri(File pictureFile) {
         try {
             UserDataFragment userDataFragment = (UserDataFragment) getFragmentManager().getFragments()
                     .get(((MainActivity) getActivity()).viewPager.getCurrentItem());
@@ -522,7 +522,7 @@ public class UserDataFragment extends Fragment {
                     .withAspectRatio(5, 5)
                     .withMaxResultSize(maxWidth, maxHeight)
                     .start(getActivity(), userDataFragment, CROP_REQUEST_CODE);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -532,59 +532,46 @@ public class UserDataFragment extends Fragment {
         // Get the dimensions of the View
         int targetW = profilePhoto.getWidth();
         int targetH = profilePhoto.getHeight();
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
-
         // Determine how much to scale down the image
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor*2;
         bmOptions.inPurgeable = true;
-
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         //profilePhoto.setImageBitmap(bitmap);
-
         Picasso.with(getActivity()).
                 load(new File(mCurrentPhotoPath))
                 .skipMemoryCache()
                 .fit()
                 .into(profilePhoto);
-
-
         Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(bitmap));
     }
-
     /*
     private void setPic(Bitmap btmap) {
         // Get the dimensions of the View
         int targetW = profilePhoto.getWidth();
         int targetH = profilePhoto.getHeight();
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         //BitmapFactory.decode
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
-
         // Determine how much to scale down the image
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor*10;
         bmOptions.inPurgeable = true;
-
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         profilePhoto.setImageBitmap(bitmap);
-
         Log.d("bitmap size", ""+ BitmapCompat.getAllocationByteCount(bitmap));
     }
     */
@@ -598,8 +585,8 @@ public class UserDataFragment extends Fragment {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         Uri file = Uri.fromFile(new File(CAM_FILE_PATH));
-        StorageReference profileRef = mStorageRef.child("profile/"+FirebaseAuth.getInstance()
-                .getCurrentUser().getPhoneNumber().substring(3)+"/"+userName.getText().toString().trim()+".jpg");
+        StorageReference profileRef = mStorageRef.child("profile/" + FirebaseAuth.getInstance()
+                .getCurrentUser().getPhoneNumber().substring(3) + "/" + userName.getText().toString().trim() + ".jpg");
 
         profileRef.putFile(file)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -609,16 +596,16 @@ public class UserDataFragment extends Fragment {
                         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Log.d("downloadurl", ""+uri);
-                                updateUrl(uri+"", progressBar);
+                                Log.d("downloadurl", "" + uri);
+                                updateUrl(uri + "", progressBar);
                             }
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -648,10 +635,10 @@ public class UserDataFragment extends Fragment {
         uploadTask.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Successful update", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 }
@@ -665,8 +652,9 @@ public class UserDataFragment extends Fragment {
             }
         });
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         Runtime.getRuntime().gc();
     }
