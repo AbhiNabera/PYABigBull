@@ -47,30 +47,34 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        if(boardlist.get(position).get("imageUrl") != null) {
+        try {
+            if (boardlist.get(position).get("imageUrl") != null) {
 
-            if(!boardlist.get(position).get("imageUrl").toString().equalsIgnoreCase("null")) {
-                Picasso.with(activity).
-                        load(boardlist.get(position).get("imageUrl").getAsString().trim())
-                        //.skipMemoryCache()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                        .fit()
-                        .into(viewHolder.profilePhoto);
+                if (!boardlist.get(position).get("imageUrl").toString().equalsIgnoreCase("null")) {
+                    Picasso.with(activity).
+                            load(boardlist.get(position).get("imageUrl").getAsString().trim())
+                            //.skipMemoryCache()
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .fit()
+                            .into(viewHolder.profilePhoto);
+                }
             }
-        }
 
-        viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString()+"");
-        viewHolder.userName.setSelected(true);
-        viewHolder.userRank.setText((position+1)+"");
-        viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position)
-                .get("current_change").getAsString() +""));
-        viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position)
-                .get("current_pchange").getAsString()+"")+"%");
+            viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString() + "");
+            viewHolder.userName.setSelected(true);
+            viewHolder.userRank.setText((position + 1) + "");
+            viewHolder.userBoxPrice.setText(new Utility().getRoundoffData(boardlist.get(position)
+                    .get("current_change").getAsString() + ""));
+            viewHolder.userBoxPercent.setText(new Utility().getRoundoffData(boardlist.get(position)
+                    .get("current_pchange").getAsString() + "") + "%");
 
-        if(boardlist.get(position).get("current_pchange").getAsDouble()>=0) {
-            viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.greenText));
-        }else {
-            viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.red));
+            if (boardlist.get(position).get("current_pchange").getAsDouble() >= 0) {
+                viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.greenText));
+            } else {
+                viewHolder.leaderBoardItemBox.setBackgroundColor(activity.getResources().getColor(R.color.red));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
