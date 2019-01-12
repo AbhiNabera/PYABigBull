@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#274649</color>
     <color name="colorTabtext">#404F50</color>
     <color name="colorDisabled">#ce404f50</color>
+    <item name="darkgreen" type="color">#FF669900</item>
     <color name="greenText">#4AB556</color>
     <color name="greenTextAlpha">#374AB556</color>
     <color name="colorAccent">#4AB556</color>

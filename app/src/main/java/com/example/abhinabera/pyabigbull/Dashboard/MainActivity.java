@@ -1,7 +1,11 @@
 package com.example.abhinabera.pyabigbull.Dashboard;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseListener;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.example.abhinabera.pyabigbull.R;
 
 import java.net.InetAddress;
@@ -22,9 +30,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+
 public class MainActivity extends AppCompatActivity{
 
     BottomNavigationView bottomNavigationView;
+    BottomNavigationItemView navData, navUser, navPortfolio, navleaderBoard;
 
     private ViewPager viewPager;
 
@@ -36,6 +46,8 @@ public class MainActivity extends AppCompatActivity{
 
     static AppCompatActivity appCompatActivity;
 
+    private static final String SHOWCASE_ID = "showcase";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +56,16 @@ public class MainActivity extends AppCompatActivity{
 
         appCompatActivity = MainActivity.this;
 
+        SharedPreferences prefs = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        boolean haveWeShownPreferences = prefs.getBoolean("HaveShownPrefs", false);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+
+        navData = (BottomNavigationItemView) findViewById(R.id.navigation_data);
+        navPortfolio = (BottomNavigationItemView) findViewById(R.id.navigation_portfolio);
+        navUser = (BottomNavigationItemView) findViewById(R.id.navigation_userdata);
+        navleaderBoard = (BottomNavigationItemView) findViewById(R.id.navigation_leaderboard);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,6 +118,71 @@ public class MainActivity extends AppCompatActivity{
 
         setupViewPager(viewPager);
 
+        BubbleShowCaseBuilder first = new BubbleShowCaseBuilder(this);
+        first.title("LIVE")
+                .description("Invest or buy here.")
+                .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                .backgroundColor(Color.GREEN)
+                .imageResourceId(R.drawable.purchase)
+                .closeActionImageResourceId(R.drawable.ic_buble_close)
+                .textColor(Color.BLACK)
+                .titleTextSize(17)
+                .descriptionTextSize(15)
+                .targetView(navData);
+
+
+        BubbleShowCaseBuilder second = new BubbleShowCaseBuilder(this);
+        second.title("YOUR PORTFOLIO")
+                .description("Sell here.")
+                .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                .backgroundColor(Color.GREEN)
+                .textColor(Color.BLACK)
+                .imageResourceId(R.drawable.sell)
+                .closeActionImageResourceId(R.drawable.ic_buble_close)
+                .titleTextSize(17)
+                .descriptionTextSize(15)
+                .targetView(navPortfolio);
+
+        BubbleShowCaseBuilder third = new BubbleShowCaseBuilder(this);
+        third.title("RULES")
+                .description("Please read the playing conditions available here before starting.")
+                .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                .backgroundColor(Color.GREEN)
+                .textColor(Color.BLACK)
+                .imageResourceId(R.drawable.conditions)
+                .closeActionImageResourceId(R.drawable.ic_buble_close)
+                .titleTextSize(17)
+                .descriptionTextSize(15)
+                .targetView(navUser);
+
+        BubbleShowCaseBuilder fourth = new BubbleShowCaseBuilder(this);
+        fourth.description("Pull down to refresh and update the data.")
+                .backgroundColor(Color.GREEN)
+                .textColor(Color.BLACK)
+                .imageResourceId(R.drawable.refresh)
+                .closeActionImageResourceId(R.drawable.ic_buble_close)
+                .descriptionTextSize(15);
+
+        BubbleShowCaseBuilder fifth = new BubbleShowCaseBuilder(this);
+        fifth.description("Please forgive us in case of any errors. We will try to solve the problem as soon as possible.")
+                .backgroundColor(Color.GREEN)
+                .textColor(Color.BLACK)
+                .imageResourceId(R.drawable.please)
+                .closeActionImageResourceId(R.drawable.ic_buble_close)
+                .descriptionTextSize(15);
+
+        if (!haveWeShownPreferences) {
+            BubbleShowCaseSequence sequence = new BubbleShowCaseSequence();
+            sequence.addShowCase(first).addShowCase(second).addShowCase(third).addShowCase(fourth).addShowCase(fifth).show();
+            SharedPreferences.Editor ed = prefs.edit();
+            ed.putBoolean("HaveShownPrefs", true);
+            ed.commit();
+        } else {
+            // we have already shown the preferences activity before
+        }
+
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -142,5 +227,6 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
+
 
 }

@@ -93,8 +93,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 boolean wifi = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                 boolean internet = grantResults[2] == PackageManager.PERMISSION_GRANTED;
                 boolean sms = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                //boolean writeSettings = grantResults[4] == PackageManager.PERMISSION_GRANTED;
+                boolean writeExt = grantResults[5] == PackageManager.PERMISSION_GRANTED;
+                boolean readExt = grantResults[6] == PackageManager.PERMISSION_GRANTED;
+                boolean cam = grantResults[7] == PackageManager.PERMISSION_GRANTED;
 
-                if(!network || !wifi || !internet || !sms) {
+                if(!network || !wifi || !internet || !sms || !writeExt || !readExt || !cam) {
 
                     ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
 
