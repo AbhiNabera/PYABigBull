@@ -119,39 +119,45 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     public void nextActivity(){
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if(Utility.isOnline(SplashScreenActivity.this)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-                setAutoTime();
+                    setAutoTime();
 
-                if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-                    if(getUserName()!=null) {
+                        if (getUserName() != null) {
 
-                        checkifUserEnabled();
-                        //startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                            checkifUserEnabled();
+                            //startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
 
-                    }else {
+                        } else {
 
-                        Intent intent = new Intent(SplashScreenActivity.this, UserNameActivity.class);
-                        intent.putExtra("phoneNumber", getPhoneNumber());
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                            Intent intent = new Intent(SplashScreenActivity.this, UserNameActivity.class);
+                            intent.putExtra("phoneNumber", getPhoneNumber());
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.enter, R.anim.exit);
+                            finish();
+
+                        }
+
+                    } else {
+
+                        Intent menuIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
+                        startActivity(menuIntent);
                         finish();
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
 
                     }
-
-                }else {
-
-                    Intent menuIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
-                    startActivity(menuIntent);
-                    finish();
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
-
                 }
-            }
-        },00);
+            }, 00);
+        }else {
+            new Utility().showDialog("NO INTERNET",
+                    "Check your internet connection." +
+                            "Switch your internet connection and open the app again.", SplashScreenActivity.this);
+        }
     }
 
     public String getUserName() {
