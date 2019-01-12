@@ -166,23 +166,27 @@ public class StandingsFragment extends Fragment {
 
                                                 for (JsonObject item : portfolio) {
 
-                                                    switch (item.get("type").getAsString().trim()) {
+                                                    try {
+                                                        switch (item.get("type").getAsString().trim()) {
 
-                                                        case "commodity":
-                                                            portfolio_value += getCommodityValue(item);
-                                                            break;
+                                                            case "commodity":
+                                                                portfolio_value += getCommodityValue(item);
+                                                                break;
 
-                                                        case "index":
-                                                            portfolio_value += getIndexValue(item);
-                                                            break;
+                                                            case "index":
+                                                                portfolio_value += getIndexValue(item);
+                                                                break;
 
-                                                        case "currency":
-                                                            portfolio_value += getCurrencyValue(item);
-                                                            break;
+                                                            case "currency":
+                                                                portfolio_value += getCurrencyValue(item);
+                                                                break;
 
-                                                        case "fixed_deposit":
-                                                            portfolio_value += getFdValue(item);
-                                                            break;
+                                                            case "fixed_deposit":
+                                                                portfolio_value += getFdValue(item);
+                                                                break;
+                                                        }
+                                                    }catch (Exception e) {
+                                                        e.printStackTrace();
                                                     }
                                                 }
 
