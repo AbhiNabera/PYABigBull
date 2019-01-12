@@ -155,43 +155,51 @@ public class StandingsFragment extends Fragment {
 
                                         for (JsonObject player : playerList) {
 
-                                            Type listtype = new TypeToken<List<JsonObject>>() {
-                                            }.getType();
-                                            List<JsonObject> portfolio = new Gson().fromJson(player
-                                                    .getAsJsonArray("Portfolio"), listtype);
-
                                             double portfolio_value = 0.0;
 
-                                            for (JsonObject item : portfolio) {
+                                            try {
 
-                                                switch (item.get("type").getAsString().trim()) {
+                                                Type listtype = new TypeToken<List<JsonObject>>() {
+                                                }.getType();
+                                                List<JsonObject> portfolio = new Gson().fromJson(player
+                                                        .getAsJsonArray("Portfolio"), listtype);
 
-                                                    case "commodity":
-                                                        portfolio_value += getCommodityValue(item);
-                                                        break;
+                                                for (JsonObject item : portfolio) {
 
-                                                    case "index":
-                                                        portfolio_value += getIndexValue(item);
-                                                        break;
+                                                    switch (item.get("type").getAsString().trim()) {
 
-                                                    case "currency":
-                                                        portfolio_value += getCurrencyValue(item);
-                                                        break;
+                                                        case "commodity":
+                                                            portfolio_value += getCommodityValue(item);
+                                                            break;
 
-                                                    case "fixed_deposit":
-                                                        portfolio_value += getFdValue(item);
-                                                        break;
+                                                        case "index":
+                                                            portfolio_value += getIndexValue(item);
+                                                            break;
+
+                                                        case "currency":
+                                                            portfolio_value += getCurrencyValue(item);
+                                                            break;
+
+                                                        case "fixed_deposit":
+                                                            portfolio_value += getFdValue(item);
+                                                            break;
+                                                    }
                                                 }
+
+                                            }catch (Exception e){
+                                                e.printStackTrace();
                                             }
 
-                                            player.addProperty("portfolio_value", portfolio_value);
-                                            player.addProperty("net_worth", (player.get("avail_balance").getAsDouble()
-                                                    + portfolio_value));
-                                            player.addProperty("current_change", player.get("net_worth")
-                                                    .getAsDouble() - player.get("start_balance").getAsDouble());
+                                            Log.d("portfolio value", ""+portfolio_value);
 
-                                            player.addProperty("current_pchange", (player.get("current_change").getAsDouble()
-                                                    / player.get("start_balance").getAsDouble()) * 100);
+                                            player.addProperty("portfolio_value", portfolio_value);
+                                            player.addProperty("net_worth", ((player.get("avail_balance").getAsDouble()
+                                                    + portfolio_value)));
+                                            player.addProperty("current_change", (player.get("net_worth")
+                                                    .getAsDouble() - player.get("start_balance").getAsDouble()));
+
+                                            player.addProperty("current_pchange", ((player.get("current_change").getAsDouble()
+                                                    / player.get("start_balance").getAsDouble()) * 100));
                                         }
 
                                         Collections.sort(playerList, new Comparator<JsonObject>() {
@@ -300,7 +308,7 @@ public class StandingsFragment extends Fragment {
         double current_value = current_price*Integer.parseInt(object.
                 get("qty").getAsString());
 
-        //Log.d("commodity", ""+current_value);
+        Log.d("commodity", ""+current_value);
 
         return current_value;
     }
@@ -313,7 +321,7 @@ public class StandingsFragment extends Fragment {
         double current_value = current_price*Integer.parseInt(object.
                 get("qty").getAsString()) ;
 
-        //Log.d("currency", ""+current_value);
+        Log.d("currency", ""+current_value);
 
         return current_value;
     }
@@ -326,7 +334,7 @@ public class StandingsFragment extends Fragment {
         double current_value = current_price*Integer.parseInt(object.
                 get("qty").getAsString());
 
-        //Log.d("index", ""+current_value);
+        Log.d("index", ""+current_value);
 
         return current_value;
     }
@@ -336,7 +344,7 @@ public class StandingsFragment extends Fragment {
         double current_value = object.
                 get("current_value").getAsDouble() ;
 
-        //Log.d("fixed deposit", ""+current_value);
+        Log.d("fixed deposit", ""+current_value);
 
         return current_value;
     }
