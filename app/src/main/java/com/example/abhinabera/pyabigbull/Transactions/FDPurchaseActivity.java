@@ -288,7 +288,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
         leaderBoardTxnData.addProperty("id", "FD");
         leaderBoardTxnData.addProperty("qty", ""+fdqty);
-        leaderBoardTxnData.addProperty("total_amount", ""+fd_total);
+        leaderBoardTxnData.addProperty("total_amount", ""+fdamount);
         leaderBoardTxnData.addProperty("current_value", ""+fdamount);
         leaderBoardData.addProperty("type", "fixed_deposit");
 
