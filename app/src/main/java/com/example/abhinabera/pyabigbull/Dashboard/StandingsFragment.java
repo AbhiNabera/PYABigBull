@@ -255,8 +255,10 @@ public class StandingsFragment extends Fragment {
 
                                     } catch (NullPointerException e) {
                                         e.printStackTrace();
+                                        refreshLayout.setRefreshing(false);
                                     } catch (Exception e) {
                                         e.printStackTrace();
+                                        refreshLayout.setRefreshing(false);
                                     }
                                 }
                             });
