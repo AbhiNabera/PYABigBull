@@ -77,13 +77,13 @@
                 android:layout_toLeftOf="@id/leaderBoardItemBox"
                 android:padding="5dp"
                 android:text="99"
+                android:textAlignment="viewEnd"
                 android:singleLine="true"
                 android:textColor="#d9b72e"
                 android:textStyle="bold"
                 android:layout_marginRight="5dp"
                 android:layout_centerVertical="true"
                 android:textSize="18sp" />
-
 
                 <LinearLayout
                     android:paddingLeft="5dp"

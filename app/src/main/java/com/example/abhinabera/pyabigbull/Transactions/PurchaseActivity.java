@@ -302,7 +302,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         String imageUrl = (userObject.get("imageUrl")==null)?null:userObject.get("imageUrl").getAsString();
 
-        leaderBoardData.addProperty("imageUrl", imageUrl);
+        //leaderBoardData.addProperty("imageUrl", imageUrl);
         leaderBoardData.addProperty("avail_balance", acc_bal+"");
         leaderBoardData.addProperty("txn_id", ""+txn_id);
         leaderBoardData.addProperty("userName", new Utility().getUserName(PurchaseActivity.this));

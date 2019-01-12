@@ -226,7 +226,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
                                     finish();
                                 }
-                            }, 1000);
+                            }, 1500);
 
                         } else {
                             if (response.body().get("isActive").getAsBoolean()) {

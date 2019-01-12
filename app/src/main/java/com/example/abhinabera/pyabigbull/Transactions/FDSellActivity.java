@@ -284,7 +284,7 @@ public class FDSellActivity extends AppCompatActivity {
         String imageUrl = (userObject.get("data").getAsJsonObject().get("imageUrl")==null)?null:
                 userObject.get("data").getAsJsonObject().get("imageUrl").getAsString();
 
-        leaderBoardData.addProperty("imageUrl", imageUrl);
+        //leaderBoardData.addProperty("imageUrl", imageUrl);
         leaderBoardData.addProperty("avail_balance", acc_bal+"");
         leaderBoardData.addProperty("userName", new Utility().getUserName(FDSellActivity.this));
         leaderBoardData.addProperty("txn_id", ""+INVESTMENT_PACKET.get("txn_id").getAsString());
