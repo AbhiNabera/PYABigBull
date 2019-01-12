@@ -255,10 +255,10 @@ public class StandingsFragment extends Fragment {
 
                                     } catch (NullPointerException e) {
                                         e.printStackTrace();
-                                        refreshLayout.setRefreshing(false);
+                                        //refreshLayout.setRefreshing(false);
                                     } catch (Exception e) {
                                         e.printStackTrace();
-                                        refreshLayout.setRefreshing(false);
+                                        //refreshLayout.setRefreshing(false);
                                     }
                                 }
                             });
@@ -273,6 +273,7 @@ public class StandingsFragment extends Fragment {
                     refreshLayout.setRefreshing(false);
                 }
 
+                refreshLayout.setRefreshing(false);
                 userName.setText(new Utility().getUserName(getActivity())+"");
             }
 
