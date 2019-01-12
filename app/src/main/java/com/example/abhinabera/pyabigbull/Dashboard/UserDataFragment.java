@@ -55,6 +55,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
@@ -284,8 +285,10 @@ public class UserDataFragment extends Fragment {
 
             if(!player.get("data").getAsJsonObject().get("imageUrl").toString().equalsIgnoreCase("null")) {
                 Picasso.with(getActivity()).
-                        load(player.get("data").getAsJsonObject().get("imageUrl").getAsString().trim())
+                        load(player.get("data").getAsJsonObject().get("imageUrl").getAsString())
                         //.skipMemoryCache()
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .centerCrop()
                         .fit()
                         .into(profilePhoto);
             }
@@ -446,6 +449,8 @@ public class UserDataFragment extends Fragment {
             } else if (resultCode == UCrop.RESULT_ERROR) {
                 Log.d("result:", " failed");
                 final Throwable cropError = UCrop.getError(data);
+
+                Toast.makeText(getActivity(), "Unable to crop", Toast.LENGTH_SHORT).show();
 
             } else if (requestCode == GALLERY_INTENT_CALLED) {
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.abhinabera.pyabigbull.Api.Utility;
 import com.example.abhinabera.pyabigbull.R;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,7 +52,8 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
             if(!boardlist.get(position).get("imageUrl").toString().equalsIgnoreCase("null")) {
                 Picasso.with(activity).
                         load(boardlist.get(position).get("imageUrl").getAsString().trim())
-                        .skipMemoryCache()
+                        //.skipMemoryCache()
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .fit()
                         .into(viewHolder.profilePhoto);
             }
