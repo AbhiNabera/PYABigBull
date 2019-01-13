@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard.MainActivity">
+    tools:context="nabera.ranjan.abhinabera.pyabigbull.Dashboard.MainActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ranjan.abhinabera.pyabigbull">
+    package="nabera.ranjan.abhinabera.pyabigbull">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA" tools:node="remove"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:required="true" android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -34,7 +34,7 @@
         </provider>
 
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.SplashScreenActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,90 +43,90 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Dashboard.MainActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Dashboard.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Login.LoginActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Login.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Login.RegistrationActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Login.RegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Login.OTPActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Login.OTPActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Login.UserNameActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Login.UserNameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.IntroActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.IntroActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Commodity.CommodityActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Commodity.CommodityActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Currency.CurrencyActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Currency.CurrencyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Transactions.PurchaseActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.PurchaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.UserStocks"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistory"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.TermsAndConditions"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.TermsAndConditions"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.About"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.About"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyStocksIndividual"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyIndvGraphActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyIndvGraphActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Commodity.CommodityGraphActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Commodity.CommodityGraphActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyGraphActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Nifty50.NiftyGraphActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Transactions.SellActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.SellActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.Currency.CurrencyGraphActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.Currency.CurrencyGraphActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.Transactions.TransactionSummaryActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistoryIndiPurchase"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistoryIndiSale"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.TransactionsHistory.TransactionsHistoryIndiSale"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.DataActivities.FixedDepositActivity"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.DataActivities.FixedDepositActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.Disclaimer"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.Disclaimer"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.BoughtActivityIndi"
+            android:name="nabera.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.BoughtActivityIndi"
             android:screenOrientation="portrait" />
-        <activity android:name="com.ranjan.abhinabera.pyabigbull.Transactions.TransactionFDSummaryActivity"
+        <activity android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.TransactionFDSummaryActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.ranjan.abhinabera.pyabigbull.Transactions.FDPurchaseActivity"
+        <activity android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.FDPurchaseActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.ranjan.abhinabera.pyabigbull.Transactions.FDSellActivity"
+        <activity android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.FDSellActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.ranjan.abhinabera.pyabigbull.Transactions.TransactionsFDSellSumActivity"
+        <activity android:name="nabera.ranjan.abhinabera.pyabigbull.Transactions.TransactionsFDSellSumActivity"
             android:screenOrientation="portrait">
         </activity>
 

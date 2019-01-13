@@ -6,7 +6,7 @@
     android:background="#fff"
     android:gravity="center_horizontal"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity">
+    tools:context="nabera.ranjan.abhinabera.pyabigbull.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/splashImage"
