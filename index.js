@@ -94,8 +94,6 @@ exports.adminSettings =
 		}
 
 		var data = {
-
-			"close_reg_time": req.body.close_reg_time,
 			"initial_user_amt": req.body.initial_user_amt,
 			"trans_amt_commodity": req.body.trans_amt_commodity,
 			"trans_amt_currency": req.body.trans_amt_currency,
@@ -219,6 +217,29 @@ var uploadFile = (localFile, phoneNumber, userName, uploadData) => {
 }
 */
 
+
+//set image url
+exports.imageUrl = 
+	functions.https.onRequest((req, res) => {
+
+		if(req.method !== "POST"){
+			return res.status(400).send('Please send a POST request');
+		}
+
+		var UPDATES = {};
+
+		UPDATES['/LeaderBoardData/'+req.body.phoneNumber+'/imageUrl'] = (req.body.imageUrl===undefined?null:req.body.imageUrl);
+		UPDATES['/Players/'+req.body.phoneNumber+'/imageUrl'] = (req.body.imageUrl===undefined?null:req.body.imageUrl);
+
+		return admin.database().ref().update(UPDATES)
+				.then(snapshot=>{
+					return res.status(200).json({
+							        message: "Successful update.",
+					    			status: 200
+						   });
+				});
+	});
+
 //new function to update user
 exports.updateuser = functions.https.onRequest((req, res) => {
 
@@ -327,38 +348,36 @@ function addNewuser(req, res) {
 							    	"Account" : initialUserSetUp(snapshot)
 							    };
 
+							    var userdata = {
+									"phoneNumber" : phoneNumber,
+									"userName" : userName,
+									"active": true,
+									"type" : type
+								};
+
+							    var leaderBoardData = {
+							    	"phoneNumber" : phoneNumber,
+							    	"userName" : userName,
+							    	"start_balance" : snapshot.child('/initial_user_amt').val(),
+							    	"avail_balance" : snapshot.child('/initial_user_amt').val()
+							    }
+
+							    var UPDATES = {};
+
+							    UPDATES['/Players/'+phoneNumber] = data;
+							    UPDATES['/LeaderBoardData/'+phoneNumber] = leaderBoardData;
+							    UPDATES['/UserNames/'+userName] = userdata;
+
 							    //run these two parallelly
-							    return admin.database().ref('/Players').child('/'+phoneNumber).update(data)
+							    return admin.database().ref().update(UPDATES)
 							    		.then(snapshot=> {
 
 							    			//console.log("player added");
 
-							    			var data = {
-
-										    	"phoneNumber" : phoneNumber,
-										    	"userName" : userName,
-										    	"active": true,
-										    	"type" : type
-										    };
-
-							    			return admin.database().ref('/UserNames').child('/'+userName).update(data)
-							    					.then(snapshot=>{
-
-							    						//console.log("username added");
-
-							    						return res.status(200).json({
-							          						flag: "USER_ADDED",
-							            					status: 200
-							           	    			});
-
-							    					}).catch(exception=>{
-										    			//console.log("user name exception");
-										    			return res.status(200).json({
-															        flag: "INTERNAL SERVER ERROR",
-															        message: "Error occured while pushing username",
-											    					status: 200
-															   });
-										    		});
+							    			return res.status(200).json({
+							          					flag: "USER_ADDED",
+							            				status: 200
+							           	    		});
 
 							    		}).catch(exception=>{
 							    			//console.log("player exception");
@@ -813,24 +832,25 @@ exports.txn = functions.https.onRequest((req, res) => {
 
 	var UPDATES = {};
 
-	var Portfolio = {};
+	var Portfolio = {
+		[leaderBoardData.txn_id] : leaderBoardData.txnData
+	};
 
-	Portfolio['/'+leaderBoardData.txn_id] = leaderBoardData.txnData;
-
-	if(leaderBoardData.txnData === undefined) Portfolio['/'+leaderBoardData.txn_id] = null;
 
 	var userData = {
 		"avail_balance" : leaderBoardData.avail_balance,
 		"phoneNumber" : phoneNumber,
 		"userName" : leaderBoardData.userName,
 		"start_balance" : leaderBoardData.start_balance,
-		"Portfolio" : Portfolio
 	};
 
 	UPDATES['/Players/'+phoneNumber+'/Account'] = Account;
-	UPDATES['/LeaderBoardData/'+phoneNumber] = userData;
-	//UPDATES['/LeaderBoardData/'+phoneNumber+'/Portfolio/'+leaderBoardData.txn_id] = leaderBoardData.txnData; 
-
+	UPDATES['/LeaderBoardData/'+phoneNumber+'/Portfolio/'+leaderBoardData.txn_id] = (leaderBoardData.txnData===undefined?null:leaderBoardData.txnData); 
+	UPDATES['/LeaderBoardData/'+phoneNumber+'/avail_balance'] = leaderBoardData.avail_balance;
+	UPDATES['/LeaderBoardData/'+phoneNumber+'/phoneNumber'] = phoneNumber;
+	UPDATES['/LeaderBoardData/'+phoneNumber+'/userName'] = leaderBoardData.userName;
+	UPDATES['/LeaderBoardData/'+phoneNumber+'/start_balance'] = leaderBoardData.start_balance;
+	//UPDATES['/LeaderBoardData/'+phoneNumber+'/imageUrl'] = (leaderBoardData.imageUrl===undefined?null:leaderBoardData.imageUrl);
 	//console.log('txn not aborted');
 
     var db_ref = admin.database().ref();
@@ -865,6 +885,7 @@ exports.userinfo = functions.https.onRequest((req, res) => {
 			};
 
 			var data = {
+				"imageUrl" : snapshot.val().imageUrl,
 				"phoneNumber": snapshot.val().phoneNumber,
 				"userName": snapshot.val().userName,
 				"active": snapshot.val().active,
@@ -1072,6 +1093,7 @@ exports.dailyleaderboard =
 					
 					var temp = -Number.MAX_VALUE;
 					var ALL_UPDATES = {};
+					var LEADERBOAD_UPDATES = {};
 					var current_timestamp = new Date().getTime();
 					var listWinner = [];
 
@@ -1135,7 +1157,7 @@ exports.dailyleaderboard =
 								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/lastupdate'] = lastupdate;
 								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/nextupdate'] = nextupdate;
 								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/current_value'] = current_value;
-								    		ALL_UPDATES['/LeaderBoardData/'+childSnapshot.phoneNumber+'/Portfolio/'+innerchildSnapshot.key+'/current_value'] = current_value;
+								    		LEADERBOAD_UPDATES['/'+childSnapshot.key+'/Portfolio/'+innerchildSnapshot.key+'/current_value'] = current_value;
 							    		}
 
 							    	}catch(err){
@@ -1153,7 +1175,7 @@ exports.dailyleaderboard =
 
 								    pchange = ((avail_bal + shares_price - start_balance) / start_balance ) * 100;
 
-								    ALL_UPDATES['/'+childSnapshot.key+'/Account/avail_bal'] = avail_bal;
+								    ALL_UPDATES['/'+childSnapshot.key+'/Account/avail_balance'] = avail_bal;
 								    ALL_UPDATES['/'+childSnapshot.key+'/Account/change'] = change;
 								    ALL_UPDATES['/'+childSnapshot.key+'/pchange'] = pchange;
 								}
@@ -1210,6 +1232,7 @@ exports.dailyleaderboard =
 					var stringdate = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
 
 					var pushUpdates = admin.database().ref('/Players').update(ALL_UPDATES);
+					var leaderboardUpdates = admin.database().ref('/LeaderBoardData').update(LEADERBOAD_UPDATES);
 					var lastupdate = admin.database().ref('/DailyData').child('/lastupdate').set(date.getTime());
 					var currentstandings = admin.database().ref('/DailyData').child('/leaderboard').update(todaysBoardData);
 					var todaywinner = admin.database().ref('/DailyData').child('/Winner').child('/'+stringdate).set(listWinner);
@@ -1217,6 +1240,7 @@ exports.dailyleaderboard =
 					var innerpromises = [];
 
 					innerpromises.push(pushUpdates);
+					innerpromises.push(leaderboardUpdates);
 					innerpromises.push(lastupdate);
 					innerpromises.push(currentstandings);
 					innerpromises.push(winner);
@@ -1457,6 +1481,7 @@ function formatStandings(snapshot) {
       // console.log(childSnapshot.val().phoneNumber);
 
        		var data = {
+       			"imageUrl" : childSnapshot.child('/imageUrl').val(),
        			"phoneNumber" : getPhoneNumber(childSnapshot),
        			"userName" : getUserName(childSnapshot),
        			"avail_balance" : getAvailBal(childSnapshot),
@@ -1587,6 +1612,12 @@ function isDayValidForTransaction(type) {
 
 	var current_date = new Date();
 	var current_timestamp = current_date.getTime();
+
+	var close_reg_time = 1550601000000;
+	//Registration closed
+	if(current_timestamp < close_reg_time) {
+		return false;
+	}
 
 	var registrationopen = ["2019/01/17", "2019/01/18", "2019/01/19", "2019/01/20"];
 	var holidays = ["2019/01/26", "2019/01/27", "2019/02/02", "2019/02/03", "2019/02/09", "2019/02/10", "2019/02/16", "2019/02/17"];
