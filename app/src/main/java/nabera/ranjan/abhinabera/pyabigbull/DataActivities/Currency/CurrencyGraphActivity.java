@@ -74,6 +74,8 @@ public class CurrencyGraphActivity extends AppCompatActivity {
         periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        titletext.setText(""+symbol);
+
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

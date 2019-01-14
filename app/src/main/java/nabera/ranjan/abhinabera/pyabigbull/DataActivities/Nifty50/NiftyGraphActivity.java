@@ -68,6 +68,7 @@ public class NiftyGraphActivity extends AppCompatActivity {
         periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        titletext.setText("NIFTY50");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
