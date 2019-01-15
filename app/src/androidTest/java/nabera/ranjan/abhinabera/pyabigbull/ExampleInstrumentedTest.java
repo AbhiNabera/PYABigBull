@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.ranjan.abhinabera.pyabigbull", appContext.getPackageName());
+        assertEquals("nabera.ranjan.abhinabera.pyabigbull", appContext.getPackageName());
     }
 }

@@ -7,7 +7,6 @@
     android:layout_centerVertical="true"
     android:background="@drawable/photo_border"
     android:elevation="4dp"
-    tools:context="com.ranjan.abhinabera.pyabigbull.nabera.ranjan.abhinabera.pyabigbull.Login.UserNameActivity"
     android:padding="20dp">
 
     <!-- TODO: Update blank fragment layout -->

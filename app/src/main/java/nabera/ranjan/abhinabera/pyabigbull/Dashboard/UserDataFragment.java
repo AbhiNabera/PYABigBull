@@ -263,7 +263,7 @@ public class UserDataFragment extends Fragment {
                             }
                             if (photoFile != null) {
                                 currentPhotoUri = FileProvider.getUriForFile(getActivity(),
-                                        "com.ranjan.android.fileprovider", photoFile);
+                                        "nabera.ranjan.android.fileprovider", photoFile);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri);
                                 startActivityForResult(intent, CHOICE_CAMERA);
                             }
