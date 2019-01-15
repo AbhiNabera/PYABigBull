@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -256,8 +258,43 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                         } else {
                             if (response.body().get("isActive").getAsBoolean()) {
-                                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                                finish();
+                                int versionCode = getVersioncode();
+
+                                Log.d("versionCode", ""+versionCode);
+
+                                if(versionCode == 0) {
+                                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                                    finish();
+
+                                }else if(response.body().get("versionCode").getAsInt() != versionCode) {
+
+                                    new Utility().showDialog("UPDATE",
+                                            "A new version of app is available on play store. " +
+                                                    "Do you want to update now?", SplashScreenActivity.this,
+                                            new DialogInterface() {
+                                                @Override
+                                                public void onSuccess() {
+
+                                                    final String appPackageName = getPackageName();
+                                                    try {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                                    } catch (android.content.ActivityNotFoundException anfe) {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancel() {
+                                                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                                                    finish();
+                                                }
+                                            });
+
+                                }else {
+                                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                                
                             } else {
                                 new Utility().showDialog("ACCOUNT DISABLED",
                                         "Your account has been disabled and you can't login until it is enabled again. " +
@@ -297,6 +334,20 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         Log.d("Date", System.currentTimeMillis()+"");
 
+    }
+
+    public int getVersioncode() {
+
+        int version = 0;
+
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return version;
     }
 
     @Override

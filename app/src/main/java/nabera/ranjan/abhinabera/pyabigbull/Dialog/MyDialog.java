@@ -157,6 +157,30 @@ public class MyDialog extends DialogFragment {
                 }
             });
 
+        }else if(header.contains("UPDATE")){
+
+            headerTv.setText(header);
+            messageTv.setText(message);
+            positive.setText("UPDATE");
+            negative.setText("LATER");
+
+            positive.setVisibility(View.VISIBLE);
+            negative.setVisibility(View.VISIBLE);
+
+            positive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onPositive();
+                }
+            });
+
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    optionSelectListener.onNegative();
+                }
+            });
+
         }else {
 
             headerTv.setText(header);
