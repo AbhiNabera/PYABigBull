@@ -245,16 +245,22 @@ public class SplashScreenActivity extends AppCompatActivity {
                         if (response.body().get("isActive").toString().equalsIgnoreCase("null")) {
                             new Utility().showDialog("ACCOUNT 404",
                                     "Your account does not exist." +
-                                            "You will be redirected to login again.", SplashScreenActivity.this);
-                            FirebaseAuth.getInstance().signOut();
+                                            "Continue to login again.", SplashScreenActivity.this,
+                                    new DialogInterface() {
+                                        @Override
+                                        public void onSuccess() {
+                                            startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
+                                            finish();
+                                        }
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
-                                    finish();
-                                }
-                            }, 1500);
+                                        @Override
+                                        public void onCancel() {
+                                            startActivity(new Intent(SplashScreenActivity.this, RegistrationActivity.class));
+                                            finish();
+                                        }
+                                    });
+
+                            FirebaseAuth.getInstance().signOut();
 
                         } else {
                             if (response.body().get("isActive").getAsBoolean()) {
@@ -281,6 +287,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                                     } catch (android.content.ActivityNotFoundException anfe) {
                                                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                                                     }
+                                                    finish();
                                                 }
 
                                                 @Override
@@ -298,7 +305,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                             } else {
                                 new Utility().showDialog("ACCOUNT DISABLED",
                                         "Your account has been disabled and you can't login until it is enabled again. " +
-                                                "Please contact your admin.", SplashScreenActivity.this);
+                                                "Please contact your admin.", SplashScreenActivity.this, new DialogInterface() {
+                                            @Override
+                                            public void onSuccess() {
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onCancel() {
+                                                finish();
+                                            }
+                                        });
                                 //FirebaseAuth.getInstance().signOut();
                             }
                         }
@@ -317,6 +334,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 t.printStackTrace();
                 Toast.makeText(SplashScreenActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
