@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import nabera.ranjan.abhinabera.pyabigbull.R;
 
 public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoardRecyclerAdapter.ViewHolder> {
 
@@ -56,7 +57,12 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
                             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                             .fit()
                             .into(viewHolder.profilePhoto);
+                }else {
+                    viewHolder.profilePhoto.setImageResource(R.drawable.user_account);
                 }
+                
+            }else {
+                viewHolder.profilePhoto.setImageResource(R.drawable.user_account);
             }
 
             viewHolder.userName.setText(boardlist.get(position).get("userName").getAsString() + "");
