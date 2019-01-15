@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import nabera.ranjan.abhinabera.pyabigbull.Api.RetrofitClient;
+import nabera.ranjan.abhinabera.pyabigbull.Dialog.DialogInterface;
 import nabera.ranjan.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import nabera.ranjan.abhinabera.pyabigbull.Dashboard.MainActivity;
 import nabera.ranjan.abhinabera.pyabigbull.Api.Utility;
@@ -30,6 +31,7 @@ import com.google.gson.JsonObject;
 import java.io.File;
 import java.io.IOException;
 
+import nabera.ranjan.abhinabera.pyabigbull.SplashScreenActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -220,6 +222,23 @@ public class UserNameActivity extends AppCompatActivity {
                         finish();
 
                     }
+
+                } else {
+
+                    new Utility().showDialog("ERROR",
+                            "Internal server error occurred." +
+                                    "Check your netwok connection and try again later.", UserNameActivity.this
+                            , new DialogInterface() {
+                                @Override
+                                public void onSuccess() {
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancel() {
+                                    finish();
+                                }
+                            });
                 }
 
                 progressDialog.dismiss();
@@ -229,6 +248,21 @@ public class UserNameActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressDialog.dismiss();
                 t.printStackTrace();
+
+                new Utility().showDialog("ERROR",
+                        "Network error occurred." +
+                                "Check your netwok connection and try again later.", UserNameActivity.this
+                        , new DialogInterface() {
+                            @Override
+                            public void onSuccess() {
+                                finish();
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                finish();
+                            }
+                        });
             }
         });
     }

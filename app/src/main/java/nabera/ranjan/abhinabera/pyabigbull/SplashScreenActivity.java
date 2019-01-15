@@ -20,6 +20,7 @@ import android.widget.Toast;
 import nabera.ranjan.abhinabera.pyabigbull.Api.RetrofitClient;
 import nabera.ranjan.abhinabera.pyabigbull.Api.Utility;
 import nabera.ranjan.abhinabera.pyabigbull.Dashboard.MainActivity;
+import nabera.ranjan.abhinabera.pyabigbull.Dialog.DialogInterface;
 import nabera.ranjan.abhinabera.pyabigbull.Login.RegistrationActivity;
 import nabera.ranjan.abhinabera.pyabigbull.Login.UserNameActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -164,7 +165,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         }else {
             new Utility().showDialog("NO INTERNET",
                     "Check your internet connection." +
-                            "Switch your internet connection and open the app again.", SplashScreenActivity.this);
+                            "Switch your internet connection and open the app again.", SplashScreenActivity.this,
+                    new DialogInterface() {
+                        @Override
+                        public void onSuccess() {
+                            finish();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            finish();
+                        }
+                    });
         }
     }
 
