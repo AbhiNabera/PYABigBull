@@ -60,7 +60,7 @@ public class LeaderBoardRecyclerAdapter extends RecyclerView.Adapter<LeaderBoard
                 }else {
                     viewHolder.profilePhoto.setImageResource(R.drawable.user_account);
                 }
-                
+
             }else {
                 viewHolder.profilePhoto.setImageResource(R.drawable.user_account);
             }
