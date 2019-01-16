@@ -99,7 +99,8 @@ public class UserDataFragment extends Fragment {
     private String CAM_FILE_PATH = null;
 
     private static final int GALLERY_INTENT_CALLED = 4;
-    private static final int GALLERY_KITKAT_INTENT_CALLED = 5, CHOICE_CAMERA = 7, PIC_CROP = 9, CROP_REQUEST_CODE = 11;
+    private static final int GALLERY_KITKAT_INTENT_CALLED = 5, CHOICE_CAMERA = 7, PIC_CROP = 9,
+            CROP_REQUEST_CODE = 11, PICK_PHOTO_CODE = 13;
 
     int maxWidth = 100;
     int maxHeight = 100;
@@ -236,10 +237,26 @@ public class UserDataFragment extends Fragment {
             public void onClick(View view) {
 
                 if (progressBar.getVisibility() != View.VISIBLE) {
+                    /*
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("image/jpeg");
                     startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+                    */
+
+                    Intent intent = new Intent(Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(intent, PICK_PHOTO_CODE);
+                    }else {
+                        Toast.makeText(getActivity(), "Error occurred", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("image/jpeg");
+                        startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), "Wait for upload to finish", Toast.LENGTH_SHORT).show();
                 }
@@ -510,11 +527,29 @@ public class UserDataFragment extends Fragment {
                         crop_from_uri(gallery_file);
                     }
                 }
+
+            } else if(requestCode == PICK_PHOTO_CODE) {
+                if (data != null) {
+                    Uri photoUri = data.getData();
+                    Log.d("photoUri", photoUri+"");
+
+                    String[] projection = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getActivity().getContentResolver().query(photoUri, projection, null, null, null);
+                    if (cursor != null) {
+                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        String filePath = cursor.getString(column_index);
+                        cursor.close();
+
+                        gallery_file = new File(filePath);
+                        crop_from_uri(gallery_file);
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Error occured while geting reults", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Error occured while geting results", Toast.LENGTH_SHORT).show();
         }
     }
 
