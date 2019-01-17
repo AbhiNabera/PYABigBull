@@ -1,5 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const request = require('request');
+const async = require('async');
 
 /*
 const os = require("os");
@@ -32,6 +34,335 @@ const storage = new Storage({
 
 //const bucket = storage.bucket()
 */
+
+
+//leaderboard testing function
+exports.currentStockPrice = 
+	functions.https.onRequest((req, res) => {
+
+		if(req.method !== "GET"){
+			return res.status(400).send('Please send a GET request');
+		}
+
+		return getCurrentStockQuote(function(MAP){
+
+			return res.status(200).json({
+			        data: MAP,
+		    		status: 200
+			   });
+		});
+		
+	});
+
+
+exports.dailyWinner = 
+	functions.https.onRequest((req, res) => {
+
+		if(req.method !== "GET"){
+			return res.status(400).send('Please send a GET request');
+		}
+
+		return admin.database().ref('/LeaderBoardData').once('value')
+				.then(snapshot=>{
+					return getCurrentStockQuote(function(MAP){
+
+						snapshot.forEach(function(playerSnapshot){
+
+							try{
+
+								var portfolio_value = 0.0;
+								var portfolio = playerSnapshot.Portfolio;
+
+								portfolio.forEach(function(item){
+
+									try{
+
+										switch(item.type){
+
+											case 'commodity': 
+												portfolio_value += getCommodityValue(MAP.COMMODITY, item);
+											break;
+
+											case 'index': 
+												portfolio_value += getIndexValue(MAP.INDEX, item);
+											break;
+
+											case 'currency': 
+												portfolio_value += getCurrencyValue(MAP.CURRENCY, item);
+											break;
+
+											case 'fixed_deposit': 
+												portfolio_value += getFdValue(item);
+											break;
+										}
+
+									}catch(err){
+										console.log(err);
+									}
+
+								});
+
+								console.log("Value:"+portfolio_value);
+
+								item['portfolio_value'] = portfolio_value;
+								item['net_worth'] = item.avail_balance + portfolio_value;
+								item['change'] = item.net_worth - item.start_balance;
+
+						    }catch(err){
+						    	console.log(err);
+						    }
+
+						});
+					});
+
+				}).catch(exception=>{
+					console.log('exception:'+exception);
+		    			return res.status(200).json({
+							        flag: "INTERNAL SERVER ERROR",
+							        message: "Error occured while fetching leaderBoardData",
+			    					status: 200
+							   });
+		    		});
+		
+	});
+
+function getCommodityValue(COMMODITY_MAP, item) {
+	var current_price = parseFloat(COMMODITY_MAP[item.id].lastprice.replace(/,/g, ''));
+
+	if(item.id === 'SILVER') {
+
+		current_price = current_price*0.1;
+	}
+
+	var current_value = current_price*(item.qty);
+
+	return current_value;
+}
+
+function getIndexValue(INDEX_MAP, item) {
+
+	var current_price = parseFloat(INDEX_MAP[item.id].lastvalue.replace(/,/g, ''));
+
+	var current_value = current_price*(item.qty);
+
+	return current_value;
+}
+
+function getCurrencyValue(CURRENCY_MAP, item) {
+
+	var current_price = parseFloat(INDEX_MAP[item.id].data.pricecurrent.replace(/,/g, ''));
+
+	var current_value = current_price*(item.qty);
+
+	return current_value;
+}
+
+function getFdValue(item) {
+
+	return item.current_value;
+}
+
+function getCurrentStockQuote(callback) {
+
+	const urls= [
+		  "https://appfeeds.moneycontrol.com/jsonapi/ticker/index&type=nifty&format=json",
+		  "https://appfeeds.moneycontrol.com/jsonapi/commodity/top_commodity&ex=MCX&format=json",
+		  "https://priceapi.moneycontrol.com/pricefeed/notapplicable/currencyspot/%24%24%3BUSDINR",
+		  "https://priceapi.moneycontrol.com/pricefeed/notapplicable/currencyspot/%24%24%3BEURINR",
+		  "https://priceapi.moneycontrol.com/pricefeed/notapplicable/currencyspot/%24%24%3BGBPINR"
+		];
+
+		async.map(urls, httpGet, function(err, res){
+		  
+		  if (err) return {	err: err, status: 200};
+
+		  var i = 0;
+
+		  var MAP = {};
+		  var INDEX_MAP = {};
+		  var COMMODITY_MAP = {};
+		  var CURRENCY_MAP = {};
+
+		  res.forEach(function(stockEle){
+
+		  	try{
+
+			  	switch(i) {
+
+			  		case 0: 
+
+			  			stockEle.forEach(function(stock){
+
+			  				INDEX_MAP[stock.id] = stock;
+			  				//MAP['INDEX/'+stock.id] = stock;
+			  			});
+
+			  			//console.log(INDEX_MAP);
+			  			i++;
+			  		break;
+
+			  		case 1:
+
+			  			stockEle.list.forEach(function(stock){
+
+			  				switch(stock.id) {
+
+			  					case 'GOLD' : 
+			  						COMMODITY_MAP['GOLD'] = stock;
+			  					break;
+
+			  					case 'SILVER' :
+			  						COMMODITY_MAP['SILVER'] = stock; 
+			  					break;
+
+			  					case 'CRUDEOIL' :
+			  						COMMODITY_MAP['CRUDEOIL'] = stock;
+			  					break;
+			  				}
+
+			  			});
+
+			  			//console.log(COMMODITY_MAP);
+			  			i++;
+			  		break;
+
+			  		case 2: 
+			  			CURRENCY_MAP['USDINR'] = stockEle;
+			  			//console.log(CURRENCY_MAP);
+			  			i++;
+			  		break;
+
+			  		case 3: 
+			  			CURRENCY_MAP['EURINR'] = stockEle;
+			  			//console.log(CURRENCY_MAP);
+			  			i++;
+			  		break;
+
+			  		case 4: 
+			  			CURRENCY_MAP['GBPINR'] = stockEle;
+			  			//console.log(CURRENCY_MAP);
+			  			i++;
+			  		break;
+			  	}
+
+		    }catch(err){
+		    	console.log(err);
+		    }
+
+		  });
+
+		  MAP = {
+			  	'INDEX' :  INDEX_MAP,
+			  	'COMMODITY' : COMMODITY_MAP,
+			  	'CURRENCY' : CURRENCY_MAP
+			};
+
+		  callback(MAP);		  	
+
+		});
+}
+
+function httpGet(url, callback) {
+  const options = {
+    url :  url,
+    json : true
+  };
+  request(options,
+    function(err, res, body) {
+      callback(err, body);
+    }
+  );
+}
+
+//count of users
+exports.playersCount = 
+	functions.https.onRequest((req, res) => {
+
+		if(req.method !== "GET"){
+			return res.status(400).send('Please send a GET request');
+		}
+
+		return admin.database().ref('/LeaderBoardData').once('value')
+				.then(snapshot=>{
+
+					return res.status(200).json({
+						        count: snapshot.numChildren(),
+		    					status: 200
+						   });
+				});
+
+	});
+
+exports.updatePlayername = 
+	functions.https.onRequest((req, res) => {
+
+		if(req.method !== "POST"){
+			return res.status(400).send('Please send a POST request');
+		}
+
+		var newUsername = req.body.userName;
+		var phoneNumber = req.body.phoneNumber;
+		var type = req.body.type;
+
+		var userNameData = {
+			'phoneNumber' : phoneNumber,
+			'userName' : newUsername,
+			'type' : type,
+			'active' : true
+		};
+
+		var UPDATES = {};
+
+		UPDATES['/LeaderBoardData/'+phoneNumber+'/userName'] = newUsername;
+		UPDATES['/Players/'+phoneNumber+'/userName'] = newUsername;
+		UPDATES['/Players/'+phoneNumber+'/userData/userName'] = newUsername;
+		UPDATES['/UserNames/'+newUsername] = userNameData;
+
+		return admin.database().ref('/LeaderBoardData').child('/'+phoneNumber).child('/userName').once('value')
+				.then(snapshot => {
+
+					if(snapshot.exists()) {
+						if(snapshot.val() !== newUsername) {
+
+							UPDATES['/UserNames/'+snapshot.val()] = null;
+
+							return admin.database().ref().update(UPDATES)
+									.then(snapshot => {
+
+										return res.status(200).json({
+						        			flag: "UPDATE SUCCESSFUL",
+					    					status: 200
+									   });
+
+									}).catch(exception=>{
+						    			//console.log("player exception: " + exception);
+						    			return res.status(200).json({
+											        flag: "INTERNAL SERVER ERROR",
+							    					status: 200
+											   });
+						    		});
+						}else {
+							return res.status(200).json({
+											        flag: "SAME USER",
+							    					status: 200
+											   });
+						}
+					}else {
+
+						return res.status(200).json({
+											        flag: "USER DOES NOT EXIST",
+							    					status: 200
+											   });
+					}
+				}).catch(exception=>{
+	    			//console.log("player exception: " + exception);
+	    			return res.status(200).json({
+						        flag: "INTERNAL SERVER ERROR",
+		    					status: 200
+						   });
+	    		});
+	});
+
 
 //-------------/admin functions
 exports.allPlayers = 
@@ -298,7 +629,12 @@ exports.updateuser = functions.https.onRequest((req, res) => {
 
     			}else {
     				//console.log("player does exist");
-    				return updateUser(req, res, snapshot);
+    				//return updateUser(req, res, snapshot);
+    				return res.status(200).json({
+								flag: "USER_ADDED",
+								message: "player added, different username",
+								status: 200
+							});
     			}
 
     		}).catch(exception=>{
@@ -638,7 +974,8 @@ exports.userStatus = functions.https.onRequest((req, res) => {
 			.then(snapshot=>{
 
 				return res.json({
-       				"isActive" : snapshot.val(),
+       				"isActive" : snapshot.val(), 
+       				"versionCode" : 10, 
        				"status" : 200 
        			});
 
@@ -1610,13 +1947,15 @@ function stockstoArray(snapshot) {
 
 function isDayValidForTransaction(type) {
 
+	//return true;
+
 	var current_date = new Date();
 	var current_timestamp = current_date.getTime();
 
 	var close_reg_time = 1550601000000;
 	//Registration closed
 	if(current_timestamp < close_reg_time) {
-		return false;
+		return false; //TODO: chnage to false
 	}
 
 	var registrationopen = ["2019/01/17", "2019/01/18", "2019/01/19", "2019/01/20"];
