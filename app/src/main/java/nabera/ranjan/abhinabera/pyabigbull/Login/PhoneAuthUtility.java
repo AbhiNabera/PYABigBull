@@ -90,7 +90,7 @@ public class PhoneAuthUtility {
             //mResendToken = forceResendingToken;
             phoneAuthCallback.onCodeSent(s, forceResendingToken);
 
-            super.onCodeSent(s, forceResendingToken);//TODO: change
+            //super.onCodeSent(s, forceResendingToken);//TODO: change
         }
     };
 

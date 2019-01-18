@@ -368,7 +368,11 @@ public class DataFragment extends Fragment {
                 if(response.isSuccessful()) {
                     nifty50 = response;
                     //Log.d("response NIFTY50", response.body().toString());
-                    setNiftyCard();
+                    try {
+                        setNiftyCard();
+                    }catch (Exception e){
+
+                    }
                 }else {
                     try {
                         Log.d("response ERR NIFTY50", response.errorBody().string());
@@ -425,9 +429,13 @@ public class DataFragment extends Fragment {
                         if(i==3) break;
                     }
 
-                    setGoldCard();
-                    setSilverCard();
-                    setCrudeoilCard();
+                    try {
+                        setGoldCard();
+                        setSilverCard();
+                        setCrudeoilCard();
+                    }catch (Exception e){
+
+                    }
 
                 }else{
                     try {
@@ -457,7 +465,11 @@ public class DataFragment extends Fragment {
                 if(response.isSuccessful()) {
                     usd = response;
                     //Log.d("response USDINR", response.body().toString());
-                    setDollarCard();
+                    try {
+                        setDollarCard();
+                    }catch (Exception e){
+
+                    }
                 }else {
                     try {
                         Log.d("response ERR USDINR", response.errorBody().string());
@@ -486,7 +498,11 @@ public class DataFragment extends Fragment {
                 if(response.isSuccessful()) {
                     eur = response;
                     //Log.d("response EURINR", response.body().toString());
-                    setEuroCard();
+                    try {
+                        setEuroCard();
+                    }catch (Exception e){
+
+                    }
                 }else {
                     try {
                         Log.d("response ERR EURINR", response.errorBody().string());
@@ -515,7 +531,11 @@ public class DataFragment extends Fragment {
                 if(response.isSuccessful()) {
                     gbp = response;
                     //Log.d("response GBPINR", response.body().toString());
-                    setPoundCard();
+                    try {
+                        setPoundCard();
+                    }catch (Exception e){
+
+                    }
                 }else {
                     try {
                         Log.d("response ERR GBPINR", response.errorBody().string());
