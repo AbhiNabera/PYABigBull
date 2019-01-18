@@ -20,7 +20,7 @@ public class PhoneAuthUtility {
 
     Activity context;
     PhoneAuthCallback phoneAuthCallback;
-    String mVerificationId;
+    String mVerificationId = "";
 
     private FirebaseAuth mAuth;
 
@@ -88,16 +88,20 @@ public class PhoneAuthUtility {
             //mResendToken = forceResendingToken;
             phoneAuthCallback.onCodeSent(s, forceResendingToken);
 
-            super.onCodeSent(s, forceResendingToken);
+            //super.onCodeSent(s, forceResendingToken);//TODO: change
         }
     };
 
     public void verifyVerificationCode(String otp/*, String mVerificationId*/) {
-        //creating the credential
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otp);
-
-        //signing the user
-        signInWithPhoneAuthCredential(credential);
+        try {
+            //creating the credential
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otp);
+            //signing the user
+            signInWithPhoneAuthCredential(credential);
+        }catch (Exception e){
+            e.printStackTrace();
+            phoneAuthCallback.onAuthFailed();
+        }
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
