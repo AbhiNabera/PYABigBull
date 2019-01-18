@@ -1,12 +1,13 @@
 package nabera.ranjan.abhinabera.pyabigbull.Login;
 
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public interface PhoneAuthCallback {
 
-    public void onCodeDetected(String code);
+    public void onCodeDetected(String code, PhoneAuthCredential phoneAuthCredential);
 
-    public void onNullCodeDetected();
+    public void onNullCodeDetected(PhoneAuthCredential phoneAuthCredential);
 
     public void onAuthFailed();
 

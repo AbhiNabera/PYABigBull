@@ -22,6 +22,8 @@ public class PhoneAuthUtility {
     PhoneAuthCallback phoneAuthCallback;
     String mVerificationId = "";
 
+    static  boolean FLAG = false;
+
     private FirebaseAuth mAuth;
 
     public PhoneAuthUtility(Activity context, PhoneAuthCallback phoneAuthCallback) {
@@ -50,12 +52,12 @@ public class PhoneAuthUtility {
             //so user has to manually enter the code
             if (code != null) {
 
-                phoneAuthCallback.onCodeDetected(code);
+                phoneAuthCallback.onCodeDetected(code, phoneAuthCredential);
                 //verifying the code
                 //verifyVerificationCode(code);
             }else {
 
-                phoneAuthCallback.onNullCodeDetected();
+                phoneAuthCallback.onNullCodeDetected(phoneAuthCredential);
             }
         }
 
@@ -88,16 +90,26 @@ public class PhoneAuthUtility {
             //mResendToken = forceResendingToken;
             phoneAuthCallback.onCodeSent(s, forceResendingToken);
 
-            //super.onCodeSent(s, forceResendingToken);//TODO: change
+            super.onCodeSent(s, forceResendingToken);//TODO: change
         }
     };
 
-    public void verifyVerificationCode(String otp/*, String mVerificationId*/) {
+    public void verifyVerificationCode(String otp) {
         try {
             //creating the credential
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otp);
             //signing the user
             signInWithPhoneAuthCredential(credential);
+        }catch (Exception e){
+            e.printStackTrace();
+            phoneAuthCallback.onAuthFailed();
+        }
+    }
+
+    public void verifyVerificationCode(PhoneAuthCredential phoneAuthCredential) {
+        try {
+            //signing the user
+            signInWithPhoneAuthCredential(phoneAuthCredential);
         }catch (Exception e){
             e.printStackTrace();
             phoneAuthCallback.onAuthFailed();

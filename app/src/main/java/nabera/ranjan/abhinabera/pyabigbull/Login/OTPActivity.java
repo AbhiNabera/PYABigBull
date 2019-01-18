@@ -17,6 +17,8 @@ import android.widget.Toast;
 import nabera.ranjan.abhinabera.pyabigbull.Dialog.ProgressDialog;
 import nabera.ranjan.abhinabera.pyabigbull.R;
 import nabera.ranjan.abhinabera.pyabigbull.Api.Utility;
+
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public class OTPActivity extends AppCompatActivity {
@@ -122,7 +124,7 @@ public class OTPActivity extends AppCompatActivity {
 
         phoneAuthUtility = new PhoneAuthUtility(OTPActivity.this, new PhoneAuthCallback() {
             @Override
-            public void onCodeDetected(String code) {
+            public void onCodeDetected(String code, PhoneAuthCredential phoneAuthCredential) {
                 //otp detected automatically
 
                 countDownTimer.cancel();
@@ -142,28 +144,26 @@ public class OTPActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNullCodeDetected() {
+            public void onNullCodeDetected(PhoneAuthCredential phoneAuthCredential) {
                 //ask user to manually enter otp
-                new Utility().showDialog("ENTER OTP",
-                        "Please manually enter the OTP received on +91" + phoneNumber + ".", OTPActivity.this);
+                //new Utility().showDialog("ENTER OTP",
+                 //       "Please manually enter the OTP received on +91" + phoneNumber + ".", OTPActivity.this);
                 verify.setText("VERIFY");
                 verify.setEnabled(true);
                 verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
-                timer.setText("Enter OTP sent to you");
+                timer.setText("Verfying...");
 
+                progressDialog = new Utility().showDialog("Please wait while we are verifying OTP", OTPActivity.this);
+                progressDialog.setCancelable(false);
+
+                phoneAuthUtility.verifyVerificationCode(phoneAuthCredential);
             }
 
             @Override
             public void onAuthFailed() {
                 Toast.makeText(OTPActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                //progressDialog.dismiss();
-
-                //verify.setText("RETRY");
-                //verify.setEnabled(true);
-                //verify.setBackground(getDrawable(R.drawable.button_border));
-
                 countDownTimer.cancel();
                 timer.setText("Retry...");
             }
@@ -171,12 +171,6 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onInvalidCedentials() {
                 Toast.makeText(OTPActivity.this, "Invalid credential", Toast.LENGTH_SHORT).show();
-                //progressDialog.dismiss();
-
-                //verify.setText("RETRY");
-                //verify.setEnabled(true);
-                //verify.setBackground(getDrawable(R.drawable.button_border));
-
                 countDownTimer.cancel();
                 timer.setText("Retry...");
             }
@@ -184,12 +178,6 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onTooManyRequest() {
                 Toast.makeText(OTPActivity.this, "Too many request", Toast.LENGTH_SHORT).show();
-                //progressDialog.dismiss();
-
-                //verify.setText("RETRY");
-                //verify.setEnabled(true);
-                //verify.setBackground(getDrawable(R.drawable.button_border));
-
                 countDownTimer.cancel();
                 timer.setText("Retry...");
             }
@@ -227,9 +215,6 @@ public class OTPActivity extends AppCompatActivity {
                 }catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
-                //verify.setText("RETRY");
-                //verify.setEnabled(true);
-                //verify.setBackground(getDrawable(R.drawable.button_border));
 
                 countDownTimer.cancel();
                 timer.setText("Retry...");

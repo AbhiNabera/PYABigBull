@@ -182,7 +182,11 @@ public class SoldFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 refreshLayout.setRefreshing(false);
             }
         });
