@@ -70,6 +70,8 @@ public class CommodityActivity extends AppCompatActivity {
 
     long MIN, MAX;
 
+    ArrayList<Call<JsonObject>> calls;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -90,6 +92,8 @@ public class CommodityActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_commodity);
         getSupportActionBar().hide();
+
+        calls = new ArrayList<>();
 
         commodityToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.commodityToolbar);
         Intent i = getIntent();
@@ -188,10 +192,12 @@ public class CommodityActivity extends AppCompatActivity {
         graphView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CommodityActivity.this, CommodityGraphActivity.class);
-                intent.putExtra("id", id);
-                intent.putExtra("expdt", expiryList.get(pos)+"");
-                startActivity(intent);
+                if(expiryList.size()!=0) {
+                    Intent intent = new Intent(CommodityActivity.this, CommodityGraphActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("expdt", expiryList.get(pos) + "");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -295,7 +301,9 @@ public class CommodityActivity extends AppCompatActivity {
 
         swipeRefreshLayout.setRefreshing(true);
 
-        new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityURL(id)).enqueue(new Callback<JsonObject>() {
+        Call<JsonObject> call = new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityURL(id));
+
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -321,6 +329,8 @@ public class CommodityActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        calls.add(call);
     }
 
     public void getExpiryData(String expiry) {
@@ -328,7 +338,9 @@ public class CommodityActivity extends AppCompatActivity {
         swipeRefreshLayout.setRefreshing(true);
         //Log.d("URL", new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())+"");
 
-        new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityExpiryURL(id.trim(), expiry.trim())).enqueue(new Callback<JsonObject>() {
+        Call<JsonObject> call = new RetrofitClient().getNifty50Interface().getData(new Utility()
+                .getCommodityExpiryURL(id.trim(), expiry.trim()));
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -352,6 +364,8 @@ public class CommodityActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        calls.add(call);
     }
 
     public long getDateFromString(String time) {
@@ -375,9 +389,10 @@ public class CommodityActivity extends AppCompatActivity {
 
     public void getGraphData(String symbol, String expdt) {
 
-        new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityGraphURL(
+        Call<JsonObject> call = new RetrofitClient().getNifty50Interface().getData(new Utility().getCommodityGraphURL(
                 "i", symbol, expdt
-        )).enqueue(new Callback<JsonObject>() {
+        ));
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -470,6 +485,8 @@ public class CommodityActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+
+        calls.add(call);
     }
 
     public void setUpChart() {
@@ -517,6 +534,11 @@ public class CommodityActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

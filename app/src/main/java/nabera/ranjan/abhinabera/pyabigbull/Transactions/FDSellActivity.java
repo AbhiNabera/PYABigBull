@@ -393,7 +393,9 @@ public class FDSellActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
-                    progressDialog.dismiss();
+                    try {
+                        progressDialog.dismiss();
+                    }catch (Exception e){}
 
                     if (response.body().getAsJsonObject("data") != null) {
                         Log.d("response", response.body() + "");
@@ -409,7 +411,9 @@ public class FDSellActivity extends AppCompatActivity {
 
                     } else if (response.body().get("flag") != null) {
 
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
 
                         new Utility().showDialog(response.body().get("flag").getAsString(),
                                 response.body().get("message").getAsString(), FDSellActivity.this, new DialogInterface() {
@@ -427,7 +431,9 @@ public class FDSellActivity extends AppCompatActivity {
                                 });
 
                     }else {
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
                         Toast.makeText(FDSellActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
@@ -435,7 +441,9 @@ public class FDSellActivity extends AppCompatActivity {
 
                 }else {
 
-                    progressDialog.dismiss();
+                    try {
+                        progressDialog.dismiss();
+                    }catch (Exception e){}
 
                     try {
                         Log.d("SellActivity error", response.errorBody().string()+"");
@@ -451,7 +459,9 @@ public class FDSellActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){}
                 Toast.makeText(FDSellActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();
@@ -487,7 +497,9 @@ public class FDSellActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            try {
+                                progressDialog.dismiss();
+                            }catch (Exception e){}
                             startActivity(intent);
                             finish();
                             overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -517,7 +529,9 @@ public class FDSellActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){}
                 Toast.makeText(FDSellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FDSellActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);

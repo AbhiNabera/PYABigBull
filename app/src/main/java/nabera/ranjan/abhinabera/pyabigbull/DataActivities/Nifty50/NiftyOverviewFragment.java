@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -56,6 +57,8 @@ public class NiftyOverviewFragment extends Fragment {
         // Required empty public constructor
     }
 
+    ArrayList<Call<JsonObject>> calls;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,8 @@ public class NiftyOverviewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        calls = new ArrayList<>();
 
         lastUpdate = (TextView) view.findViewById(R.id.lastUpdate);
         lastChange = (TextView) view.findViewById(R.id.lastChangeTextView);
@@ -170,7 +175,9 @@ public class NiftyOverviewFragment extends Fragment {
                 }else {
                     try {
                         Log.d("response ERR NIFTY50", response.errorBody().string());
-                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                        try {
+                            Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -181,7 +188,9 @@ public class NiftyOverviewFragment extends Fragment {
             public void onError(Throwable t) {
                 t.printStackTrace();
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
             }
         });
    }
@@ -208,7 +217,9 @@ public class NiftyOverviewFragment extends Fragment {
 
     public void getGraphData() {
 
-        new RetrofitClient().getNifty50Interface().getData(new Utility().getNift50GraphURL("1d")).enqueue(new Callback<JsonObject>() {
+        Call<JsonObject> call = new RetrofitClient().getNifty50Interface().getData(new Utility().getNift50GraphURL("1d"));
+
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
@@ -286,6 +297,8 @@ public class NiftyOverviewFragment extends Fragment {
 
             }
         });
+
+        calls.add(call);
     }
 
     public void setUpChart() {
@@ -337,6 +350,11 @@ public class NiftyOverviewFragment extends Fragment {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

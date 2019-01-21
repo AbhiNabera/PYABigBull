@@ -11,13 +11,18 @@ import android.widget.TextView;
 
 import nabera.ranjan.abhinabera.pyabigbull.Api.Utility;
 import nabera.ranjan.abhinabera.pyabigbull.R;
+import retrofit2.Call;
+
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NiftyStocksRecyclerAdapter extends RecyclerView.Adapter<NiftyStocksRecyclerAdapter.ViewHolder> {
     public List<JsonObject> stockList;
     public Activity context;
+
+    ArrayList<Call<JsonObject>> calls;
 
     Clicklistener clicklistener;
 

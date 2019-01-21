@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -40,6 +41,8 @@ import retrofit2.Response;
 public class NiftyStocksIndividual extends AppCompatActivity {
 
     SwipeRefreshLayout refreshLayout;
+
+    ArrayList<Call<JsonObject>> calls;
 
     Button buyStocks;
 
@@ -77,6 +80,8 @@ public class NiftyStocksIndividual extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_nifty_stocks_individual);
         getSupportActionBar().hide();
+
+        calls = new ArrayList<>();
 
         lastUpdate = (TextView) findViewById(R.id.lastUpdate);
         lastChange = (TextView) findViewById(R.id.lastChangeTextView);
@@ -396,6 +401,11 @@ public class NiftyStocksIndividual extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

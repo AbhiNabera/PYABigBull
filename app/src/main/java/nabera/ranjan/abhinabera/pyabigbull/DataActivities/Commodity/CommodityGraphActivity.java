@@ -319,7 +319,9 @@ public class CommodityGraphActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(CommodityGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(CommodityGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
                 progressBar.setVisibility(View.GONE);
             }
         });

@@ -424,13 +424,16 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         setViews();
                         statTimer();
 
-                        progressDialog.dismiss();
-
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
                         //new FDAmtUpdateUtility().getUpdatedAmount(userObject);
 
                     } else if (response.body().get("flag") != null) {
 
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
 
                         new Utility().showDialog(response.body().get("flag").getAsString(),
                                 response.body().get("message").getAsString(), FDPurchaseActivity.this, new DialogInterface() {
@@ -449,7 +452,9 @@ public class FDPurchaseActivity extends AppCompatActivity {
 
                     } else {
 
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
 
                         setResult(RESULT_OK);
                         finish();
@@ -463,7 +468,9 @@ public class FDPurchaseActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    progressDialog.dismiss();
+                    try {
+                        progressDialog.dismiss();
+                    }catch (Exception e){}
 
                     setResult(RESULT_OK);
                     finish();
@@ -474,7 +481,9 @@ public class FDPurchaseActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){}
                 setResult(RESULT_OK);
                 finish();
                 Toast.makeText(FDPurchaseActivity.this, "Error occured", Toast.LENGTH_SHORT).show();
@@ -535,7 +544,9 @@ public class FDPurchaseActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            try {
+                                progressDialog.dismiss();
+                            }catch (Exception e){}
                             startActivity(intent);
                             finish();
                             overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -565,7 +576,10 @@ public class FDPurchaseActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){}
+
                 Toast.makeText(FDPurchaseActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FDPurchaseActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);

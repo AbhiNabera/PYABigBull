@@ -59,6 +59,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -105,6 +106,8 @@ public class UserDataFragment extends Fragment {
     int maxWidth = 100;
     int maxHeight = 100;
 
+    ArrayList<Call<JsonObject>> calls;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -117,6 +120,8 @@ public class UserDataFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        calls = new ArrayList<>();
 
         progressBar = (ProgressBar) view.findViewById(R.id.ProgressBar);
         profileCard = (RelativeLayout) view.findViewById(R.id.profileCard);
@@ -352,8 +357,10 @@ public class UserDataFragment extends Fragment {
 
         refreshLayout.setRefreshing(true);
 
-        new RetrofitClient().getInterface().getPlayerinfo(FirebaseAuth.getInstance().getCurrentUser().
-                getPhoneNumber().substring(3)).enqueue(new Callback<JsonObject>() {
+        Call<JsonObject> call = new RetrofitClient().getInterface().getPlayerinfo(FirebaseAuth.getInstance().getCurrentUser().
+                getPhoneNumber().substring(3));
+
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -382,6 +389,8 @@ public class UserDataFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
             }
         });
+
+        calls.add(call);
     }
 
     public void removeDataFromSP() {
@@ -686,14 +695,23 @@ public class UserDataFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
+                if(!uploadTask.isCanceled()) {
+                    Toast.makeText(getActivity(), "Unable to update image url", Toast.LENGTH_SHORT).show();
+                }
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+        calls.add(uploadTask);
     }
 
     @Override
     public void onDestroy() {
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

@@ -17,7 +17,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+
 import nabera.ranjan.abhinabera.pyabigbull.R;
+import retrofit2.Call;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,8 @@ public class NiftyActivity extends AppCompatActivity {
     private ViewPager niftyViewPager;
     Typeface custom_font;
 
+    ArrayList<Call<JsonObject>> calls;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,8 @@ public class NiftyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_nifty);
         getSupportActionBar().hide();
+
+        calls = new ArrayList<>();
 
         niftyToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.niftyToolbar);
         niftyToolbar.setTitle("NIFTY50");
@@ -143,6 +150,11 @@ public class NiftyActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

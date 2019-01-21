@@ -742,7 +742,9 @@ public class SellActivity extends AppCompatActivity {
 
                     }else if(response.body().get("flag")!=null) {
 
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){}
 
                         new Utility().showDialog(response.body().get("flag").getAsString(),
                                 response.body().get("message").getAsString(), SellActivity.this, new DialogInterface() {
@@ -815,7 +817,9 @@ public class SellActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            try {
+                                progressDialog.dismiss();
+                            }catch (Exception e){}
                             startActivity(intent);
                             finish();
                             overridePendingTransition(nabera.ranjan.abhinabera.pyabigbull.R.anim.enter, nabera.ranjan.abhinabera.pyabigbull.R.anim.exit);
@@ -846,7 +850,9 @@ public class SellActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){}
                 Toast.makeText(SellActivity.this, "Network error occued", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SellActivity.this, TransactionSummaryActivity.class);
                 intent.putExtra("success", false);
@@ -864,7 +870,9 @@ public class SellActivity extends AppCompatActivity {
     public void dismissDialog() {
         if(count == 2) {
             count = 0;
-            progressDialog.dismiss();
+            try {
+                progressDialog.dismiss();
+            }catch (Exception e){}
             if(userObject!=null && stockObject != null) {
                 setPurchaseData();
             }else {

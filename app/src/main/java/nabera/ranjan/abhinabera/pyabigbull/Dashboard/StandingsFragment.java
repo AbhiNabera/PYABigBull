@@ -51,6 +51,8 @@ public class StandingsFragment extends Fragment {
     JsonObject usd, eur, gbp;
     JsonObject gold, silver, crudeoil;
 
+    ArrayList<Call<JsonObject>> calls;
+
     private LeaderBoardRecyclerAdapter mAdapter;
     ImageView userMedal;
     TextView userName, userRank, boxPrice, boxPercent;
@@ -81,6 +83,8 @@ public class StandingsFragment extends Fragment {
 
         boardlist = new ArrayList<>();
         leaderboardlist = new ArrayList<>();
+
+        calls = new ArrayList<>();
 
         user_object = new JsonObject();
         stockList = new ArrayList<>();
@@ -286,7 +290,9 @@ public class StandingsFragment extends Fragment {
                 }
 
                 refreshLayout.setRefreshing(false);
-                userName.setText(new Utility().getUserName(getActivity())+"");
+                try {
+                    userName.setText(new Utility().getUserName(getActivity()) + "");
+                }catch (Exception e){}
             }
 
             @Override
@@ -294,7 +300,9 @@ public class StandingsFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
                 t.printStackTrace();
 
-                userName.setText(new Utility().getUserName(getActivity())+"");
+                try {
+                    userName.setText(new Utility().getUserName(getActivity()) + "");
+                }catch (Exception e){}
             }
         });
     }
@@ -520,7 +528,11 @@ public class StandingsFragment extends Fragment {
 
                 }else{
 
-                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    }catch (NullPointerException n) {
+
+                    }
 
                 }
 
@@ -533,7 +545,11 @@ public class StandingsFragment extends Fragment {
                 t.printStackTrace();
                 count++;
                 hideSwipeRefresh();
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (NullPointerException n) {
+
+                }
             }
         });
     }
@@ -545,13 +561,22 @@ public class StandingsFragment extends Fragment {
                 getLeaderboard();
             }else {
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (NullPointerException n) {
+
+                }
             }
         }
     }
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

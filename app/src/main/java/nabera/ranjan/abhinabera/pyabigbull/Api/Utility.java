@@ -22,6 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Utility {
 
     public static String URL = "https://us-central1-bigbull-c7557.cloudfunctions.net";
+    //public static String URL = "https://us-central1-pyabigbull.cloudfunctions.net";
 
     public static String MONEY_CONTROL_NIFTY50_URL = "https://appfeeds.moneycontrol.com";
 

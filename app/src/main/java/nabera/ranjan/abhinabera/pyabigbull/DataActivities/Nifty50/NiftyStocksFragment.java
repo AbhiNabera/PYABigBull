@@ -35,6 +35,8 @@ public class NiftyStocksFragment extends Fragment {
     List<JsonObject> stockList;
     private NiftyStocksRecyclerAdapter mAdapter;
 
+    ArrayList<Call<JsonObject>> calls;
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public NiftyStocksFragment() {
@@ -70,6 +72,8 @@ public class NiftyStocksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         stockList = new ArrayList<>();
+
+        calls = new ArrayList<>();
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
 
@@ -124,7 +128,9 @@ public class NiftyStocksFragment extends Fragment {
 
                 }else{
 
-                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){}
 
                 }
             }
@@ -133,13 +139,20 @@ public class NiftyStocksFragment extends Fragment {
             public void onFailure(Call<List<JsonObject>> call, Throwable t) {
                 t.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
             }
         });
     }
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

@@ -28,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +42,7 @@ public class DataFragment extends Fragment {
     private int MAXCOUNT = 5;
 
     //private static boolean flag = true;
+    ArrayList<Call<JsonObject>> calls;
 
     Response<JsonObject> nifty50, usd, eur, gbp;
 
@@ -86,6 +88,8 @@ public class DataFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        calls = new ArrayList<>();
 
         niftyCard = (CardView) view.findViewById(R.id.niftyCard);
         goldCard = (CardView) view.findViewById(R.id.goldCard);
@@ -233,7 +237,7 @@ public class DataFragment extends Fragment {
         //getUserAccount(); ////Automated operation cron job
     }
 
-    public void setNiftyCard() {
+    public void setNiftyCard() throws Exception{
 
         JsonObject object = nifty50.body().get("indices").getAsJsonObject();
         Utility utility = new Utility();
@@ -250,7 +254,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setGoldCard() {
+    public void setGoldCard() throws Exception{
         JsonObject object = gold;
         Utility utility = new Utility();
 
@@ -267,7 +271,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setSilverCard() {
+    public void setSilverCard() throws Exception{
         JsonObject object = silver;
         Utility utility = new Utility();
 
@@ -284,7 +288,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setCrudeoilCard() {
+    public void setCrudeoilCard() throws Exception{
         JsonObject object = crudeoil;
         Utility utility = new Utility();
 
@@ -301,7 +305,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setDollarCard() {
+    public void setDollarCard() throws Exception{
         JsonObject object = usd.body().get("data").getAsJsonObject();
         Utility utility = new Utility();
 
@@ -319,7 +323,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setEuroCard() {
+    public void setEuroCard() throws Exception{
         JsonObject object = eur.body().get("data").getAsJsonObject();
         Utility utility = new Utility();
 
@@ -337,7 +341,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    public void setPoundCard() {
+    public void setPoundCard() throws Exception{
         JsonObject object = gbp.body().get("data").getAsJsonObject();
         Utility utility = new Utility();
 

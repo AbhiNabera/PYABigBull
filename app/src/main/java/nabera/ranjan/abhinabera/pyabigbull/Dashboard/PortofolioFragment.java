@@ -15,9 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+
 import nabera.ranjan.abhinabera.pyabigbull.R;
 import nabera.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.BoughtFragment;
 import nabera.ranjan.abhinabera.pyabigbull.UserActivities.Userstocks.SoldFragment;
+import retrofit2.Call;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ public class PortofolioFragment extends Fragment {
 
     BoughtFragment boughtFragment;
     SoldFragment soldFragment;
+
+    ArrayList<Call<JsonObject>> calls;
 
     ViewPager investmentViewPager;
     TabLayout investmentTabs;

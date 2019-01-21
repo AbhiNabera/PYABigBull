@@ -66,6 +66,7 @@ public class CurrencyActivity extends AppCompatActivity {
     ArrayList<Long> xAxis = new ArrayList<>();
     ArrayList<Double> yAxis = new ArrayList<>();
 
+    ArrayList<Call<JsonObject>> calls;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -87,6 +88,8 @@ public class CurrencyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_currency);
         getSupportActionBar().hide();
+
+        calls = new ArrayList<>();
 
         currencyToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.currencyToolbar);
         Intent i = getIntent();
@@ -210,7 +213,9 @@ public class CurrencyActivity extends AppCompatActivity {
     }
 
     public void getCurrency() {
-        getFunction().enqueue(new Callback<JsonObject>() {
+        Call<JsonObject> call = getFunction();
+
+        call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -228,6 +233,8 @@ public class CurrencyActivity extends AppCompatActivity {
                 refreshLayout.setRefreshing(false);
             }
         });
+
+        calls.add(call);
     }
 
     public Call<JsonObject> getFunction() {
@@ -362,6 +369,8 @@ public class CurrencyActivity extends AppCompatActivity {
             }
         });
 
+        calls.add(call);
+
         return call;
     }
 
@@ -410,6 +419,11 @@ public class CurrencyActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }

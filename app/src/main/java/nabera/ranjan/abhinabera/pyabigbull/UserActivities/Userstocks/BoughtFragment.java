@@ -833,7 +833,9 @@ public class BoughtFragment extends Fragment {
 
                 }else{
 
-                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){}
 
                 }
 
@@ -846,7 +848,9 @@ public class BoughtFragment extends Fragment {
                 t.printStackTrace();
                 count++;
                 hideSwipeRefresh();
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
             }
         });
     }
@@ -859,7 +863,9 @@ public class BoughtFragment extends Fragment {
                 getBoughtfragmentData();
             }else {
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "error occured ", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
             }
         }
     }

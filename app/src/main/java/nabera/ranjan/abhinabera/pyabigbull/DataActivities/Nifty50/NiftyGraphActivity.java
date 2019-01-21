@@ -28,6 +28,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -54,6 +55,8 @@ public class NiftyGraphActivity extends AppCompatActivity {
     String[] periods = {"1 day", "5 days", "1 month", "3 months", "6 months", "1 year", "2 years", "5 years", "Max"};
     String[] periodId = {"1d","5d","1m","3m","6m","1yr", "2yr", "5yr", "max"};
 
+    ArrayList<Call<JsonObject>> calls;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,8 @@ public class NiftyGraphActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_nifty_graph);
         getSupportActionBar().hide();
+
+        calls = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.graphToolbar);
         graphView = (GraphView) findViewById(R.id.graph);
@@ -288,10 +293,14 @@ public class NiftyGraphActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(NiftyGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(NiftyGraphActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+       calls.add(call);
 
        return call;
     }
@@ -341,6 +350,11 @@ public class NiftyGraphActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        for(Call<JsonObject> call: calls) {
+            if(!call.isExecuted()) {
+                call.cancel();
+            }
+        }
         super.onDestroy();
         Runtime.getRuntime().gc();
     }
