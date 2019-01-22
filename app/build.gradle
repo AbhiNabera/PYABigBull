@@ -8,8 +8,8 @@ android {
         applicationId "nabera.ranjan.abhinabera.pyabigbull"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.6"
+        versionCode 13
+        versionName "1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
