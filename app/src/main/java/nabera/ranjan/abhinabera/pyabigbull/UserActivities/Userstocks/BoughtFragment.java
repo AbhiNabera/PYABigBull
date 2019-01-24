@@ -602,55 +602,62 @@ public class BoughtFragment extends Fragment {
                             currencyProfitPer.setText(new Utility().getRoundoffData("" + ((CURRENCY_CURRENTVALUE - CURRENCY_INVESTMENT) / CURRENCY_INVESTMENT * 100)) + "%");
                             fixedDepositProfitPer.setText(new Utility().getRoundoffData("" + ((FD_CURRENTVALUE - FD_INVESTMENT) / FD_INVESTMENT * 100)) + "%");
 
-                            if (NIFTY_INVESTMENT == 0) {
-                                niftyProfitPer.setText("0.00%");
-                            }
-                            if (GOLD_INVESTMENT == 0) {
-                                goldProfitPer.setText("0.00%");
-                            }
-                            if (SILVER_INVESTMENT == 0) {
-                                silverProfitPer.setText("0.00%");
-                            }
-                            if (CRUDEOIL_INVESTMENT == 0) {
-                                crudeOilProfitPer.setText("0.00%");
-                            }
-                            if (CURRENCY_INVESTMENT == 0) {
-                                currencyProfitPer.setText("0.00%");
-                            }
-                            if (FD_INVESTMENT == 0) {
-                                fixedDepositProfitPer.setText("0.00%");
-                            }
-                            if (Double.parseDouble(niftyProfit.getText().toString()) >= 0) {
-                                niftyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                niftyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
-                            if (Double.parseDouble(goldProfit.getText().toString()) >= 0) {
-                                goldBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                goldBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
-                            if (Double.parseDouble(silverProfit.getText().toString()) >= 0) {
-                                silverBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                silverBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
-                            if (Double.parseDouble(crudeOilProfit.getText().toString()) >= 0) {
-                                crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
-                            if (Double.parseDouble(currencyProfit.getText().toString()) >= 0) {
-                                currencyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                currencyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
-                            if (Double.parseDouble(fixedDepositProfit.getText().toString()) >= 0) {
-                                fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
-                            } else
-                                fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                            try {
+                                if (NIFTY_INVESTMENT == 0) {
+                                    niftyProfitPer.setText("0.00%");
+                                }
+                                if (GOLD_INVESTMENT == 0) {
+                                    goldProfitPer.setText("0.00%");
+                                }
+                                if (SILVER_INVESTMENT == 0) {
+                                    silverProfitPer.setText("0.00%");
+                                }
+                                if (CRUDEOIL_INVESTMENT == 0) {
+                                    crudeOilProfitPer.setText("0.00%");
+                                }
+                                if (CURRENCY_INVESTMENT == 0) {
+                                    currencyProfitPer.setText("0.00%");
+                                }
+                                if (FD_INVESTMENT == 0) {
+                                    fixedDepositProfitPer.setText("0.00%");
+                                }
+                                if (Double.parseDouble(niftyProfit.getText().toString()) >= 0) {
+                                    niftyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    niftyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                                if (Double.parseDouble(goldProfit.getText().toString()) >= 0) {
+                                    goldBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    goldBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                                if (Double.parseDouble(silverProfit.getText().toString()) >= 0) {
+                                    silverBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    silverBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                                if (Double.parseDouble(crudeOilProfit.getText().toString()) >= 0) {
+                                    crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    crudeOilBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                                if (Double.parseDouble(currencyProfit.getText().toString()) >= 0) {
+                                    currencyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    currencyBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+                                if (Double.parseDouble(fixedDepositProfit.getText().toString()) >= 0) {
+                                    fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.greenText));
+                                } else
+                                    fixedDepositBox.setBackgroundColor(getActivity().getResources().getColor(nabera.ranjan.abhinabera.pyabigbull.R.color.red));
+
+                            }catch (Exception e){}
 
                         } else {
-                            Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();
+                            try {
+                                Toast.makeText(getActivity(), "Internal server error", Toast.LENGTH_SHORT).show();
+                            }catch (Exception e){}
                         }
 
                     } else {
-                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                        try {
+                            Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
                     }
 
                 }catch (Exception e) {
@@ -663,7 +670,9 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){}
                 refreshLayout.setRefreshing(false);
             }
         });

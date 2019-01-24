@@ -138,11 +138,13 @@ public class NiftyOverviewFragment extends Fragment {
         lastPrice.setText(""+new Utility().getRoundoffData(object.get("lastprice").getAsString()));
         lastChange.setText(""+new Utility().getRoundoffData(object.get("change").getAsString()) + "(" + new Utility().getRoundoffData(object.get("percentchange").getAsString()) +"%)");
 
-        if(Double.parseDouble(object.get("percentchange").getAsString()+"")>=0){
-            lastChange.setTextColor(getActivity().getResources().getColor(R.color.greenText));
-        }else{
-            lastChange.setTextColor(getActivity().getResources().getColor(R.color.red));
-        }
+        try {
+            if (Double.parseDouble(object.get("percentchange").getAsString() + "") >= 0) {
+                lastChange.setTextColor(getActivity().getResources().getColor(R.color.greenText));
+            } else {
+                lastChange.setTextColor(getActivity().getResources().getColor(R.color.red));
+            }
+        }catch (Exception e){}
 
         openPrice.setText(""+new Utility().getRoundoffData(object.get("open").getAsString()));
         prevClose.setText(""+new Utility().getRoundoffData(object.get("prevclose").getAsString()));

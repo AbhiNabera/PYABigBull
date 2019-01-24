@@ -309,7 +309,8 @@ public class UserDataFragment extends Fragment {
 
         if (player.get("data").getAsJsonObject().get("imageUrl") != null) {
 
-            if (!player.get("data").getAsJsonObject().get("imageUrl").toString().equalsIgnoreCase("null")) {
+            if (!player.get("data").getAsJsonObject().get("imageUrl").toString()
+                    .equalsIgnoreCase("null") && getActivity()!=null) {
                 Picasso.with(getActivity()).
                         load(player.get("data").getAsJsonObject().get("imageUrl").getAsString())
                         //.skipMemoryCache()
