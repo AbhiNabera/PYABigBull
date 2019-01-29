@@ -28,16 +28,16 @@ public interface ApiInterface {
     @GET("expiry")
     Call<JsonObject> getCommodityExpiry();
 
-    @GET("userAccount")
+    @GET("userAccount2")
     Call<JsonObject> getUserAccount(@Query("phoneNumber") String phoneNumber, @Query("item_type") String item_type);
 
-    @GET("userTxnAccount")
+    @GET("userTxnAccount2")
     Call<JsonObject> getUserTxnData(@Query("phoneNumber") String phoneNumber, @Query("item_type") String item_type);
 
     @GET("adminSettings")
     Call<JsonObject> getAdminSettings();
 
-    @POST("txn")
+    @POST("txn2")
     Call<JsonObject> performTransaction(@Body JsonObject object);
 
     @GET("userinfo")

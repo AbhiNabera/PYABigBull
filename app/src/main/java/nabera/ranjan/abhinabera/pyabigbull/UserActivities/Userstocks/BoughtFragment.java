@@ -47,6 +47,8 @@ public class BoughtFragment extends Fragment {
     private int count = 0;
     private int MAXCOUNT = 5;
 
+    private boolean flag = true;
+
     private double index_txn_charges, commodity_txn_charges, currency_txn_charges;
 
     int REQUEST_CODE = 1;
@@ -91,6 +93,8 @@ public class BoughtFragment extends Fragment {
 
     public void getLoadFragmentData() {
 
+        //flag = false;
+
         NIFTY_INVESTMENT = 0;
         GOLD_INVESTMENT = 0;
         SILVER_INVESTMENT = 0;
@@ -122,7 +126,13 @@ public class BoughtFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //flag = false;
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        //flag = true;
     }
 
     @Override
@@ -131,12 +141,12 @@ public class BoughtFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (/*requestCode == REQUEST_CODE  && */resultCode  == RESULT_OK) {
-
             //unsuccessful transaction
+            //flag = false;
             Log.d("unsuccessfultransaction", "");
 
         }else {
-
+            //flag = false;
             Intent intent = new Intent("soldFragment");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
@@ -229,13 +239,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "NIFTY50");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(niftyList) + "");
-                    i.putExtra("current_value", NIFTY_CURRENTVALUE);
-                    i.putExtra("investment", NIFTY_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "NIFTY50");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(niftyList) + "");
+                        i.putExtra("current_value", NIFTY_CURRENTVALUE);
+                        i.putExtra("investment", NIFTY_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -244,13 +260,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "GOLD");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(goldList) + "");
-                    i.putExtra("current_value", GOLD_CURRENTVALUE);
-                    i.putExtra("investment", GOLD_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "GOLD");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(goldList) + "");
+                        i.putExtra("current_value", GOLD_CURRENTVALUE);
+                        i.putExtra("investment", GOLD_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -259,13 +281,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "SILVER");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(silverList) + "");
-                    i.putExtra("current_value", SILVER_CURRENTVALUE);
-                    i.putExtra("investment", SILVER_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "SILVER");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(silverList) + "");
+                        i.putExtra("current_value", SILVER_CURRENTVALUE);
+                        i.putExtra("investment", SILVER_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -274,13 +302,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "CRUDEOIL");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(crudeoilList) + "");
-                    i.putExtra("current_value", CRUDEOIL_CURRENTVALUE);
-                    i.putExtra("investment", CRUDEOIL_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "CRUDEOIL");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(crudeoilList) + "");
+                        i.putExtra("current_value", CRUDEOIL_CURRENTVALUE);
+                        i.putExtra("investment", CRUDEOIL_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -289,13 +323,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "CURRENCY");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(currencyList) + "");
-                    i.putExtra("current_value", CURRENCY_CURRENTVALUE);
-                    i.putExtra("investment", CURRENCY_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "CURRENCY");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(currencyList) + "");
+                        i.putExtra("current_value", CURRENCY_CURRENTVALUE);
+                        i.putExtra("investment", CURRENCY_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -304,13 +344,19 @@ public class BoughtFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!refreshLayout.isRefreshing()) {
-                    Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
-                    i.putExtra("cardName", "FIXED DEPOSIT");
-                    Gson gson = new Gson();
-                    i.putExtra("data", gson.toJson(fdList) + "");
-                    i.putExtra("current_value", FD_CURRENTVALUE);
-                    i.putExtra("investment", FD_INVESTMENT);
-                    startActivityForResult(i, REQUEST_CODE);
+                    if(flag) {
+                        Intent i = new Intent(getActivity(), BoughtActivityIndi.class);
+                        i.putExtra("cardName", "FIXED DEPOSIT");
+                        Gson gson = new Gson();
+                        i.putExtra("data", gson.toJson(fdList) + "");
+                        i.putExtra("current_value", FD_CURRENTVALUE);
+                        i.putExtra("investment", FD_INVESTMENT);
+                        startActivityForResult(i, REQUEST_CODE);
+                    }else {
+                        try{
+                            Toast.makeText(getActivity(), "Please refresh page to view details.", Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){}
+                    }
                 }
             }
         });
@@ -664,6 +710,7 @@ public class BoughtFragment extends Fragment {
                     e.printStackTrace();
                 }
 
+                flag = true;
                 refreshLayout.setRefreshing(false);
             }
 

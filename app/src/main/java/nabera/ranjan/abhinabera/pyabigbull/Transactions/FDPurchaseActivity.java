@@ -137,6 +137,7 @@ public class FDPurchaseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //setfddata();
                 if(check()) {
+                    confirm.setEnabled(false);
                     txn_id = getTransId();
                     countDownTimer.cancel();
                     //setfddata();

@@ -45,4 +45,8 @@ public class JsonObjectFormatter {
         return parent;
     }
 
+    public JsonObject get(String key) {
+        JsonObject object = parent.getAsJsonObject(key);
+        return object;
+    }
 }

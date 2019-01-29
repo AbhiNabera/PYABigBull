@@ -130,6 +130,7 @@ public class PurchaseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(check()) {
                     //TODO: network call
+                    confirm.setEnabled(false);
                     txn_id = getTransId();
                     JsonObject object = setTransactionData();
                     Log.d("PurchaseActivity", ""+object);
@@ -163,9 +164,11 @@ public class PurchaseActivity extends AppCompatActivity {
 
                 }else {
 
-                    quantity = Integer.parseInt(editable.toString().trim());
-                    updateAmounts();
-                    updateViews();
+                    try {
+                        quantity = Integer.parseInt(editable.toString().trim());
+                        updateAmounts();
+                        updateViews();
+                    }catch (Exception e){}
                 }
             }
         });

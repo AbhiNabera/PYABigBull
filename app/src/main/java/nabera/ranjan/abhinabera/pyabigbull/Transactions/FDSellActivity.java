@@ -44,7 +44,7 @@ public class FDSellActivity extends AppCompatActivity {
 
     private String INTENT_DATA;
     JsonObject INVESTMENT_PACKET;
-    JsonObject userObject;
+    JsonObject userObject, userObjectcopy;
 
     private String type;
     private String product_type;
@@ -125,6 +125,7 @@ public class FDSellActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(check()) {
+                    confirm.setEnabled(false);
                     txn_id = getTransId();
                     executeTransaction(setfddata());
                     countDownTimer.cancel();
@@ -268,6 +269,28 @@ public class FDSellActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean checkifStateValid() {
+        JsonObject account_ref = userObjectcopy;
+        JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
+
+        Log.d("USEROBJECT", userObjectcopy+"");
+
+        String type_key = "fixed_deposit";
+
+        JsonObject object = jsonformatter.child("stocks_list").child("bought_items").child(type_key)
+                .get(INVESTMENT_PACKET.get("txn_id").getAsString());
+        int ACTUAL_QTY = ((object==null)?0:object.get("qty").getAsInt());
+
+        Log.d("ACTUAL QTY", ""+ACTUAL_QTY);
+        Log.d("PACKET QTY", ""+INVESTMENT_PACKET.get("qty").getAsInt());
+
+        if(ACTUAL_QTY != INVESTMENT_PACKET.get("qty").getAsInt()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public JsonObject setfddata() {
 
         JsonObject account_ref = userObject.get("data").getAsJsonObject();
@@ -408,6 +431,27 @@ public class FDSellActivity extends AppCompatActivity {
                         updateAmounts();
                         updateViews();
                         statTimer();
+
+                        JsonParser parser = new JsonParser();
+                        userObjectcopy = (JsonObject) parser.parse(userObject.get("data").getAsJsonObject().toString());
+
+                        if(!checkifStateValid()) {
+                            new Utility().showDialog("INVALID STATE",
+                                    "Invalid state. Please go back to your portfolio " +
+                                            "and refresh it to proceed with the transaction.", FDSellActivity.this, new DialogInterface() {
+                                        @Override
+                                        public void onSuccess() {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onCancel() {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+                                    });
+                        }
 
                     } else if (response.body().get("flag") != null) {
 

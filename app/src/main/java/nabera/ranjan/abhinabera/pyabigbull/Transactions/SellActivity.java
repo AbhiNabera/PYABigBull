@@ -27,11 +27,15 @@ import nabera.ranjan.abhinabera.pyabigbull.Dialog.DialogInterface;
 import nabera.ranjan.abhinabera.pyabigbull.Dialog.ProgressDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +67,7 @@ public class SellActivity extends AppCompatActivity {
     private String id;
     private String name;
 
-    JsonObject userObject;
+    JsonObject userObject, userObjectcopy;
     JsonObject stockObject;
     JsonObject adminSettings;
 
@@ -148,6 +152,7 @@ public class SellActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(check()) {
                     //TODO: network call
+                    confirm.setEnabled(false);
                     txn_id = getTransId();
                     JsonObject object = setAccountData();
                     Log.d("SellActivity", ""+object);
@@ -329,6 +334,43 @@ public class SellActivity extends AppCompatActivity {
             Toast.makeText(SellActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
             return false;
         }
+        return true;
+    }
+
+    public boolean checkifStateValid() {
+        JsonObject account_ref = userObjectcopy;
+        JsonObjectFormatter jsonformatter = new JsonObjectFormatter(account_ref);
+
+        //Log.d("USEROBJECT", userObjectcopy+"");
+
+        String type_key = "";
+
+        switch (type) {
+
+            case "NIFTY":
+                type_key = "index";
+                break;
+
+            case "COMMODITY":
+                type_key = "commodity";
+                break;
+
+            case "CURRENCY":
+                type_key = "currency";
+                break;
+        }
+
+        JsonObject object = jsonformatter.child("stocks_list").child("bought_items").child(type_key)
+                .get(INVESTMENT_PACKET.get("txn_id").getAsString());
+        int ACTUAL_QTY = ((object==null)?0:object.get("qty").getAsInt());
+
+        Log.d("ACTUAL QTY", ""+ACTUAL_QTY);
+        Log.d("PACKET QTY", ""+INVESTMENT_PACKET.get("qty").getAsInt());
+
+        if(ACTUAL_QTY != INVESTMENT_PACKET.get("qty").getAsInt()) {
+            return false;
+        }
+
         return true;
     }
 
@@ -736,6 +778,27 @@ public class SellActivity extends AppCompatActivity {
 
                         adminSettings = response.body().getAsJsonObject("data").getAsJsonObject("admin_settings");
                         userObject = response.body().getAsJsonObject("data").getAsJsonObject("Account");
+
+                        JsonParser parser = new JsonParser();
+                        userObjectcopy = (JsonObject) parser.parse(userObject.toString());
+
+                        if(!checkifStateValid()) {
+                            new Utility().showDialog("INVALID STATE",
+                                    "Invalid state. Please go back to your portfolio " +
+                                            "and refresh it to proceed with the transaction.", SellActivity.this, new DialogInterface() {
+                                        @Override
+                                        public void onSuccess() {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onCancel() {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+                                    });
+                        }
 
                         count++;
                         dismissDialog();
