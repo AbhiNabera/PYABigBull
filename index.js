@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const request = require('request');
 const async = require('async');
+const portfolioCheck = require('./PortfolioDatacheck');
 
 /*
 const os = require("os");
@@ -34,7 +35,41 @@ const storage = new Storage({
 
 //const bucket = storage.bucket()
 */
+exports.TransactionHistory = functions.https.onRequest((req, res)=>{
 
+	var phoneNumber = req.query.phoneNumber;
+	//9710083000
+	admin.database().ref('/Players').child('/'+phoneNumber).child('/Account')
+		.child('/txn_history').orderByChild('timestamp').once('value')
+			.then(snapshot=>{
+
+					return res.status(200).json({
+						        data: toArray(snapshot),
+		    					status: 200
+						   });
+
+				}).catch(exception=>{
+	    			//console.log("player exception: " + exception);
+	    			return res.status(200).json({
+						        flag: "INTERNAL SERVER ERROR",
+						        message: "Error occured getting players for admin",
+		    					status: 200
+						   });
+	    		});
+
+});
+
+exports.PortfolioCheck =  functions.https.onRequest((req, res)=>{
+	console.log(portfolioCheck);
+
+	return portfolioCheck.PortfolioDatacheck(function(array, err){
+
+		if(err) res.status(200).send('Error occured');
+
+		return res.status(200).json(array);
+	});
+	
+});
 
 //leaderboard testing function
 exports.currentStockPrice = 
@@ -44,7 +79,7 @@ exports.currentStockPrice =
 			return res.status(400).send('Please send a GET request');
 		}
 
-		return getCurrentStockQuote(function(MAP){
+		return getCurrentStockQuote(function(MAP, err){
 
 			return res.status(200).json({
 			        data: MAP,
@@ -55,111 +90,208 @@ exports.currentStockPrice =
 	});
 
 
-exports.dailyWinner = 
-	functions.https.onRequest((req, res) => {
+function updateWinners(current_timestamp, playerSnapshot, leaderBoardData, prevBoardData, callback){
 
-		if(req.method !== "GET"){
-			return res.status(400).send('Please send a GET request');
+	return getCurrentStockQuote(function(MAP, err){
+
+		if(err) return callback(err);
+
+		console.log('MAP:'+MAP);
+
+		var todaysBoardData = {};
+		var listWinnerR = []; //after selling
+		var listWinnerUR = []; //without selling
+		var tempR = -Number.MAX_VALUE;
+		var tempUR = -Number.MAX_VALUE;
+		var portfolio_value = 0.0;
+
+		playerSnapshot.forEach(function(player){
+
+		try{
+
+			portfolio_value = 0.0;
+			var portfolio = leaderBoardData.child('/'+player.key).child('/Portfolio');
+
+			//console.log(item);
+
+			portfolio.forEach(function(item){
+
+				//console.log(item.val());
+
+				try{
+
+					switch(item.child('/type').val()){
+
+							case 'commodity': 
+								//console.log('commodity');
+								portfolio_value += getCommodityValue(MAP.COMMODITY, item);
+							break;
+
+							case 'index': 
+								//console.log('index');
+								portfolio_value += getIndexValue(MAP.INDEX, item);
+							break;
+
+							case 'currency': 
+								//console.log('currency');
+								portfolio_value += getCurrencyValue(MAP.CURRENCY, item);
+							break;
+
+							case 'fixed_deposit': 
+								//console.log('fixed_deposit');
+								portfolio_value += getFdValue(item);
+							break;
+					}
+
+					//console.log("Portfolio Value:"+portfolio_value);
+
+				}catch(error){
+					console.log(error);
+				}
+
+			});
+
+			//console.log("Value:"+portfolio_value);
+
+			//player['change'] = getValue(player.child('/Account').child('/avail_balance')) + portfolio_value - getValue(player.child('/Account').child('/start_balance'));
+
+	    }catch(error){
+		   	//console.log(error);
 		}
 
-		return admin.database().ref('/LeaderBoardData').once('value')
-				.then(snapshot=>{
-					return getCurrentStockQuote(function(MAP){
+		// some error with portfolio_value
+		if(portfolio_value !== 0.0) {
+			console.log("Value:"+portfolio_value);
+		}
+		var newChange = getValue(player.child('/Account').child('/avail_balance')) + portfolio_value - getValue(player.child('/Account').child('/start_balance'));
 
-						snapshot.forEach(function(playerSnapshot){
+		try{
 
-							try{
+			var daychangeR = getValue(player.child('/Account').child('/change')) 
+				- getValue(prevBoardData.child('/'+player.key).child('/changeR'));
 
-								var portfolio_value = 0.0;
-								var portfolio = playerSnapshot.Portfolio;
+			var daychangeUR = parseFloat(newChange)
+				- getValue(prevBoardData.child('/'+player.key).child('/changeUR'));	
 
-								portfolio.forEach(function(item){
+			todaysBoardData[player.key] = {
+				'phoneNumber': player.key,
+				'changeR': getValue(player.child('/Account').child('/change')),
+				'changeUR': parseFloat(newChange)
+			};
 
-									try{
+			if(parseFloat(daychangeR) > parseFloat(tempR)){
+				listWinnerR = [];
+				tempR = parseFloat(daychangeR);
+				
+				listWinnerR.push( {
+					"phoneNumber" : player.key,
+					"daychange" : daychangeR
+				});
 
-										switch(item.type){
-
-											case 'commodity': 
-												portfolio_value += getCommodityValue(MAP.COMMODITY, item);
-											break;
-
-											case 'index': 
-												portfolio_value += getIndexValue(MAP.INDEX, item);
-											break;
-
-											case 'currency': 
-												portfolio_value += getCurrencyValue(MAP.CURRENCY, item);
-											break;
-
-											case 'fixed_deposit': 
-												portfolio_value += getFdValue(item);
-											break;
-										}
-
-									}catch(err){
-										console.log(err);
-									}
-
-								});
-
-								console.log("Value:"+portfolio_value);
-
-								item['portfolio_value'] = portfolio_value;
-								item['net_worth'] = item.avail_balance + portfolio_value;
-								item['change'] = item.net_worth - item.start_balance;
-
-						    }catch(err){
-						    	console.log(err);
-						    }
-
-						});
+			}else if(parseFloat(daychangeR) === parseFloat(tempR)) {
+								
+					listWinnerR.push({
+						"phoneNumber" : player.key,
+						"daychange" : daychangeR
 					});
+			}	
+
+			if(parseFloat(daychangeUR) > parseFloat(tempUR)){
+				listWinnerUR = [];
+				tempUR = parseFloat(daychangeUR);
+				
+				listWinnerUR.push( {
+					"phoneNumber" : player.key,
+					"daychange" : daychangeUR
+				});
+
+			}else if(parseFloat(daychangeUR) === parseFloat(tempUR)) {
+								
+					listWinnerUR.push({
+						"phoneNumber" : player.key,
+						"daychange" : daychangeUR
+					});
+			}	
+				
+		}catch(error){
+			console.log(error);
+		}
+
+		});
+
+		var winners = {
+			'winnerR': listWinnerR,
+			'winnerUR': listWinnerUR
+		};
+
+		var date = new Date(current_timestamp + 5*60*60*1000 + 30*60*1000);
+		var stringdate = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
+
+		var lastupdate = admin.database().ref('/DailyData').child('/lastupdate').set(date.getTime());
+		var currentstandings = admin.database().ref('/DailyData').child('/leaderboard').update(todaysBoardData);
+		var todaywinner = admin.database().ref('/DailyData').child('/Winner').child('/'+stringdate).set(winners);
+
+		var innerpromises = [];
+
+		innerpromises.push(lastupdate);
+		innerpromises.push(currentstandings);
+		innerpromises.push(todaywinner);
+
+		return Promise.all(innerpromises)
+				.then(snapshot=>{
+
+					return callback(snapshot, err);
 
 				}).catch(exception=>{
 					console.log('exception:'+exception);
-		    			return res.status(200).json({
-							        flag: "INTERNAL SERVER ERROR",
-							        message: "Error occured while fetching leaderBoardData",
-			    					status: 200
-							   });
-		    		});
-		
+					return callback(exception, err);
+				});
 	});
 
-function getCommodityValue(COMMODITY_MAP, item) {
-	var current_price = parseFloat(COMMODITY_MAP[item.id].lastprice.replace(/,/g, ''));
+}
+	 
+						
 
-	if(item.id === 'SILVER') {
+function getCommodityValue(COMMODITY_MAP, item) {
+	//console.log('getCommodity:'+COMMODITY_MAP);
+
+	var current_price = parseFloat(COMMODITY_MAP[item.child('id').val()]['lastprice'].replace(/,/g, ''));
+
+	if(item.child('id').val() === 'SILVER') {
 
 		current_price = current_price*0.1;
 	}
 
-	var current_value = current_price*(item.qty);
+	var current_value = current_price*(parseInt(item.child('qty').val()));
 
-	return current_value;
+	//console.log("current_value:"+ current_value);
+	return parseFloat(current_value);
 }
 
 function getIndexValue(INDEX_MAP, item) {
 
-	var current_price = parseFloat(INDEX_MAP[item.id].lastvalue.replace(/,/g, ''));
+	var current_price = parseFloat(INDEX_MAP[item.child('id').val()]['lastvalue'].replace(/,/g, ''));
 
-	var current_value = current_price*(item.qty);
+	var current_value = current_price*(parseInt(item.child('qty').val()));
 
-	return current_value;
+	//console.log("current_value:"+ current_value);
+	return parseFloat(current_value);
 }
 
 function getCurrencyValue(CURRENCY_MAP, item) {
 
-	var current_price = parseFloat(INDEX_MAP[item.id].data.pricecurrent.replace(/,/g, ''));
+	var current_price = parseFloat(CURRENCY_MAP[item.child('id').val()]['data']['pricecurrent'].replace(/,/g, ''));
 
-	var current_value = current_price*(item.qty);
+	var current_value = current_price*(parseInt(item.child('qty').val()));
 
-	return current_value;
+	//console.log("current_value:"+ current_value);
+	return parseFloat(current_value);
 }
 
 function getFdValue(item) {
 
-	return item.current_value;
+	//console.log("current_value:"+ current_value);
+	return parseFloat(item.child('/current_value').val());
 }
 
 function getCurrentStockQuote(callback) {
@@ -174,7 +306,7 @@ function getCurrentStockQuote(callback) {
 
 		async.map(urls, httpGet, function(err, res){
 		  
-		  if (err) return {	err: err, status: 200};
+		  if (err) return callback(err);
 
 		  var i = 0;
 
@@ -245,8 +377,8 @@ function getCurrentStockQuote(callback) {
 			  		break;
 			  	}
 
-		    }catch(err){
-		    	console.log(err);
+		    }catch(error){
+		    	console.log(error);
 		    }
 
 		  });
@@ -257,7 +389,9 @@ function getCurrentStockQuote(callback) {
 			  	'CURRENCY' : CURRENCY_MAP
 			};
 
-		  callback(MAP);		  	
+			console.log('FETCH MAP:'+ MAP);
+
+		  return callback(MAP, err);		  	
 
 		});
 }
@@ -273,6 +407,232 @@ function httpGet(url, callback) {
     }
   );
 }
+
+//get daily winner
+exports.dailyleaderboard = 
+	functions.https.onRequest((req, res)=>{
+
+		var dailyLeaderBoard = admin.database().ref('/DailyData').child('/leaderboard').once('value');
+		var Players = admin.database().ref('/Players').once('value');
+		var leaderBoardData = admin.database().ref('/LeaderBoardData').once('value');
+
+		var promises = [];
+
+		promises.push(dailyLeaderBoard);
+		promises.push(Players);
+		promises.push(leaderBoardData);
+
+		return Promise.all(promises)
+				.then(snapshot=>{
+
+					var leaderBoardData;
+					var prevBoardData;
+					var todaysBoardData = {};
+					var players;
+					var winner = {};
+
+					snapshot.forEach(function(childSnapshot){
+
+						if(childSnapshot.key === "Players") {
+							players = childSnapshot;
+						}else if(childSnapshot.key === "leaderboard") {
+							prevBoardData = childSnapshot;
+						}else {
+							leaderBoardData = childSnapshot;
+						}
+					});
+					
+					var temp = -Number.MAX_VALUE;
+					var ALL_UPDATES = {};
+					var LEADERBOAD_UPDATES = {};
+					var current_timestamp = new Date().getTime();
+					var listWinner = [];
+
+					players.forEach(function(childSnapshot){
+
+
+						//update fixed deposit function (all updates wrong way of doing)****************************************************************************
+						/*var updt = updateFixedDeposit(childSnapshot, current_timestamp);
+
+						if(updt !== null && updt !== undefined) {
+							ALL_UPDATES[childSnapshot.key] = updt; 
+						}*/
+
+						var avail_bal  = getValue(childSnapshot.child('/Account').child('/avail_balance'));
+					    var change = getValue(childSnapshot.child('/Account').child('/change'));
+					    var pchange = getValue(childSnapshot.child('/Account').child('/percentchange'));
+					    var shares_price = getValue(childSnapshot.child('/Account').child('/shares_price'));
+					    var start_balance = getValue(childSnapshot.child('/Account').child('/start_balance'));
+
+					    var starttime =  0;
+					    var timestamp =  0;
+					    var lastupdate =  0;
+					    var nextupdate =  0;
+					    var firstupdate =  0;
+
+					    var SI_CHANGE = 0.0;
+
+					    var fd_ref = childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/fixed_deposit');
+
+					    try {
+
+						    if(fd_ref.exists()) {
+
+							    fd_ref.forEach(function(innerchildSnapshot){
+
+							    	//console.log(childSnapshot.val());
+
+							    	try{
+
+							    		starttime =  getLongValue(innerchildSnapshot.child('/starttime'));
+							    		timestamp =  getLongValue(innerchildSnapshot.child('/timestamp'));
+							    		lastupdate =  getLongValue(innerchildSnapshot.child('/lastupdate'));
+							    		nextupdate =  getLongValue(innerchildSnapshot.child('/nextupdate'));
+							    		firstupdate =  getLongValue(innerchildSnapshot.child('/firstupdate'));
+
+							    		if(getTotalDayCount(current_timestamp, lastupdate) > 0) {
+								    		
+								    		//console.log("phoneNumber: "+ childSnapshot.key );
+
+								    		var prev_currentval = getValue(innerchildSnapshot.child('/current_value'));
+
+								    		var SI = getSimpleInterest(getTotalDayCount(current_timestamp, starttime), innerchildSnapshot);
+								    		var current_value = getValue(innerchildSnapshot.child('/investment')) + SI;
+
+								    		SI_CHANGE += (current_value - prev_currentval);
+
+								    		lastupdate = getLastUpdate(current_timestamp);
+								    		nextupdate = getNextUpdate();
+
+								    		//TODO: set updates here
+								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/lastupdate'] = lastupdate;
+								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/nextupdate'] = nextupdate;
+								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/current_value'] = current_value;
+								    		LEADERBOAD_UPDATES['/'+childSnapshot.key+'/Portfolio/'+innerchildSnapshot.key+'/current_value'] = current_value;
+							    		}
+
+							    	}catch(err){
+							    		console.log("Error occured: " +err)
+							    		//continue;
+							    	}
+
+							    });
+
+							    /* //dont update it here. It will be updated once user sells his fd
+							    if(SI_CHANGE > 1) {
+
+								    avail_bal += SI_CHANGE;
+								    change += SI_CHANGE;
+
+								    pchange = ((avail_bal + shares_price - start_balance) / start_balance ) * 100;
+
+								    ALL_UPDATES['/'+childSnapshot.key+'/Account/avail_balance'] = avail_bal;
+								    ALL_UPDATES['/'+childSnapshot.key+'/Account/change'] = change;
+								    ALL_UPDATES['/'+childSnapshot.key+'/pchange'] = pchange;
+								}
+								*/
+
+							}
+
+						}catch(err) {
+							console.log("Error occured:"+childSnapshot.key+":"+err);
+						}
+
+						//******************************************ALL UPDATES FUNCTION***********************************************************************
+						/*
+
+						try{
+
+							var daychange = getValue(childSnapshot.child('/Account').child('/change')) 
+								- getValue(prevBoardData.child('/'+childSnapshot.key).child('/change'));
+
+							var data = {
+								"phoneNumber": childSnapshot.key,
+								"change" : getValue(childSnapshot.child('/Account').child('/change'))
+							};
+								
+							todaysBoardData[childSnapshot.key] = data;
+
+							if(parseFloat(daychange) > parseFloat(temp)){
+								
+								listWinner = [];
+								temp = parseFloat(daychange);
+								winner = {
+									"phoneNumber" : childSnapshot.key,
+									"daychange" : daychange
+								};
+								listWinner.push(winner);
+
+							}else if(parseFloat(daychange) === parseFloat(temp)) {
+								
+								winner = {
+									"phoneNumber" : childSnapshot.key,
+									"daychange" : daychange
+								};
+								listWinner.push(winner);
+
+							}	
+
+						}catch(err) {
+							console.log('exception:'+err);
+						}
+
+						*/
+
+					});
+
+					var date = new Date(current_timestamp + 5*60*60*1000 + 30*60*1000);
+					var stringdate = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
+
+					var pushUpdates = admin.database().ref('/Players').update(ALL_UPDATES);
+					var leaderboardUpdates = admin.database().ref('/LeaderBoardData').update(LEADERBOAD_UPDATES);
+					//var lastupdate = admin.database().ref('/DailyData').child('/lastupdate').set(date.getTime());
+					//var currentstandings = admin.database().ref('/DailyData').child('/leaderboard').update(todaysBoardData);
+					//var todaywinner = admin.database().ref('/DailyData').child('/Winner').child('/'+stringdate).set(listWinner);
+
+					var innerpromises = [];
+
+					innerpromises.push(pushUpdates);
+					innerpromises.push(leaderboardUpdates);
+					//innerpromises.push(lastupdate);
+					//innerpromises.push(currentstandings);
+					//innerpromises.push(winner);
+
+					return Promise.all(innerpromises)
+							.then(snapshot=>{
+
+								//TODO: update winner here
+								return updateWinners(current_timestamp, players, leaderBoardData, prevBoardData, function(snapshot, err){
+
+									if(err) return res.status(200).json({
+												        message: "Failed to update dailly winner. FD update successful",
+								    					status: 200
+												   });
+
+									return res.status(200).json({
+									        message: "Daily update successful",
+					    					status: 200,
+									   });
+								});
+
+							}).catch(exception=>{
+								console.log('exception:'+exception);
+				    			return res.status(200).json({
+									        flag: "INTERNAL SERVER ERROR",
+									        message: "Error occured while upadating daily records",
+					    					status: 200
+									   });
+				    		});
+
+				}).catch(exception=>{
+					console.log('exception:'+exception);
+		    			return res.status(200).json({
+							        flag: "INTERNAL SERVER ERROR",
+							        message: "Error occured while fetching daily records",
+			    					status: 200
+							   });
+		    		});
+	});
 
 //count of users
 exports.playersCount = 
@@ -450,104 +810,6 @@ exports.adminSettings =
 				});
 
 	});
-/*
-//function to upload file
-exports.updateProfile =
-	functions.https.onRequest((req, res) => {
-
-	//	cors(req, res, () => {
-
-			if(req.method !== "POST"){
-				return res.status(400).send('Please send a POST request');
-			}
-
-			var fileName;
-			var phoneNumber;
-			var userName;
-			var userData;
-			var type;
-
-			const busboy = new Busboy({ headers: req.headers });
-		    let uploadData = null;
-
-		    var IMGURL;
-
-		    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-		      console.log("file");	
-		      
-		      const filepath = path.join(os.tmpdir(), filename);
-		      fileName = filename;
-		      uploadData = { file: filepath, type: mimetype };
-		      file.pipe(fs.createWriteStream(filepath));
-
-		    });
-
-		    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-		    
-		       console.log("request body:"+val);
-
-		       if(fieldname === 'phoneNumber') id = val;
-		       else if(fieldname === 'userName') experiment = val;
-		       else if(fieldname === 'userData') param = val;
-		       else if(fieldname === 'type') date = val;
-
-		    });
-
-		    busboy.on("finish", () => {
-
-		    	uploadFile(uploadData.file, phoneNumber, userName, uploadData)
-		    		.then( downloadURL => {
-	
-				    	IMGURL = downloadURL;
-
-				    	return res.status(200).json({
-					        flag: "UPLOAD SUCCESS",
-					        imgurl: IMGURL,
-		    				status: 200
-					   });
-
-					}).catch(exception=>{
-		    			//console.log("player exception: " + exception);
-			    		return res.status(200).json({
-							      flag: "UPLOAD ERROR",
-							      message: "Error occured while uploading file to bucket",
-				    			  status: 200
-							   });
-			    	});
-
-		    });
-
-		    busboy.end(req.rawBody);//important
-	//	});
-
-	});
-
-var uploadFile = (localFile, phoneNumber, userName, uploadData) => {
-
-	var uuid = UUID();
-
-	const bucket = storage.bucket(bucketName);
-	bucket.upload(localFile, {
-	destination: '/Profile/'+ phoneNumber +'/'+userName + '.jpg',uploadType: "media",
-	metadata: { metadata: { contentType: uploadData.type, metadata: { firebaseStorageDownloadTokens: uuid } } } })
-			.then((data) => {
- 				let file = data[0];
-   				var IMGURL = "https://firebasestorage.googleapis.com/v0/b/" + bucket.name + "/o/" + encodeURIComponent(file.name) + "?alt=media&token=" + uuid;
-
-   				return Promise.resolve(IMGURL);
-
-   			}).catch(exception=>{
-    			//console.log("player exception: " + exception);
-	    		return res.status(200).json({
-					        flag: "UPLOAD ERROR",
-					        message: "Error occured while uploading file to bucket",
-		    				status: 200
-					   });
-	    	});
-
-}
-*/
-
 
 //set image url
 exports.imageUrl = 
@@ -975,7 +1237,7 @@ exports.userStatus = functions.https.onRequest((req, res) => {
 
 				return res.json({
        				"isActive" : snapshot.val(), 
-       				"versionCode" : 10, 
+       				"versionCode" : 16, 
        				"status" : 200 
        			});
 
@@ -997,6 +1259,76 @@ exports.userAccount = functions.https.onRequest((req, res) => {
 	if(req.method !== "GET"){
 		return res.status(400).send('Please send a GET request');
 	}
+
+	return res.json({
+					"flag" : "UPDATE",
+			   		"message" : 'Please update your app to make any further transactions.',
+			       	"status" : 200 
+			    });  
+	/*
+	if(!isDayValidForTransaction(req.query.item_type)) {
+
+		return res.json({
+					"flag" : "MARKET CLOSED",
+			   		"message" : 'Market is closed. You transaction cannot be processed right now. Please try again later.',
+			       	"status" : 200 
+			    });  
+	}
+
+	var phoneNumber = req.query.phoneNumber;
+
+	return admin.database().ref('/Players').child('/'+ phoneNumber).child('/Account').once('value')
+			.then(snapshot=>{
+
+				if(snapshot.exists()) {
+
+					return res.json({
+			       			"data" : snapshot.val(),
+			       			"timestamp" : new Date().getTime(),
+			       			"status" : 200 
+			       		}); 
+
+				}else {
+					//create user account here
+
+					return admin.database().ref('/ADMINSETTINGS').once('value')
+							.then(snapshot=>{
+
+								var initial_data = initialUserSetUp(snapshot);
+
+								return admin.database().ref('/Players').child('/'+phoneNumber).child('/Account').update(initialUserSetUp(snapshot))
+										.then(snapshot=>{
+
+											return res.json({
+									       			"message" : "no data",
+									       			"data": initial_data,
+									       			"timestamp" : new Date().getTime(),
+									       			"status" : 200 
+									       	});  
+										});
+							});
+				}
+
+			}).catch(exception=>{
+				console.log(exception);
+    			return res.status(200).json({
+					        flag: "INTERNAL SERVER ERROR",
+					        message: "Error occured while getting player account",
+	    					status: 200
+					   });
+    		});
+
+    		*/
+
+});
+
+//called in data fragment
+exports.userAccount2 = functions.https.onRequest((req, res) => {
+
+	if(req.method !== "GET"){
+		return res.status(400).send('Please send a GET request');
+	}
+
 
 	if(!isDayValidForTransaction(req.query.item_type)) {
 
@@ -1052,7 +1384,6 @@ exports.userAccount = functions.https.onRequest((req, res) => {
 
 });
 
-
 exports.adminSettings = functions.https.onRequest((req, res) => {
 
 	if(req.method !== "GET"){
@@ -1071,6 +1402,21 @@ exports.adminSettings = functions.https.onRequest((req, res) => {
 
 //called in data fragment, sell and purchase activity
 exports.userTxnAccount = functions.https.onRequest((req, res) => {
+
+	if(req.method !== "GET"){
+		return res.status(400).send('Please send a GET request');
+	}
+
+	return res.json({
+					"flag" : "UPDATE",
+			   		"message" : 'Please update your app to make any further transactions.',
+			       	"status" : 200 
+			    });  
+
+});
+
+//called in data fragment, sell and purchase activity
+exports.userTxnAccount2 = functions.https.onRequest((req, res) => {
 
 	if(req.method !== "GET"){
 		return res.status(400).send('Please send a GET request');
@@ -1162,10 +1508,48 @@ exports.txn = functions.https.onRequest((req, res) => {
 		return res.status(400).send('Please send a POST request');
 	}
 
+	return res.json({
+					"flag" : "UPDATE",
+			   		"message" : 'Please update your app to make any further transactions.',
+			       	"status" : 200 
+			    });  
+});
+
+//new function
+exports.txn2 = functions.https.onRequest((req, res) => {
+
+	if(req.method !== "POST"){
+		return res.status(400).send('Please send a POST request');
+	}
+
+	
+	if(!isDayValidForTransaction(req.body.item_type)) {
+
+		return res.json({
+					"flag" : "MARKET CLOSED",
+			   		"message" : 'Market is closed. You transaction cannot be processed right now. Please try again later.',
+			       	"status" : 200 
+			    });  
+	}
+
 	var phoneNumber = req.body.phoneNumber;
 	var Account = req.body.Account;
 	var type = req.body.item_type;
 	var leaderBoardData = req.body.leaderBoardData;
+
+	//check for mismatch in transaction data
+	//type = BUY(if txndata is not null)
+	if(leaderBoardData.txnData!==undefined) {
+		
+		console.log("Account" + Account['stocks_list']['bought_items'][type][leaderBoardData.txn_id]);
+
+		if(Account['stocks_list']['bought_items'][type][leaderBoardData.txn_id] === undefined 
+			|| Account['stocks_list']['bought_items'][type][leaderBoardData.txn_id] === null) {
+			
+			//force error here
+			return leaderBoardData.txndata.error;     
+		}
+	}
 
 	var UPDATES = {};
 
@@ -1184,20 +1568,21 @@ exports.txn = functions.https.onRequest((req, res) => {
 	UPDATES['/Players/'+phoneNumber+'/Account'] = Account;
 	UPDATES['/LeaderBoardData/'+phoneNumber+'/Portfolio/'+leaderBoardData.txn_id] = (leaderBoardData.txnData===undefined?null:leaderBoardData.txnData); 
 	UPDATES['/LeaderBoardData/'+phoneNumber+'/avail_balance'] = leaderBoardData.avail_balance;
-	UPDATES['/LeaderBoardData/'+phoneNumber+'/phoneNumber'] = phoneNumber;
-	UPDATES['/LeaderBoardData/'+phoneNumber+'/userName'] = leaderBoardData.userName;
-	UPDATES['/LeaderBoardData/'+phoneNumber+'/start_balance'] = leaderBoardData.start_balance;
+	//UPDATES['/LeaderBoardData/'+phoneNumber+'/phoneNumber'] = phoneNumber;
+	//UPDATES['/LeaderBoardData/'+phoneNumber+'/userName'] = leaderBoardData.userName;
+	//UPDATES['/LeaderBoardData/'+phoneNumber+'/start_balance'] = leaderBoardData.start_balance;
 	//UPDATES['/LeaderBoardData/'+phoneNumber+'/imageUrl'] = (leaderBoardData.imageUrl===undefined?null:leaderBoardData.imageUrl);
 	//console.log('txn not aborted');
 
     var db_ref = admin.database().ref();
 
     return db_ref.update(UPDATES).then((snapshot)=>{
-    	return res.json({
-	   		"message" : "transaction successful",
-	       	"status" : 200 
-	    }); 
-    });
+				    	return res.json({
+					   		"message" : "transaction successful",
+					       	"status" : 200 
+					    }); 
+				    });
+    
 });
 
 exports.userinfo = functions.https.onRequest((req, res) => {
@@ -1398,218 +1783,6 @@ exports.standings = functions.https.onRequest((req, res) => {
     		});
 
 });
-
-//get daily winner
-exports.dailyleaderboard = 
-	functions.https.onRequest((req, res)=>{
-
-		var dailyLeaderBoard = admin.database().ref('/DailyData').child('/leaderboard').once('value');
-		var Players = admin.database().ref('/Players').once('value');
-
-		var promises = [];
-
-		promises.push(dailyLeaderBoard);
-		promises.push(Players);
-
-		return Promise.all(promises)
-				.then(snapshot=>{
-
-					var prevBoardData;
-					var todaysBoardData = {};
-					var players;
-					var winner = {};
-
-					snapshot.forEach(function(childSnapshot){
-
-						if(childSnapshot.key === "Players") {
-							players = childSnapshot;
-						}else {
-							prevBoardData = childSnapshot;
-						}
-					});
-					
-					var temp = -Number.MAX_VALUE;
-					var ALL_UPDATES = {};
-					var LEADERBOAD_UPDATES = {};
-					var current_timestamp = new Date().getTime();
-					var listWinner = [];
-
-					players.forEach(function(childSnapshot){
-
-
-						//update fixed deposit function (all updates wrong way of doing)****************************************************************************
-						/*var updt = updateFixedDeposit(childSnapshot, current_timestamp);
-
-						if(updt !== null && updt !== undefined) {
-							ALL_UPDATES[childSnapshot.key] = updt; 
-						}*/
-
-						var avail_bal  = getValue(childSnapshot.child('/Account').child('/avail_balance'));
-					    var change = getValue(childSnapshot.child('/Account').child('/change'));
-					    var pchange = getValue(childSnapshot.child('/Account').child('/percentchange'));
-					    var shares_price = getValue(childSnapshot.child('/Account').child('/shares_price'));
-					    var start_balance = getValue(childSnapshot.child('/Account').child('/start_balance'));
-
-					    var starttime =  0;
-					    var timestamp =  0;
-					    var lastupdate =  0;
-					    var nextupdate =  0;
-					    var firstupdate =  0;
-
-					    var SI_CHANGE = 0.0;
-
-					    var fd_ref = childSnapshot.child('/Account').child('/stocks_list').child('/bought_items').child('/fixed_deposit');
-
-					    try {
-
-						    if(fd_ref.exists()) {
-
-							    fd_ref.forEach(function(innerchildSnapshot){
-
-							    	//console.log(childSnapshot.val());
-
-							    	try{
-
-							    		starttime =  getLongValue(innerchildSnapshot.child('/starttime'));
-							    		timestamp =  getLongValue(innerchildSnapshot.child('/timestamp'));
-							    		lastupdate =  getLongValue(innerchildSnapshot.child('/lastupdate'));
-							    		nextupdate =  getLongValue(innerchildSnapshot.child('/nextupdate'));
-							    		firstupdate =  getLongValue(innerchildSnapshot.child('/firstupdate'));
-
-							    		if(getTotalDayCount(current_timestamp, lastupdate) > 0) {
-								    		
-								    		//console.log("phoneNumber: "+ childSnapshot.key );
-
-								    		var prev_currentval = getValue(innerchildSnapshot.child('/current_value'));
-
-								    		var SI = getSimpleInterest(getTotalDayCount(current_timestamp, starttime), innerchildSnapshot);
-								    		var current_value = getValue(innerchildSnapshot.child('/investment')) + SI;
-
-								    		SI_CHANGE += (current_value - prev_currentval);
-
-								    		lastupdate = getLastUpdate(current_timestamp);
-								    		nextupdate = getNextUpdate();
-
-								    		//TODO: set updates here
-								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/lastupdate'] = lastupdate;
-								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/nextupdate'] = nextupdate;
-								    		ALL_UPDATES['/'+childSnapshot.key+'/Account/stocks_list/bought_items/fixed_deposit/'+innerchildSnapshot.key+'/current_value'] = current_value;
-								    		LEADERBOAD_UPDATES['/'+childSnapshot.key+'/Portfolio/'+innerchildSnapshot.key+'/current_value'] = current_value;
-							    		}
-
-							    	}catch(err){
-							    		console.log("Error occured: " +err)
-							    		//continue;
-							    	}
-
-							    });
-
-							    /* //dont update it here. It will be updated once user sells his fd
-							    if(SI_CHANGE > 1) {
-
-								    avail_bal += SI_CHANGE;
-								    change += SI_CHANGE;
-
-								    pchange = ((avail_bal + shares_price - start_balance) / start_balance ) * 100;
-
-								    ALL_UPDATES['/'+childSnapshot.key+'/Account/avail_balance'] = avail_bal;
-								    ALL_UPDATES['/'+childSnapshot.key+'/Account/change'] = change;
-								    ALL_UPDATES['/'+childSnapshot.key+'/pchange'] = pchange;
-								}
-								*/
-
-							}
-
-						}catch(err) {
-							console.log("Error occured:"+childSnapshot.key+":"+err);
-						}
-
-						//******************************************ALL UPDATES FUNCTION***********************************************************************
-
-						try{
-
-							var daychange = getValue(childSnapshot.child('/Account').child('/change')) 
-								- getValue(prevBoardData.child('/'+childSnapshot.key).child('/change'));
-
-							var data = {
-								"phoneNumber": childSnapshot.key,
-								"change" : getValue(childSnapshot.child('/Account').child('/change'))
-							};
-								
-							todaysBoardData[childSnapshot.key] = data;
-
-							if(parseFloat(daychange) > parseFloat(temp)){
-								
-								listWinner = [];
-								temp = parseFloat(daychange);
-								winner = {
-									"phoneNumber" : childSnapshot.key,
-									"daychange" : daychange
-								};
-								listWinner.push(winner);
-
-							}else if(parseFloat(daychange) === parseFloat(temp)) {
-								
-								winner = {
-									"phoneNumber" : childSnapshot.key,
-									"daychange" : daychange
-								};
-								listWinner.push(winner);
-
-							}	
-
-						}catch(err) {
-							console.log('exception:'+err);
-						}
-
-					});
-
-					
-					var date = new Date(current_timestamp + 5*60*60*1000 + 30*60*1000);
-					var stringdate = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
-
-					var pushUpdates = admin.database().ref('/Players').update(ALL_UPDATES);
-					var leaderboardUpdates = admin.database().ref('/LeaderBoardData').update(LEADERBOAD_UPDATES);
-					var lastupdate = admin.database().ref('/DailyData').child('/lastupdate').set(date.getTime());
-					var currentstandings = admin.database().ref('/DailyData').child('/leaderboard').update(todaysBoardData);
-					var todaywinner = admin.database().ref('/DailyData').child('/Winner').child('/'+stringdate).set(listWinner);
-
-					var innerpromises = [];
-
-					innerpromises.push(pushUpdates);
-					innerpromises.push(leaderboardUpdates);
-					innerpromises.push(lastupdate);
-					innerpromises.push(currentstandings);
-					innerpromises.push(winner);
-
-					return Promise.all(innerpromises)
-							.then(snapshot=>{
-
-								return res.status(200).json({
-									        message: "Daily update successful",
-					    					status: 200,
-					    					timestamp : getLastUpdate(new Date().getTime()),
-					    					nextupdate: getNextUpdate()
-									   });
-
-							}).catch(exception=>{
-								console.log('exception:'+exception);
-				    			return res.status(200).json({
-									        flag: "INTERNAL SERVER ERROR",
-									        message: "Error occured while upadating daily records",
-					    					status: 200
-									   });
-				    		});
-
-				}).catch(exception=>{
-					console.log('exception:'+exception);
-		    			return res.status(200).json({
-							        flag: "INTERNAL SERVER ERROR",
-							        message: "Error occured while fetching daily records",
-			    					status: 200
-							   });
-		    		});
-	});
 
 
 //Utiltiy function for fixed deposit(depricated)
@@ -1952,7 +2125,7 @@ function isDayValidForTransaction(type) {
 	var current_date = new Date();
 	var current_timestamp = current_date.getTime();
 
-	var close_reg_time = 1550601000000;
+	var close_reg_time = 1548037800000;
 	//Registration closed
 	if(current_timestamp < close_reg_time) {
 		return false; //TODO: chnage to false
@@ -2052,7 +2225,7 @@ function getNiftyLowerLimit(timestamp){
 	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
 	else m = date.getMonth()+1; 
 
-	var stringdate = y + "/" + m + "/" + d +" 09:15:00+05:30";
+	var stringdate = y + "/" + m + "/" + d +" 09:16:00+05:30";
 
 	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
 
@@ -2098,7 +2271,7 @@ function getCommodityLowerLimit(timestamp){
 	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
 	else m = date.getMonth()+1; 
 
-	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+	var stringdate = y + "/" + m + "/" + d +" 09:01:00+05:30";
 
 	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
 
@@ -2144,7 +2317,7 @@ function getCurrencyLowerLimit(timestamp){
 	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
 	else m = date.getMonth()+1; 
 
-	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+	var stringdate = y + "/" + m + "/" + d +" 09:01:00+05:30";
 
 	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
 
@@ -2190,7 +2363,7 @@ function getFdLowerLimit(timestamp){
 	if(parseInt((date.getMonth()+1)) < 10) m = "0"+(date.getMonth()+1);
 	else m = date.getMonth()+1; 
 
-	var stringdate = y + "/" + m + "/" + d +" 09:00:00+05:30";
+	var stringdate = y + "/" + m + "/" + d +" 09:01:00+05:30";
 
 	//console.log("string date to timestamp " + stringdate+":" + new Date(stringdate).getTime());
 
